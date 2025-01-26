@@ -50,3 +50,6 @@ env/
 # Keystore files
 *.jks
 *.keystore
+
+# Gradle properties
+android/gradle.properties
