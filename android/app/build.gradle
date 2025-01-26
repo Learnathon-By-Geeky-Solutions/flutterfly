@@ -27,12 +27,22 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        release {
+            keyAlias System.getenv("KEY_ALIAS") ?: project.findProperty("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD") ?: project.findProperty("KEY_PASSWORD")
+            storeFile file(System.getenv("STORE_FILE") ?: project.findProperty("STORE_FILE"))
+            storePassword System.getenv("STORE_PASSWORD") ?: project.findProperty("STORE_PASSWORD")
+        }
+    }
+
     buildTypes {
         release {
             // Ensure release builds are signed correctly
             signingConfig = signingConfigs.release
             minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            shrinkResources false
+           // proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"),"proguard-rules.pro"
         }
     }
 
@@ -57,4 +67,8 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation 'com.google.android.gms:play-services-tasks:18.2.0'
 }
