@@ -16,10 +16,10 @@
 </div>
 
 <h1 align="center" style="vertical-align: middle;" >
-  Flutterfly App
+  <img src="https://i.ibb.co.com/cSFqqjWH/logo.jpg" alt="logo" border="0" width="280">
 </h1>
 
-<p align="center"> This is an app </p>
+<p align="center"> A marketplace platform where users request custom product quotes, vendors bid, and finalized projects are confirmed with digital agreements and payments. </p>
 <p align="center">
     <a href="https://github.com/Learnathon-By-Geeky-Solutions/flutterfly">View Demo</a>
     &middot;
@@ -34,6 +34,7 @@
 - <a href="#wiki">➡️ Visit Our Wiki</a>
 - <a href="#problem">⚠️ Problem Statement</a>
 - [📱 Features](#-features)
+- [🧩 Project Structure: Feature-First Clean Architecture with Repository Pattern](#clean)
 - <a href="#wiki">➡️ Visit Our Wiki</a>
 - [🚀 Getting Started](#-getting-started)
     - [Prerequisites](#prerequisites)
@@ -58,14 +59,112 @@ For comprehensive documentation, guides, and resources related to the Flutterfly
 
 <a id="problem"></a>
 ## ⚠️ Problem Statement
-Problem statement
+Many businesses and individuals struggle to find the right vendors for customized products or services, leading to inefficiencies, high costs, and delays. Vendors, on the other hand, lack a centralized platform to discover potential clients and bid on projects effectively.
+
+This app bridges the gap by providing a streamlined bidding and quotation system.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 ## 📱 Features
-- **Feature:** Feature
 
+### 🛒 Vendor Registration and Services
+- Vendors can register with business details and services offered.
+- They can link portfolios and set business hours.
+- Certificates and social media links can be added for credibility.
+
+### 💼 Order Process and Payment
+- Clients can view ongoing bids and select preferred vendors.
+- Payment can be completed through a gateway or cash-on-delivery.
+- Invoices are generated post order completion.
+
+### 📝 User Profile Setup
+- Users can set up profiles with mandatory and optional information.
+- Business accounts require additional details like business type and registration number.
+
+### 💬 Communication and Reviews
+- Clients can rate and review vendors post order completion.
+- Vendors can update bids and communicate with clients for better deals.
+
+### 📅 Order Tracking and Completion
+- Clients can track active orders and view payment status.
+- Orders are confirmed post payment completion and vendors can generate digital agreements.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<a id="clean"></a>
+## 🧩 Project Structure: Feature-First Clean Architecture with Repository Pattern
+```
+bidding_ecommerce/
+├── src/
+│   ├── features/
+│   │   ├── auth/
+│   │   │   ├── domain/
+│   │   │   │   ├── entities/
+│   │   │   │   │   └── user.dart
+│   │   │   │   ├── repositories/
+│   │   │   │   │   └── auth_repository.dart
+│   │   │   │   └── use_cases/
+│   │   │   │       ├── login_use_case.dart
+│   │   │   │       └── register_use_case.dart
+│   │   │   ├── data/
+│   │   │   │   ├── repositories/
+│   │   │   │   │   └── auth_repository_impl.dart
+│   │   │   │   └── data_sources/
+│   │   │   │       ├── auth_local_data_source.dart
+│   │   │   │       └── auth_remote_data_source.dart
+│   │   │   └── presentation/
+│   │   │       ├── pages/
+│   │   │       │   ├── login_page.dart
+│   │   │       │   └── register_page.dart
+│   │   │       └── controllers/
+│   │   │           └── auth_controller.dart
+│   │   │
+│   │   ├── product/
+│   │   │   ├── domain/
+|   |   |       ├── ...
+│   ├── core/
+│   │   ├── error/
+│   │   │   ├── exceptions.dart
+│   │   │   └── failures.dart
+│   │   ├── network/
+│   │   │   ├── api_client.dart
+│   │   │   └── network_info.dart
+│   │   ├── utils/
+│   │   │   ├── constants.dart
+│   │   │   └── validators.dart
+│   │   └── config/
+│   │       └── app_config.dart
+│   │
+│   ├── shared/
+│   │   ├── domain/
+│   │   │   └── entities/
+│   │   │       └── base_entity.dart
+│   │   ├── data/
+│   │   │   └── models/
+│   │   │       └── base_model.dart
+│   │   └── presentation/
+│   │       ├── widgets/
+│   │       │   ├── loading_widget.dart
+│   │       │   └── error_widget.dart
+│   │       └── themes/
+│   │           └── app_theme.dart
+│   │
+│   └── main.dart
+│
+├── test/
+│   ├── features/
+│   │   ├── auth/
+│   │   ├── product/
+│   │   ├── bidding/
+│   │   ├── payment/
+│   │   └── order/
+|    |  └── review/
+│   └── core/
+│
+├── pubspec.yaml
+└── README.md
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -192,7 +291,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [stars-url]: https://github.com/Learnathon-By-Geeky-Solutions/flutterfly/stargazers
 [issues-shield]: https://img.shields.io/github/issues/Learnathon-By-Geeky-Solutions/flutterfly.svg?style=for-the-badge
 [issues-url]: https://github.com/Learnathon-By-Geeky-Solutions/flutterfly/issues
-[license-shield]: https://img.shields.io/github/license/Learnathon-By-Geeky-Solutions/flutterfly.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/Learnathon-By-Geeky-Solutions/flutterfly.svg?style=for-the-badge&color=color=#50C878
 [license-url]: https://github.com/Learnathon-By-Geeky-Solutions/flutterfly/blob/master/LICENSE
 [FigJam]: https://img.shields.io/badge/FigJam-F24E1E?style=for-the-badge&logo=figma&logoColor=white
 [FigJam-url]: https://www.figma.com/figjam/
