@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfly/utils/theme/theme.dart';
-import 'config/app_config.dart';
-import 'config/environment.dart';
+import 'package:flutterfly/core/utils/theme/theme.dart';
+import 'core/config/app_config.dart';
+import 'core/config/environment.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
