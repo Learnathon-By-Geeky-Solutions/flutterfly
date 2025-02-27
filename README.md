@@ -15,9 +15,10 @@
 
 </div>
 
-<h1 align="center" style="vertical-align: middle;" >
-  <img src="https://i.ibb.co.com/cSFqqjWH/logo.jpg" alt="logo" border="0" width="280">
-</h1>
+<div align="center">
+  <img src="https://i.ibb.co/cSFqqjWH/logo.jpg" alt="logo" width="280">
+</div>
+
 
 <p align="center"> A marketplace platform where users request custom product quotes, vendors bid, and finalized projects are confirmed with digital agreements and payments. </p>
 <p align="center">
