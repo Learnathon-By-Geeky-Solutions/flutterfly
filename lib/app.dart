@@ -1,31 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfly/core/utils/theme/theme.dart';
-import 'core/config/app_config.dart';
-import 'core/config/environment.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/routes/route_generator.dart';
+import 'core/utils/theme/app_theme.dart';
+import 'core/utils/theme/theme_provider.dart';
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
-
-    String appEnv = Environment.flavorName;
-    String appName = AppConfig.appName;
-
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref)
+  {
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: appName,
-      themeMode: ThemeMode.system,
-      theme: AppTheme.lightTheme,
+      routerConfig: router,
+      title: "QuickDeal",
+      theme: ref.watch(themeProvider),
       darkTheme: AppTheme.darkTheme,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Learn-a-thon Project'),
-        ),
-        body: Center(
-          child: Text('App running on $appEnv environment'),
-        ),
-      ),
+      themeMode: ref.watch(themeModeProvider),
     );
   }
 }
