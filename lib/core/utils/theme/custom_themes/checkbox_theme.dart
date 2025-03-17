@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../color_palette.dart';
 
 class AppCheckboxTheme {
   AppCheckboxTheme._();
@@ -14,7 +15,7 @@ class AppCheckboxTheme {
     }),
     fillColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return Colors.blue;
+        return AppColors.primaryAccent;
       } else {
         return Colors.grey;
       }
@@ -32,7 +33,7 @@ class AppCheckboxTheme {
     }),
     fillColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return Colors.blue;
+        return AppColors.primaryDark;
       } else {
         return Colors.grey;
       }

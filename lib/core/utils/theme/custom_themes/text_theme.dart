@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../color_palette.dart';
 
 class AppTextTheme {
   AppTextTheme._();
@@ -16,7 +17,8 @@ class AppTextTheme {
       titleMedium: TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.grey[600]),
       titleSmall: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey[600]),
       labelSmall: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey),
-      labelLarge: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.blue),
+      labelLarge: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold,
+          color: AppColors.primaryAccent),
       labelMedium: TextStyle(fontSize: 10.0, fontWeight: FontWeight.normal, color: Colors.black),
     );
   }
@@ -34,7 +36,8 @@ class AppTextTheme {
       titleMedium: TextStyle(fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.grey[400]),
       titleSmall: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey[400]),
       labelSmall: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal, color: Colors.grey),
-      labelLarge: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.blue),
+      labelLarge: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold,
+          color: AppColors.primaryDark),
       labelMedium: TextStyle(fontSize: 10.0, fontWeight: FontWeight.normal, color: Colors.white),
     );
   }
