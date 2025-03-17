@@ -1,4 +1,4 @@
-name: flutterfly
+name: QuickDeal
 description: "A new Flutter project."
 
 publish_to: 'none'
@@ -16,6 +16,10 @@ dependencies:
   loading_animation_widget: ^1.3.0
   logger: ^2.5.0
   flutter_dotenv: ^5.2.1
+  go_router: ^14.8.1
+  shared_preferences: ^2.3.3
+  flutter_svg: ^2.0.17
+  flutter_riverpod: ^2.6.1
 
 dev_dependencies:
   flutter_test:
