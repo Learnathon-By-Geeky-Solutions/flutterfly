@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:quickdeal/common/widget/getLogoWidget.dart';
 import 'package:quickdeal/core/utils/constants/image_strings.dart';
 import '../../../../core/routes/app_routes.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SafeArea(
@@ -43,14 +45,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   getLogoBasedOnTheme(context, width: 250, height: 100),
                   // Welcome Text
                   Text(
-                    'Welcome Back!',
+                    l10n.welcomeBack,
                     style: textTheme.displayLarge,
                   ),
                   const SizedBox(height: 8),
 
                   // Subtitle
                   Text(
-                    'Secure Fast & Reliable Deals.',
+                    l10n.secureDeals,
                     style: textTheme.titleSmall,
                     textAlign: TextAlign.center,
                   ),
@@ -60,8 +62,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      hintText: 'Personal/Business Email',
+                    decoration: InputDecoration(
+                      hintText: l10n.emailHint,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -71,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _passwordController,
                     obscureText: _obscurePassword,
                     decoration: InputDecoration(
-                      hintText: 'Password',
+                      hintText: l10n.passwordHint,
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscurePassword
@@ -110,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Remember me',
+                            l10n.rememberMe,
                             style: textTheme.labelMedium,
                           ),
                         ],
@@ -128,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         child: Text(
-                          'Forgot Password?',
+                          l10n.forgotPassword,
                           style: textTheme.labelMedium,
                         ),
                       ),
@@ -144,23 +146,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Handle sign in
                       },
                       child: Text(
-                        'Sign In',
+                        l10n.signIn,
                         style: textTheme.labelLarge?.copyWith(
-                          color: Colors.white
+                            color: Colors.white
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 24),
 
-                  // Divider with text "or continue with"
+                  // Divider with text
                   Row(
                     children: [
                       const Expanded(child: Divider()),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(
-                          'or continue with',
+                          l10n.orContinue,
                           style: textTheme.labelMedium,
                         ),
                       ),
@@ -169,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 24),
 
-                  // Google Sign In Button (uses theme defined in AppOutlinedButtonTheme)
+                  // Google Sign In Button
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(
@@ -185,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            'Sign In with Google',
+                            l10n.googleSignIn,
                             style: textTheme.labelMedium,
                           ),
                         ],
@@ -199,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Don\'t have an account?',
+                        l10n.noAccount,
                         style: textTheme.labelMedium,
                       ),
                       TextButton(
@@ -213,9 +215,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         child: Text(
-                          'Sign up',
-                          style: textTheme.labelLarge?.copyWith(color:
-                          colorScheme.secondary),
+                          l10n.signUp,
+                          style: textTheme.labelLarge?.copyWith(
+                              color: colorScheme.secondary
+                          ),
                         ),
                       ),
                     ],
