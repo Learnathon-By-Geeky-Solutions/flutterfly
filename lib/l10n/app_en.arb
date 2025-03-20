@@ -4,8 +4,17 @@
     "description": "Welcome message on login screen"
   },
   "secureDeals": "Secure Fast & Reliable Deals.",
+  "@secureDeals": {
+    "description": "Subtitle on login screen"
+  },
   "emailHint": "Personal/Business Email",
+  "@emailHint": {
+    "description": "Hint text for email input field"
+  },
   "passwordHint": "Password",
+  "@passwordHint": {
+    "description": "Hint text for password input field"
+  },
   "rememberMe": "Remember me",
   "forgotPassword": "Forgot Password?",
   "signIn": "Sign In",
