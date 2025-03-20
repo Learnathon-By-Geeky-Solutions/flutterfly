@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    final l10n = AppLocalizations.of(context)!;
+    final loc = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SafeArea(
@@ -45,14 +45,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   getLogoBasedOnTheme(context, width: 250, height: 100),
                   // Welcome Text
                   Text(
-                    l10n.welcomeBack,
+                    loc.welcomeBack,
                     style: textTheme.displayLarge,
                   ),
                   const SizedBox(height: 8),
 
                   // Subtitle
                   Text(
-                    l10n.secureDeals,
+                    loc.secureDeals,
                     style: textTheme.titleSmall,
                     textAlign: TextAlign.center,
                   ),
@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      hintText: l10n.emailHint,
+                      hintText: loc.emailHint,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _passwordController,
                     obscureText: _obscurePassword,
                     decoration: InputDecoration(
-                      hintText: l10n.passwordHint,
+                      hintText: loc.passwordHint,
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscurePassword
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            l10n.rememberMe,
+                            loc.rememberMe,
                             style: textTheme.labelMedium,
                           ),
                         ],
@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         child: Text(
-                          l10n.forgotPassword,
+                          loc.forgotPassword,
                           style: textTheme.labelMedium,
                         ),
                       ),
@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Handle sign in
                       },
                       child: Text(
-                        l10n.signIn,
+                        loc.signIn,
                         style: textTheme.labelLarge?.copyWith(
                             color: Colors.white
                         ),
@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Text(
-                          l10n.orContinue,
+                          loc.orContinue,
                           style: textTheme.labelMedium,
                         ),
                       ),
@@ -187,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            l10n.googleSignIn,
+                            loc.googleSignIn,
                             style: textTheme.labelMedium,
                           ),
                         ],
@@ -201,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        l10n.noAccount,
+                        loc.noAccount,
                         style: textTheme.labelMedium,
                       ),
                       TextButton(
@@ -215,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         child: Text(
-                          l10n.signUp,
+                          loc.signUp,
                           style: textTheme.labelLarge?.copyWith(
                               color: colorScheme.secondary
                           ),
