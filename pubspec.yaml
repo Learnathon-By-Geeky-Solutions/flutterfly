@@ -24,7 +24,7 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_localizations:
     sdk: flutter
-  intl: any
+  intl: ^0.18.1
   flutter_gen: ^5.10.0
 
 dev_dependencies:
