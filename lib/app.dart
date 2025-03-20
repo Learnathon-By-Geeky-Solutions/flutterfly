@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/routes/route_generator.dart';
 import 'core/utils/theme/app_theme.dart';
-import 'core/utils/theme/theme_provider.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -14,9 +13,9 @@ class App extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: router,
       title: "QuickDeal",
-      theme: ref.watch(themeProvider),
+      theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ref.watch(themeModeProvider),
+      themeMode: ThemeMode.system
     );
   }
 }
