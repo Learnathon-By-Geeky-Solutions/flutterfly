@@ -1,62 +1,86 @@
 import 'package:flutter/material.dart';
-import '../color_palette.dart';
+import '../../constants/color_palette.dart';
 
 class AppTextFieldTheme {
   AppTextFieldTheme._();
 
-  static final InputDecorationTheme lightInputDecorationTheme =
-  InputDecorationTheme(
-    filled: true,
-    fillColor: Colors.white,
-    prefixIconColor: Colors.grey,
-    suffixIconColor: Colors.grey,
-    labelStyle: TextStyle(fontSize: 14, color: Colors.grey[600]),
-    hintStyle: TextStyle(fontSize: 14, color: Colors.grey[500]),
-    errorStyle: const TextStyle(fontSize: 14, color: Colors.red),
-    floatingLabelStyle: const TextStyle(fontSize: 14, color: AppColors.primaryAccent), // Pink label when focused
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: const BorderSide(width: 1, color: Colors.grey),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: const BorderSide(width: 1, color: AppColors.primaryAccent), // Pink border when focused
-    ),
-    errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: const BorderSide(width: 1, color: Colors.red),
-    ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: const BorderSide(width: 1, color: Colors.red),
-    ),
-  );
+  /// Light Theme
+  static InputDecorationTheme get lightInputDecorationTheme {
+    return InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 1, color: Colors.grey),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 1, color: Colors.grey),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 1, color: AppColors.primaryAccent),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 1, color: Colors.red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 2, color: Colors.red),
+      ),
+      hintStyle: const TextStyle(
+        color: Colors.grey,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+      labelStyle: const TextStyle(
+        color: Colors.black,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+      suffixIconColor: Colors.grey,
+    );
+  }
 
-  static final InputDecorationTheme darkInputDecorationTheme =
-  InputDecorationTheme(
-    filled: true,
-    fillColor: AppColors.primaryDark, // Dark Blue background in dark mode
-    prefixIconColor: Colors.grey[300],
-    suffixIconColor: Colors.grey[300],
-    labelStyle: TextStyle(fontSize: 14, color: Colors.grey[400]),
-    hintStyle: TextStyle(fontSize: 14, color: Colors.grey[500]),
-    errorStyle: const TextStyle(fontSize: 14, color: Colors.red),
-    floatingLabelStyle: const TextStyle(fontSize: 14, color: AppColors.primaryAccent), // Pink label when focused
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: BorderSide(width: 1, color: Colors.grey[700]!),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: const BorderSide(width: 1, color: AppColors.primaryAccent), // Pink border when focused
-    ),
-    errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: const BorderSide(width: 1, color: Colors.red),
-    ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: const BorderSide(width: 1, color: Colors.red),
-    ),
-  );
+  /// Dark Theme
+  static InputDecorationTheme get darkInputDecorationTheme {
+    return InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.transparent,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 1, color: Colors.grey),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 1, color: Colors.grey),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 1, color: AppColors.primaryAccent),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 1, color: Colors.red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(width: 2, color: Colors.red),
+      ),
+      hintStyle: const TextStyle(
+        color: Colors.grey,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+      labelStyle: const TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+      suffixIconColor: Colors.grey,
+    );
+  }
 }
