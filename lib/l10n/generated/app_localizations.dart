@@ -101,19 +101,19 @@ abstract class AppLocalizations {
   /// **'Welcome Back!'**
   String get welcomeBack;
 
-  /// No description provided for @secureDeals.
+  /// Subtitle on login screen
   ///
   /// In en, this message translates to:
   /// **'Secure Fast & Reliable Deals.'**
   String get secureDeals;
 
-  /// No description provided for @emailHint.
+  /// Hint text for email input field
   ///
   /// In en, this message translates to:
   /// **'Personal/Business Email'**
   String get emailHint;
 
-  /// No description provided for @passwordHint.
+  /// Hint text for password input field
   ///
   /// In en, this message translates to:
   /// **'Password'**

@@ -18,7 +18,7 @@
   "fullName": "পুরো নাম",
   "enterFullName": "আপনার পুরো নাম লিখুন",
   "emailAddress": "ইমেইল",
-  "emailExample": "ইমেইল",
+  "emailExample": "আপনার ইমেইল লিখুন",
   "password": "পাসওয়ার্ড",
   "createPassword": "একটি পাসওয়ার্ড তৈরি করুন",
   "confirmPassword": "পাসওয়ার্ড নিশ্চিত করুন",
@@ -31,5 +31,5 @@
   "agreeTermsPart1": "একটি অ্যাকাউন্ট তৈরি করে, আপনি আমাদের ",
   "termsOfService": "সেবার শর্তাবলী",
   "and": " এবং ",
-  "privacyPolicy": "গোপনীয়তা নীতি"
+  "privacyPolicy": "গোপনীয়তা নীতি রক্ষা করছেন"
 }

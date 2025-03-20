@@ -64,7 +64,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get emailAddress => 'ইমেইল';
 
   @override
-  String get emailExample => 'ইমেইল';
+  String get emailExample => 'আপনার ইমেইল লিখুন';
 
   @override
   String get password => 'পাসওয়ার্ড';
@@ -103,5 +103,5 @@ class AppLocalizationsBn extends AppLocalizations {
   String get and => ' এবং ';
 
   @override
-  String get privacyPolicy => 'গোপনীয়তা নীতি';
+  String get privacyPolicy => 'গোপনীয়তা নীতি রক্ষা করছেন';
 }
