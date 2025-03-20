@@ -1,0 +1,56 @@
+{
+  "welcomeBack": "Welcome Back!",
+  "@welcomeBack": {
+    "description": "Welcome message on login screen"
+  },
+  "secureDeals": "Secure Fast & Reliable Deals.",
+  "emailHint": "Personal/Business Email",
+  "passwordHint": "Password",
+  "rememberMe": "Remember me",
+  "forgotPassword": "Forgot Password?",
+  "signIn": "Sign In",
+  "orContinue": "or continue with",
+  "googleSignIn": "Sign In with Google",
+  "noAccount": "Don't have an account?",
+  "signUp": "Sign up",
+
+  "needHelp": "Need help?",
+  "@needHelp": {"description": "Help button in signup header"},
+
+  "createAccount": "Create your account",
+  "@createAccount": {"description": "Signup screen title"},
+
+  "chooseAccountType": "Choose your account type to get started",
+  "@chooseAccountType": {"description": "Signup screen subtitle"},
+
+  "personalAccount": "Personal",
+  "@personalAccount": {"description": "Personal account type label"},
+
+  "businessAccount": "Business",
+  "@businessAccount": {"description": "Business account type label"},
+
+  "fullName": "Full Name",
+  "enterFullName": "Enter your full name",
+
+  "emailAddress": "Email Address",
+  "emailExample": "you@example.com",
+
+  "password": "Password",
+  "createPassword": "Create a password",
+
+  "confirmPassword": "Confirm Password",
+  "confirmPasswordHint": "Confirm your password",
+
+  "becomeVendor": "Become a Vendor",
+  "sellProducts": "Sell products on our platform",
+
+  "createAccountButton": "Create Account",
+
+  "haveAccount": "Already have an account?",
+  "login": "Log in",
+
+  "agreeTermsPart1": "By creating an account, you agree to our ",
+  "termsOfService": "Terms of Service",
+  "and": " & ",
+  "privacyPolicy": "Privacy Policy"
+}

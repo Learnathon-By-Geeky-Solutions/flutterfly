@@ -1,8 +1,11 @@
+// signup_screen.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickdeal/core/utils/theme/custom_themes/account_button_theme.dart';
-import '../../../../common/widget/getLogoWidget.dart';
-import '../../../../core/routes/app_routes.dart';
+import 'package:quickdeal/core/routes/app_routes.dart';
+import 'package:quickdeal/common/widget/getLogoWidget.dart';
+
+import '../../../../l10n/generated/app_localizations.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -33,12 +36,12 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final accountButtonTheme =
-    Theme.of(context).extension<AccountButtonTheme>()!;
-    final bool isPersonalSelected = _accountType == 'personal';
-    final bool isBusinessSelected = _accountType == 'business';
+    final loc = AppLocalizations.of(context)!;
+    final accountButtonTheme = Theme.of(context).extension<AccountButtonTheme>()!;
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+    final bool isPersonalSelected = _accountType == 'personal';
+    final bool isBusinessSelected = _accountType == 'business';
 
     return Scaffold(
       body: SafeArea(
@@ -47,7 +50,7 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header with logo and help
+              // Header with logo and help button
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -63,36 +66,33 @@ class _SignupScreenState extends State<SignupScreen> {
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                     child: Text(
-                      'Need help?',
+                      loc.needHelp,
                       style: textTheme.labelMedium,
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 24),
-
-              // Create account heading
+              // Signup title
               Center(
                 child: Text(
-                  'Create your account',
+                  loc.createAccount,
                   style: textTheme.titleLarge,
                 ),
               ),
               const SizedBox(height: 8),
-
-              // Subheading
+              // Subtitle
               Center(
                 child: Text(
-                  'Choose your account type to get started',
+                  loc.chooseAccountType,
                   style: textTheme.titleSmall,
                 ),
               ),
               const SizedBox(height: 24),
-
               // Account type selection
               Row(
                 children: [
-                  // Personal account
+                  // Personal account selection
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
@@ -124,7 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Personal',
+                              loc.personalAccount,
                               style: textTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.w500,
                                 color: isPersonalSelected
@@ -138,8 +138,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                   const SizedBox(width: 16),
-
-                  // Business account
+                  // Business account selection
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
@@ -171,7 +170,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Business',
+                              loc.businessAccount,
                               style: textTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.w500,
                                 color: isBusinessSelected
@@ -187,41 +186,38 @@ class _SignupScreenState extends State<SignupScreen> {
                 ],
               ),
               const SizedBox(height: 24),
-
               // Full Name
               Text(
-                'Full Name',
+                loc.fullName,
                 style: textTheme.bodyLarge,
               ),
               const SizedBox(height: 8),
               TextField(
                 controller: _fullNameController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your full name',
-                  prefixIcon: Icon(Icons.person_outline),
+                decoration: InputDecoration(
+                  hintText: loc.enterFullName,
+                  prefixIcon: const Icon(Icons.person_outline),
                 ),
               ),
               const SizedBox(height: 16),
-
               // Email Address
               Text(
-                'Email Address',
+                loc.emailAddress,
                 style: textTheme.bodyLarge,
               ),
               const SizedBox(height: 8),
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  hintText: 'you@example.com',
-                  prefixIcon: Icon(Icons.email_outlined),
+                decoration: InputDecoration(
+                  hintText: loc.emailExample,
+                  prefixIcon: const Icon(Icons.email_outlined),
                 ),
               ),
               const SizedBox(height: 16),
-
               // Password
               Text(
-                'Password',
+                loc.password,
                 style: textTheme.bodyLarge,
               ),
               const SizedBox(height: 8),
@@ -229,13 +225,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
-                  hintText: 'Create a password',
+                  hintText: loc.createPassword,
                   prefixIcon: const Icon(Icons.help_outline),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
+                      _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                     ),
                     onPressed: () {
                       setState(() {
@@ -246,10 +240,9 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-
               // Confirm Password
               Text(
-                'Confirm Password',
+                loc.confirmPassword,
                 style: textTheme.bodyLarge,
               ),
               const SizedBox(height: 8),
@@ -257,13 +250,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 controller: _confirmPasswordController,
                 obscureText: _obscureConfirmPassword,
                 decoration: InputDecoration(
-                  hintText: 'Confirm your password',
+                  hintText: loc.confirmPasswordHint,
                   prefixIcon: const Icon(Icons.help_outline),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscureConfirmPassword
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
+                      _obscureConfirmPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                     ),
                     onPressed: () {
                       setState(() {
@@ -274,8 +265,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-
-              // Become a Vendor
+              // Become a Vendor Section
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -291,11 +281,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Become a Vendor',
+                          loc.becomeVendor,
                           style: textTheme.bodyLarge,
                         ),
                         Text(
-                          'Sell products on our platform',
+                          loc.sellProducts,
                           style: textTheme.bodyMedium,
                         ),
                       ],
@@ -316,31 +306,27 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-
               // Create Account Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Handle account creation
+                    // Handle account creation logic
                   },
                   child: Text(
-                    'Create Account',
-                    style: textTheme.labelLarge?.copyWith(
-                        color: Colors.white
-                    ),
+                    loc.createAccountButton,
+                    style: textTheme.labelLarge?.copyWith(color: Colors.white),
                   ),
                 ),
               ),
               const SizedBox(height: 16),
-
-              // Already have an account
+              // Already have an account? Log in.
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Already have an account?',
+                      loc.haveAccount,
                       style: textTheme.labelMedium,
                     ),
                     TextButton(
@@ -353,7 +339,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       child: Text(
-                        'Log in',
+                        loc.login,
                         style: textTheme.labelMedium?.copyWith(
                           color: colorScheme.secondary,
                         ),
@@ -363,20 +349,19 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // Terms and Privacy
+              // Terms and Privacy Policy
               Center(
                 child: Wrap(
                   alignment: WrapAlignment.center,
                   children: [
                     Text(
-                      'By creating an account, you agree to our ',
+                      loc.agreeTermsPart1,
                       style: textTheme.bodyMedium,
                       textAlign: TextAlign.center,
                     ),
                     TextButton(
                       onPressed: () {
-                        // Navigate to Terms of Service
+                        // Navigate to Terms of Service page
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -384,17 +369,17 @@ class _SignupScreenState extends State<SignupScreen> {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       child: Text(
-                        'Terms of Service',
+                        loc.termsOfService,
                         style: textTheme.labelMedium,
                       ),
                     ),
                     Text(
-                      ' & ',
+                      loc.and,
                       style: textTheme.bodyMedium,
                     ),
                     TextButton(
                       onPressed: () {
-                        // Navigate to Privacy Policy
+                        // Navigate to Privacy Policy page
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -402,7 +387,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       child: Text(
-                        'Privacy Policy',
+                        loc.privacyPolicy,
                         style: textTheme.labelMedium,
                       ),
                     ),
