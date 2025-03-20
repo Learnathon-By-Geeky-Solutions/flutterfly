@@ -1,4 +1,4 @@
-name: QuickDeal
+name: quickdeal
 description: "A new Flutter project."
 
 publish_to: 'none'
@@ -20,6 +20,7 @@ dependencies:
   shared_preferences: ^2.3.3
   flutter_svg: ^2.0.17
   flutter_riverpod: ^2.6.1
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
