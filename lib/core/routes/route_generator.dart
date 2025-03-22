@@ -19,6 +19,5 @@ final GoRouter router = GoRouter(
       path: AppRoutes.signup,
       builder: (context, state) => const SignupScreen(),
     ),
-
   ]
 );

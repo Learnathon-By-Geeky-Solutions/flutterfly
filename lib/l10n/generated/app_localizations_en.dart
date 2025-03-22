@@ -106,4 +106,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get invalidEmail => 'Please enter a valid email';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters';
+
+  @override
+  String get passwordRequireUppercase => 'Password must include at least one uppercase letter.';
+
+  @override
+  String get passwordRequireDigit => 'Password must include at least one number.';
+
+  @override
+  String get passwordRequireSpecialChar => 'Password must include at least one special character.';
+
+  @override
+  String get passwordNoSpacesAllowed => 'Password cannot contain spaces.';
 }

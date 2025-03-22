@@ -292,6 +292,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Privacy Policy'**
   String get privacyPolicy;
+
+  /// Validation error when email field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// Validation error for invalid email format
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email'**
+  String get invalidEmail;
+
+  /// Validation error when password field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
+
+  /// Validation error for short password
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordTooShort;
+
+  /// No description provided for @passwordRequireUppercase.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must include at least one uppercase letter.'**
+  String get passwordRequireUppercase;
+
+  /// No description provided for @passwordRequireDigit.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must include at least one number.'**
+  String get passwordRequireDigit;
+
+  /// No description provided for @passwordRequireSpecialChar.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must include at least one special character.'**
+  String get passwordRequireSpecialChar;
+
+  /// No description provided for @passwordNoSpacesAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Password cannot contain spaces.'**
+  String get passwordNoSpacesAllowed;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

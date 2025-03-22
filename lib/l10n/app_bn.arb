@@ -31,5 +31,30 @@
   "agreeTermsPart1": "একটি অ্যাকাউন্ট তৈরি করে, আপনি আমাদের ",
   "termsOfService": "সেবার শর্তাবলী",
   "and": " এবং ",
-  "privacyPolicy": "গোপনীয়তা নীতি রক্ষা করছেন"
+  "privacyPolicy": "গোপনীয়তা নীতি রক্ষা করছেন",
+
+  "emailRequired": "ইমেইল প্রয়োজন",
+  "@emailRequired": {
+    "description": "ইমেইল ফিল্ড খালি থাকলে ভ্যালিডেশন ত্রুটি"
+  },
+
+  "invalidEmail": "বৈধ ইমেইল লিখুন",
+  "@invalidEmail": {
+    "description": "অবৈধ ইমেইল ফরম্যাটের জন্য ভ্যালিডেশন ত্রুটি"
+  },
+
+  "passwordRequired": "পাসওয়ার্ড প্রয়োজন",
+  "@passwordRequired": {
+    "description": "পাসওয়ার্ড ফিল্ড খালি থাকলে ভ্যালিডেশন ত্রুটি"
+  },
+
+  "passwordTooShort": "পাসওয়ার্ড অন্তত ৬ অক্ষর দীর্ঘ হতে হবে",
+  "@passwordTooShort": {
+    "description": "ছোট পাসওয়ার্ডের জন্য ভ্যালিডেশন ত্রুটি"
+  },
+
+  "passwordRequireUppercase": "পাসওয়ার্ডে অন্তত একটি বড় হাতের অক্ষর থাকা আবশ্যক।",
+  "passwordRequireDigit": "পাসওয়ার্ডে অন্তত একটি সংখ্যা থাকা আবশ্যক।",
+  "passwordRequireSpecialChar": "পাসওয়ার্ডে অন্তত একটি বিশেষ অক্ষর থাকা আবশ্যক।",
+  "passwordNoSpacesAllowed": "পাসওয়ার্ডে স্পেস অনুমোদিত নয়।"
 }
