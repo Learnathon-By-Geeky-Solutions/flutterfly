@@ -1,0 +1,96 @@
+name: Deploy Test Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      build-android:
+        description: Build Android
+        required: true
+        default: true
+        type: boolean
+
+      build-ios:
+        description: Build iOS
+        default: true
+        required: true
+        type: boolean
+
+      flutter-version:
+        description: Specify the Flutter version to use.
+        default: 3.27.0
+        required: true
+
+      release-notes:
+        description: Release notes for this build. Defaults to last commit message.
+        required: false
+
+      distribute:
+        description: Distribute to tester groups? false will not send email to any tester.
+        default: true
+        type: boolean
+
+      tester-groups:
+        description: Comma separated tester groups. Defaults to internal devs group.
+        required: true
+        default: internal-devs
+        type: string
+
+jobs:
+  sign-apk-and-deploy:
+    name: Sign APK and Deploy
+    if: ${{ inputs.build-android }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Flutter setup
+      - name: Flutter Setup
+        uses: ./.github/actions/flutter-setup
+        with:
+          flutter-version: ${{ inputs.flutter-version }}
+
+      # Environment setup
+      - name: Environment setup
+        uses: ./.github/actions/environment-setup
+        with:
+          flavor: development
+          env-secret: ${{ secrets.ENV_DEVELOPMENT }}
+
+      # Key store setup
+      - name: Key store setup
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/flutterfly_keystore.jks
+          cat <<EOF > android/key.properties
+          keyAlias=upload
+          storePassword=${KEYSTORE_PASSWORD}
+          keyPassword=${KEYSTORE_PASSWORD}
+          storeFile=./flutterfly_keystore.jks
+          EOF
+      # Build APK
+      - name: Build APK
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: |
+          BUILD_NAME=$(date +'%Y.%m.%d')
+          
+          flutter build apk \
+            --flavor dev \
+            --target lib/main.dart \
+            --dart-define-from-file=env/.env.dev \
+            --build-name=${BUILD_NAME} --build-number=${BUILD_NUMBER}
+      # Deploy APK to Firebase
+      - name: Deploy APK to Firebase
+        uses: ./.github/actions/firebase-app-distribution
+        with:
+          firebase-service-credentials: ${{ secrets.FIREBASE_SERVICE_CREDENTIALS }}
+          app-file-path: build/app/outputs/flutter-apk/app-dev-release.apk
+          firebase-app-id: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
+          release-notes: ${{ inputs.release-notes }}
+          distribute: ${{ inputs.distribute }}
+          tester-groups: ${{ inputs.tester-groups }}
