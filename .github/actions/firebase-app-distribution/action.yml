@@ -1,0 +1,63 @@
+name: Firebase App Distribution
+description: Install Firebase CLI & distribute app to Firebase
+
+inputs:
+  firebase-service-credentials:
+    description: Firebase Service Credentials
+    required: true
+
+  app-file-path:
+    description: Path of the APK or IPA
+    required: true
+
+  firebase-app-id:
+    description: Firebase Android App ID for APK and iOS App ID for IPA
+    required: true
+
+  release-notes:
+    description: Release notes for this build. Defaults to last commit message
+    required: false
+
+  distribute:
+    description: Distribute to tester groups? false will not send email to any tester
+    required: true
+    type: boolean
+
+  tester-groups:
+    description: Comma separated tester groups
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install Firebase CLI
+      shell: bash
+      run: npm install -g firebase-tools
+
+    # Configure Firebase Authentication
+    - name: Configure Firebase Authentication
+      shell: bash
+      env:
+        FIREBASE_SERVICE_CREDENTIALS: ${{ inputs.firebase-service-credentials }}
+      run: |
+        echo $FIREBASE_SERVICE_CREDENTIALS | base64 --decode | jq > firebase-credentials.json
+        echo "GOOGLE_APPLICATION_CREDENTIALS=firebase-credentials.json" >> $GITHUB_ENV
+    # Deploy App to Firebase
+    - name: Deploy App to Firebase
+      shell: bash
+      env:
+        APP_FILE_PATH: ${{ inputs.app-file-path }}
+        FIREBASE_APP_ID: ${{ inputs.firebase-app-id }}
+        RELEASE_NOTES: ${{ inputs.release-notes }}
+        DISTRIBUTE: ${{ inputs.distribute }}
+        TESTER_GROUPS: ${{ inputs.tester-groups }}
+      run: |
+        # Use last commit message if release notes are not provided
+        if [ -z "$RELEASE_NOTES" ]; then
+          RELEASE_NOTES=$(git log -1 --pretty=%B)
+        fi
+        
+        firebase appdistribution:distribute $APP_FILE_PATH \
+          --app $FIREBASE_APP_ID \
+          --release-notes "$RELEASE_NOTES" \
+          $([ $DISTRIBUTE == true ] && printf -- '--groups %s' "$TESTER_GROUPS")

@@ -2,9 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickdeal/core/utils/theme/custom_themes/account_button_theme.dart';
-import 'package:quickdeal/core/routes/app_routes.dart';
 import 'package:quickdeal/common/widget/getLogoWidget.dart';
-
+import '../../../../core/services/routes/app_routes.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 
 class SignupScreen extends StatefulWidget {

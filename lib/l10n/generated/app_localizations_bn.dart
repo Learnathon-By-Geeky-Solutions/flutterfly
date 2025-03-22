@@ -106,4 +106,28 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get privacyPolicy => 'গোপনীয়তা নীতি রক্ষা করছেন';
+
+  @override
+  String get emailRequired => 'ইমেইল প্রয়োজন';
+
+  @override
+  String get invalidEmail => 'বৈধ ইমেইল লিখুন';
+
+  @override
+  String get passwordRequired => 'পাসওয়ার্ড প্রয়োজন';
+
+  @override
+  String get passwordTooShort => 'পাসওয়ার্ড অন্তত ৬ অক্ষর দীর্ঘ হতে হবে';
+
+  @override
+  String get passwordRequireUppercase => 'পাসওয়ার্ডে অন্তত একটি বড় হাতের অক্ষর থাকা আবশ্যক।';
+
+  @override
+  String get passwordRequireDigit => 'পাসওয়ার্ডে অন্তত একটি সংখ্যা থাকা আবশ্যক।';
+
+  @override
+  String get passwordRequireSpecialChar => 'পাসওয়ার্ডে অন্তত একটি বিশেষ অক্ষর থাকা আবশ্যক।';
+
+  @override
+  String get passwordNoSpacesAllowed => 'পাসওয়ার্ডে স্পেস অনুমোদিত নয়।';
 }

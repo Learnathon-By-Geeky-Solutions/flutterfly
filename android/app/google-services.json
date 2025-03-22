@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "261320880017",
+    "project_id": "quickdeal-app",
+    "storage_bucket": "quickdeal-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261320880017:android:6f85954fc43b85789bf430",
+        "android_client_info": {
+          "package_name": "com.example.flutterfly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3S4fB_7DZpCQjeJ56uHAhkfFL5QMa_og"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
