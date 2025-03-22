@@ -1,0 +1,23 @@
+name: Flutter Setup
+description: Flutter Install & Get Dependencies
+
+inputs:
+  flutter-version:
+    description: Specify the Flutter version to use
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: ${{ inputs.flutter-version }}
+        cache: true
+    - run: flutter --version
+      shell: bash
+
+    - name: Get dependencies
+      run: flutter pub get
+      shell: bash

@@ -61,5 +61,30 @@
   "agreeTermsPart1": "By creating an account, you agree to our ",
   "termsOfService": "Terms of Service",
   "and": " & ",
-  "privacyPolicy": "Privacy Policy"
+  "privacyPolicy": "Privacy Policy",
+
+  "emailRequired": "Email is required",
+  "@emailRequired": {
+    "description": "Validation error when email field is empty"
+  },
+
+  "invalidEmail": "Please enter a valid email",
+  "@invalidEmail": {
+    "description": "Validation error for invalid email format"
+  },
+
+  "passwordRequired": "Password is required",
+  "@passwordRequired": {
+    "description": "Validation error when password field is empty"
+  },
+
+  "passwordTooShort": "Password must be at least 6 characters",
+  "@passwordTooShort": {
+    "description": "Validation error for short password"
+  },
+
+  "passwordRequireUppercase": "Password must include at least one uppercase letter.",
+  "passwordRequireDigit": "Password must include at least one number.",
+  "passwordRequireSpecialChar": "Password must include at least one special character.",
+  "passwordNoSpacesAllowed": "Password cannot contain spaces."
 }

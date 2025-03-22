@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/utils/loggers/logger.dart';
 import '../../../common/widget/getLogoWidget.dart';
-import '../../../core/routes/app_routes.dart';
+import '../../../core/services/routes/app_routes.dart';
 import '../../../core/utils/constants/color_palette.dart';
 import '../data/repositories/splash_repository_impl.dart';
 import '../domain/usecases/check_app_initialization.dart';
