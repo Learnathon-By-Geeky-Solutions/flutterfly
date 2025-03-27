@@ -37,5 +37,3 @@ jobs:
         uses: sonarsource/sonarcloud-github-action@v1.7
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: "-Dsonar.login=${{ secrets.SONAR_TOKEN }}"
