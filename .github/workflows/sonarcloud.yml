@@ -27,6 +27,12 @@ jobs:
       - name: Run tests with coverage
         run: flutter test --coverage
 
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v1.7
         env:
