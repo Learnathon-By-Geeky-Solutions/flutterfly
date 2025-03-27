@@ -9,17 +9,19 @@ on:
 jobs:
   sonarcloud-analysis:
     runs-on: ubuntu-latest
+    env:
+      FLUTTER_CHANNEL: "stable"
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          channel: ${{ env.FLUTTER_CHANNEL }}
 
       - name: Install dependencies
         run: flutter pub get
@@ -32,8 +34,13 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: 'gradle'
 
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v1.7
+        uses: sonarsource/sonarcloud-github-action@v2.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          java-opts: |
+            -Djava.version=17
+            --add-opens=java.base/java.lang=ALL-UNNAMED
