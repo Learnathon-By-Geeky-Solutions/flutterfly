@@ -16,14 +16,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
-
-      - name: Add Flutter to PATH
-        run: echo "$FLUTTER_ROOT/bin" >> $GITHUB_PATH
 
       - name: Install dependencies
         run: flutter pub get
@@ -32,10 +35,14 @@ jobs:
         run: flutter test --coverage
 
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v5.0.0
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.projectKey=Learnathon-By-Geeky-Solutions_flutterfly
+            -Dsonar.organization=learnathon-by-geeky-solutions
             -Dsonar.java.version=17
             -Dsonar.verbose=true
+            -Dsonar.dart.coverage.reportPath=coverage/lcov.info
