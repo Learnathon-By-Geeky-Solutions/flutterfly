@@ -100,6 +100,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                     // Email field
                     InputFormField(
+                      key: const Key('email-field'),
                       textEditingController: _emailController,
                       hintText: loc.emailHint,
                       enableDefaultValidation: true,
@@ -109,6 +110,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                     // Password field
                     InputFormField(
+                      key: const Key('password-field'),
                       textEditingController: _passwordController,
                       hintText: loc.passwordHint,
                       enableDefaultValidation: true,
@@ -158,6 +160,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
+                        key: const Key('login-button'),
                         onPressed: () {
                           if (loginState.isLoading) return;
                           if (_formKey.currentState!.validate()) {
@@ -173,14 +176,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           width: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
-                            : Text(loc.signIn, style: textTheme.labelLarge
-                            ?.copyWith(color: Colors.white)),
+                            : Text(loc.signIn, style: textTheme.labelLarge?.copyWith(color: Colors.white)),
                       ),
                     ),
+
                     const SizedBox(height: 24),
                     // Divider with text.
                     Row(
