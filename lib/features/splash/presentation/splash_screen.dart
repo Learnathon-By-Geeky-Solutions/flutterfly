@@ -33,7 +33,7 @@ class SplashScreenState extends State<SplashScreen> {
     if (isInitialized)
     {
       Log.i('App is initialized');
-      context.go(AppRoutes.signup);
+      context.go(AppRoutes.clientSignup);
     }
     else
     {

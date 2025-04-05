@@ -4,42 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:quickdeal/common/widget/getLogoWidget.dart';
 import 'package:quickdeal/common/widget/input_form_field.dart';
 import 'package:quickdeal/core/utils/constants/image_strings.dart';
-import '../../../../core/services/routes/app_routes.dart';
-import '../../../../core/utils/validators/validators.dart';
-import '../../../../l10n/generated/app_localizations.dart';
-
-// Riverpod provider for login state.
-final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
-  return LoginNotifier();
-});
-
-class LoginNotifier extends StateNotifier<LoginState> {
-  LoginNotifier() : super(const LoginState());
-
-  Future<void> login(String email, String password) async {
-    // Start loading and reset error.
-    state = state.copyWith(isLoading: true, error: null);
-
-    // Login delay.
-    await Future.delayed(const Duration(seconds: 2));
-
-    // Handle the authentication logic and navigate!
-
-  }
-}
-
-class LoginState {
-  final bool isLoading;
-  final String? error;
-  const LoginState({this.isLoading = false, this.error});
-
-  LoginState copyWith({bool? isLoading, String? error}) {
-    return LoginState(
-      isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-    );
-  }
-}
+import '../../../../../core/services/routes/app_routes.dart';
+import '../../../../../core/utils/validators/validators.dart';
+import '../../../../../l10n/generated/app_localizations.dart';
+import '../controllers/login_controller.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -67,7 +35,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final loginNotifier = ref.read(loginProvider.notifier);
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    final loc = AppLocalizations.of(context)!;
+
+    // Get localization data, with null safety checks
+    final loc = AppLocalizations.of(context);
+    if (loc == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     // Listen for errors and show them via SnackBar.
     ref.listen<LoginState>(loginProvider, (_, state) {
@@ -179,7 +152,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
-                            : Text(loc.signIn, style: textTheme.labelLarge?.copyWith(color: Colors.white)),
+                            : Text(loc.logIn, style: textTheme.labelLarge
+                            ?.copyWith(color: Colors.white)),
                       ),
                     ),
 
@@ -208,7 +182,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           children: [
                             Image.asset(ImageStrings.googleLogo, height: 18),
                             const SizedBox(width: 12),
-                            Text(loc.googleSignIn, style: textTheme.labelMedium),
+                            Text(loc.googleLogin, style: textTheme.labelMedium),
                           ],
                         ),
                       ),
@@ -220,7 +194,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       children: [
                         Text(loc.noAccount, style: textTheme.labelMedium),
                         TextButton(
-                          onPressed: () => context.go(AppRoutes.signup),
+                          onPressed: () => context.go(AppRoutes.clientSignup),
                           style: TextButton.styleFrom(
                             foregroundColor: colorScheme.secondary,
                             padding: const EdgeInsets.only(left: 4),

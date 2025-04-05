@@ -1,5 +1,3 @@
-// ignore: unused_import
-import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -27,13 +25,13 @@ class AppLocalizationsBn extends AppLocalizations {
   String get forgotPassword => 'পাসওয়ার্ড ভুলে গেছেন?';
 
   @override
-  String get signIn => 'সাইন ইন করুন';
+  String get logIn => 'লগ ইন করুন';
 
   @override
   String get orContinue => 'অথবা এর মাধ্যমে চালিয়ে যান';
 
   @override
-  String get googleSignIn => 'গুগলের মাধ্যমে সাইন ইন করুন';
+  String get googleLogin => 'গুগলের মাধ্যমে লগ ইন করুন';
 
   @override
   String get noAccount => 'অ্যাকাউন্ট নেই?';
@@ -130,4 +128,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get passwordNoSpacesAllowed => 'পাসওয়ার্ডে স্পেস অনুমোদিত নয়।';
+
+  @override
+  String get continueButton => 'অগ্রসর হন';
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../constants/color_palette.dart';
 
 class AppTextTheme {
   AppTextTheme._();

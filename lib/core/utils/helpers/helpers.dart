@@ -3,7 +3,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../constants/color_palette.dart';
 
 class AppHelperFunctions {
-  Widget appLoader(BuildContext context) {
+  static Widget appLoader(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

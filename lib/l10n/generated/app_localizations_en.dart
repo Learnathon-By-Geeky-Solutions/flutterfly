@@ -1,5 +1,3 @@
-// ignore: unused_import
-import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -27,13 +25,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forgotPassword => 'Forgot Password?';
 
   @override
-  String get signIn => 'Sign In';
+  String get logIn => 'Login';
 
   @override
   String get orContinue => 'or continue with';
 
   @override
-  String get googleSignIn => 'Sign In with Google';
+  String get googleLogin => 'Login with Google';
 
   @override
   String get noAccount => 'Don\'t have an account?';
@@ -130,4 +128,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordNoSpacesAllowed => 'Password cannot contain spaces.';
+
+  @override
+  String get continueButton => 'Continue';
 }

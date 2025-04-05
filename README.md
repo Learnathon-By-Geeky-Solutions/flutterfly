@@ -15,6 +15,8 @@
 
 </div>
 
+
+
 <div align="center">
   <img src="https://i.ibb.co/cSFqqjWH/logo.jpg" alt="logo" width="280">
 </div>
@@ -92,6 +94,9 @@ This app bridges the gap by providing a streamlined bidding and quotation system
 - Orders are confirmed post payment completion and vendors can generate digital agreements.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+# 🏗 Schema Diagram
+![Schema Diagram](https://i.ibb.co.com/Nn1XVDqn/Untitled.png)
 
 <a id="clean"></a>
 ## 🧩 Project Structure: Feature-First Clean Architecture with Repository Pattern

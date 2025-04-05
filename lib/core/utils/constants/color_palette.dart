@@ -6,6 +6,7 @@ class AppColors {
   static const Color statusGreen = Color(0xFF508249);
   static const Color statusBlue = Color(0xFF0196D8);
   static const Color statusOrange = Color(0xFFFD4C01);
+  static const Color errorRed = Color(0xFFFF0000);
 
   // -- scaffold colors
   static const Color scaffoldLight = Color(0xFFFFFFFF);

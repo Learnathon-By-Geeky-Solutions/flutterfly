@@ -5,9 +5,9 @@
   "passwordHint": "পাসওয়ার্ড",
   "rememberMe": "আমাকে মনে রাখুন",
   "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন?",
-  "signIn": "সাইন ইন করুন",
+  "logIn": "লগ ইন করুন",
   "orContinue": "অথবা এর মাধ্যমে চালিয়ে যান",
-  "googleSignIn": "গুগলের মাধ্যমে সাইন ইন করুন",
+  "googleLogin": "গুগলের মাধ্যমে লগ ইন করুন",
   "noAccount": "অ্যাকাউন্ট নেই?",
   "signUp": "সাইন আপ করুন",
   "needHelp": "সাহায্য প্রয়োজন?",
@@ -56,5 +56,7 @@
   "passwordRequireUppercase": "পাসওয়ার্ডে অন্তত একটি বড় হাতের অক্ষর থাকা আবশ্যক।",
   "passwordRequireDigit": "পাসওয়ার্ডে অন্তত একটি সংখ্যা থাকা আবশ্যক।",
   "passwordRequireSpecialChar": "পাসওয়ার্ডে অন্তত একটি বিশেষ অক্ষর থাকা আবশ্যক।",
-  "passwordNoSpacesAllowed": "পাসওয়ার্ডে স্পেস অনুমোদিত নয়।"
+  "passwordNoSpacesAllowed": "পাসওয়ার্ডে স্পেস অনুমোদিত নয়।",
+
+  "continueButton": "অগ্রসর হন"
 }

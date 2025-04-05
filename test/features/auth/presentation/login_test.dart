@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:quickdeal/features/auth/presentation/screens/signin_screen.dart';
+import 'package:quickdeal/features/auth/login/presentation/screens/login_screen.dart';
 import 'package:quickdeal/l10n/generated/app_localizations.dart';
 
 void main() {

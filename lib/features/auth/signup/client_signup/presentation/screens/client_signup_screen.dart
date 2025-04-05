@@ -1,28 +1,35 @@
-// signup_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickdeal/core/utils/theme/custom_themes/account_button_theme.dart';
 import 'package:quickdeal/common/widget/getLogoWidget.dart';
-import '../../../../core/services/routes/app_routes.dart';
-import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../../../common/widget/custom_snackbar.dart';
+import '../../../../../../core/services/auth_service/auth_service.dart';
+import '../../../../../../core/services/routes/app_routes.dart';
+import '../../../../../../core/utils/errors/authErrors/auth_errors.dart';
+import '../../../../../../l10n/generated/app_localizations.dart';
+import '../controllers/client_signup_controller.dart';
 
-class SignupScreen extends StatefulWidget {
+class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  ConsumerState<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _SignupScreenState extends ConsumerState<SignupScreen> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
+  final authService = AuthService();
+
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _becomeVendor = false;
   String _accountType = 'personal'; // 'personal' or 'business'
+
 
   @override
   void dispose() {
@@ -32,6 +39,34 @@ class _SignupScreenState extends State<SignupScreen> {
     _confirmPasswordController.dispose();
     super.dispose();
   }
+  void clientSignup() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    try {
+      await authService.signupWithEmailOtp(email, password);
+
+      if (mounted) {
+        CustomSnackbar.show(
+          context,
+          message: 'OTP sent to $email',
+          type: SnackbarType.success,
+        );
+        // Redirect to OTP screen for verification
+        context.push(AppRoutes.emailOtpScreen, extra: email);
+      }
+    } catch (e) {
+      if (mounted) {
+        CustomSnackbar.show(
+          context,
+          message: AuthErrors.toMessage(e),
+          type: SnackbarType.error,
+        );
+      }
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +76,13 @@ class _SignupScreenState extends State<SignupScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final bool isPersonalSelected = _accountType == 'personal';
     final bool isBusinessSelected = _accountType == 'business';
+
+    final signupProvider = StateNotifierProvider<SignupNotifier, SignupState>((ref) {
+      return SignupNotifier();
+    });
+
+    final signupState = ref.watch(signupProvider);
+    final signupNotifier = ref.read(signupProvider.notifier);
 
     return Scaffold(
       body: SafeArea(
@@ -305,15 +347,23 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              // Create Account Button
+              // Create Account Button (or Continue Button)
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Handle account creation logic
+                    if (_becomeVendor) {
+                      // Navigate to the vendor screen
+                      context.pushReplacement(AppRoutes.vendorSignupBusinessInfoScreen);
+                    } else {
+                      // Handle account creation logic
+                      // For now, just navigate to the next screen
+                      //context.go(AppRoutes.home);
+                      clientSignup();
+                    }
                   },
                   child: Text(
-                    loc.createAccountButton,
+                    _becomeVendor ? loc.continueButton : loc.createAccountButton,
                     style: textTheme.labelLarge?.copyWith(color: Colors.white),
                   ),
                 ),
