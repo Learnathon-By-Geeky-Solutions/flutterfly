@@ -39,7 +39,7 @@ class HomeCard extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: iconBackgroundColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(30),
             ),
             child: Icon(
               icon,

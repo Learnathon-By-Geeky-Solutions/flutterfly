@@ -1,3 +1,4 @@
+// login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -42,26 +43,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       final newState = ref.read(loginProvider);
       if (newState.error == null && mounted) {
-        context.go(AppRoutes.clientHome);
+        context.go(AppRoutes.clientHome); // Prevents going back to login
       }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     final loginState = ref.watch(loginProvider);
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-
-    // Get localization data, with null safety checks
     final loc = AppLocalizations.of(context);
-    if (loc == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
 
-    // Listen for errors and show them via SnackBar.
+    if (loc == null) return const Center(child: CircularProgressIndicator());
+
     ref.listen<LoginState>(loginProvider, (_, state) {
       if (state.error != null) {
         ScaffoldMessenger.of(context)
@@ -81,18 +76,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Logo widget.
                     getLogoBasedOnTheme(context, width: 250, height: 100),
                     const SizedBox(height: 16),
                     Text(loc.welcomeBack, style: textTheme.displayLarge),
                     const SizedBox(height: 8),
-                    Text(loc.secureDeals,
-                        style: textTheme.titleSmall, textAlign: TextAlign.center),
+                    Text(loc.secureDeals, style: textTheme.titleSmall, textAlign: TextAlign.center),
                     const SizedBox(height: 32),
 
-                    // Email field
                     InputFormField(
                       key: const Key('email-field'),
+                      labelText: loc.emailAddress,
                       textEditingController: _emailController,
                       hintText: loc.emailHint,
                       enableDefaultValidation: true,
@@ -100,9 +93,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Password field
                     InputFormField(
                       key: const Key('password-field'),
+                      labelText: loc.password,
                       textEditingController: _passwordController,
                       hintText: loc.passwordHint,
                       enableDefaultValidation: true,
@@ -117,8 +110,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         disallowSpaces: true,
                       ),
                     ),
+
                     const SizedBox(height: 16),
-                    // Remember me & forgot password.
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -133,31 +126,26 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ],
                         ),
                         TextButton(
-                          onPressed: () {
-                            // Handle forgot password action.
-                          },
+                          onPressed: () {},
                           style: TextButton.styleFrom(
                             foregroundColor: colorScheme.secondary,
                             padding: EdgeInsets.zero,
-                            minimumSize: const Size(0, 0),
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          child: Text(loc.forgotPassword,
-                              style: textTheme.labelMedium),
+                          child: Text(loc.forgotPassword, style: textTheme.labelMedium),
                         ),
                       ],
                     ),
                     const SizedBox(height: 24),
-                    // Sign in button.
+
+                    /// Login button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         key: const Key('login-button'),
-                        onPressed: () {
-                            login();
-                        },
+                        onPressed: login,
                         child: loginState.isLoading
-                            ? SizedBox(
+                            ? const SizedBox(
                           height: 20,
                           width: 20,
                           child: CircularProgressIndicator(
@@ -165,13 +153,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
-                            : Text(loc.signIn, style: textTheme.labelLarge
-                            ?.copyWith(color: Colors.white)),
+                            : Text(loc.signIn,
+                            style: textTheme.labelLarge?.copyWith(color: Colors.white)),
                       ),
                     ),
 
                     const SizedBox(height: 24),
-                    // Divider with text.
                     Row(
                       children: [
                         const Expanded(child: Divider()),
@@ -183,13 +170,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    // Google sign in button.
+
+                    /// Google Sign In Button
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton(
-                        onPressed: () {
-                          // Handle Google sign in action.
-                        },
+                        onPressed: () {},
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -201,7 +187,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    // Sign up option.
+
+                    /// Sign Up Redirect
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -211,12 +198,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           style: TextButton.styleFrom(
                             foregroundColor: colorScheme.secondary,
                             padding: const EdgeInsets.only(left: 4),
-                            minimumSize: const Size(0, 0),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          child: Text(loc.signUp,
-                              style: textTheme.labelLarge
-                                  ?.copyWith(color: colorScheme.secondary)),
+                          child: Text(
+                            loc.signUp,
+                            style: textTheme.labelLarge?.copyWith(color: colorScheme.secondary),
+                          ),
                         ),
                       ],
                     ),

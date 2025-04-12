@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app.dart';
 import 'core/config/app_config.dart';
 import 'core/utils/loggers/logger.dart';
+import 'features/auth/auth_gate.dart';
 
 /*
     To switch flavors, run this in the terminal:
@@ -39,6 +40,5 @@ Future <void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-
   runApp(const ProviderScope(child: App()));
 }

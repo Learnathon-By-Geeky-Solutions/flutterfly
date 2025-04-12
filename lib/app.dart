@@ -30,7 +30,7 @@ class App extends ConsumerWidget {
         supportedLocales: const [
           Locale('en'),
           Locale('bn'),
-        ],
+        ]
       ),
     );
   }
