@@ -25,13 +25,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forgotPassword => 'Forgot Password?';
 
   @override
-  String get logIn => 'Login';
+  String get signIn => 'Sign In';
 
   @override
   String get orContinue => 'or continue with';
 
   @override
-  String get googleLogin => 'Login with Google';
+  String get googleSignIn => 'Sign In with Google';
 
   @override
   String get noAccount => 'Don\'t have an account?';
@@ -128,6 +128,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordNoSpacesAllowed => 'Password cannot contain spaces.';
+
+  @override
+  String get requiredField => 'This field is required';
+
+  @override
+  String get passwordMismatch => 'Passwords do not match';
 
   @override
   String get continueButton => 'Continue';

@@ -25,13 +25,13 @@ class AppLocalizationsBn extends AppLocalizations {
   String get forgotPassword => 'পাসওয়ার্ড ভুলে গেছেন?';
 
   @override
-  String get logIn => 'লগ ইন করুন';
+  String get signIn => 'সাইন ইন করুন';
 
   @override
   String get orContinue => 'অথবা এর মাধ্যমে চালিয়ে যান';
 
   @override
-  String get googleLogin => 'গুগলের মাধ্যমে লগ ইন করুন';
+  String get googleSignIn => 'গুগলের মাধ্যমে সাইন ইন করুন';
 
   @override
   String get noAccount => 'অ্যাকাউন্ট নেই?';
@@ -128,6 +128,12 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get passwordNoSpacesAllowed => 'পাসওয়ার্ডে স্পেস অনুমোদিত নয়।';
+
+  @override
+  String get requiredField => 'এই ঘরটি পূরণ করা আবশ্যক';
+
+  @override
+  String get passwordMismatch => 'পাসওয়ার্ড মিলছে না';
 
   @override
   String get continueButton => 'অগ্রসর হন';

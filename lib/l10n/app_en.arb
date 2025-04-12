@@ -17,9 +17,9 @@
   },
   "rememberMe": "Remember me",
   "forgotPassword": "Forgot Password?",
-  "logIn": "Login",
+  "signIn": "Sign In",
   "orContinue": "or continue with",
-  "googleLogin": "Login with Google",
+  "googleSignIn": "Sign In with Google",
   "noAccount": "Don't have an account?",
   "signUp": "Sign up",
 
@@ -87,6 +87,10 @@
   "passwordRequireDigit": "Password must include at least one number.",
   "passwordRequireSpecialChar": "Password must include at least one special character.",
   "passwordNoSpacesAllowed": "Password cannot contain spaces.",
+
+  "requiredField": "This field is required",
+  "passwordMismatch": "Passwords do not match",
+
 
   "continueButton": "Continue"
 }

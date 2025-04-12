@@ -40,7 +40,7 @@ class AppTextFieldTheme {
         fontSize: 14,
         fontWeight: FontWeight.w400,
       ),
-      suffixIconColor: Colors.grey,
+      suffixIconColor: Colors.grey
     );
   }
 

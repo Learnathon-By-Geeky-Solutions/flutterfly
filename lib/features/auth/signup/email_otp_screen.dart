@@ -7,16 +7,6 @@ import '../../../common/widget/getLogoWidget.dart';
 import '../../../core/utils/constants/color_palette.dart';
 import 'package:quickdeal/common/widget/custom_snackbar.dart';
 
-void main() {
-  runApp(
-    const ProviderScope(
-      child: MaterialApp(
-        home: EmailOtpScreen(email:"musarratmayeesha@gmail.com"),
-      ),
-    ),
-  );
-}
-
 class EmailOtpScreen extends ConsumerStatefulWidget {
   final String email;
   const EmailOtpScreen({super.key, required this.email});
@@ -137,7 +127,8 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
                           keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           maxLength: 1,
-                          style: textTheme.headlineSmall,
+                            style: textTheme.headlineSmall?.copyWith(color:
+                            AppColors.primaryDark),
                           cursorColor: AppColors.primaryAccent,
                           onChanged: (value) => _onOtpChanged(value, index),
                           decoration: InputDecoration(

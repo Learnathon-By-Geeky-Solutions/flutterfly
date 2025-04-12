@@ -1,8 +1,7 @@
 library;
+
 import 'package:flutter/material.dart';
 
-/// A custom input form field that wraps a [TextFormField] with added styling,
-/// validation, and optional password visibility toggle functionality.
 class InputFormField extends StatefulWidget {
   const InputFormField({
     super.key,
@@ -74,8 +73,8 @@ class _InputFormFieldState extends State<InputFormField> {
   @override
   Widget build(BuildContext context) {
     final bool isOutlined = widget.borderType == BorderType.outlined;
+
     return Column(
-      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label != null) widget.label!,
@@ -83,7 +82,8 @@ class _InputFormFieldState extends State<InputFormField> {
           height: widget.height,
           decoration: BoxDecoration(
             color: widget.fillColor,
-            borderRadius: widget.borderRadius ?? _defaultBorderRadius(isOutlined),
+            borderRadius:
+            widget.borderRadius ?? _defaultBorderRadius(isOutlined),
             border: _buildBorder(isOutlined),
           ),
           child: TextFormField(
@@ -98,12 +98,13 @@ class _InputFormFieldState extends State<InputFormField> {
               hintText: widget.hintText,
               hintStyle: widget.hintTextStyle,
               floatingLabelBehavior: widget.floatingLabelBehavior,
-              // Hide the default error text.
-              errorStyle: const TextStyle(fontSize: 0.01),
+              errorStyle: const TextStyle(fontSize: 0.01), // suppress
               border: InputBorder.none,
               prefixIcon: widget.prefix,
               suffixIcon: widget.suffix ??
-                  (widget.password != null ? _buildVisibilityButton(widget.password!) : null),
+                  (widget.password != null
+                      ? _buildVisibilityButton(widget.password!)
+                      : null),
             ),
             obscureText: widget.password != null
                 ? _showPassword
@@ -129,42 +130,50 @@ class _InputFormFieldState extends State<InputFormField> {
         ),
         if (isError && _errorMessage != null)
           Padding(
-            padding: widget.errorPadding ?? const EdgeInsets.only(left: 10.0, top: 5),
+            padding:
+            widget.errorPadding ?? const EdgeInsets.only(left: 10, top: 5),
             child: Text(
               _errorMessage!,
-              style: widget.errorTextStyle ?? TextStyle(color: widget.errorColor),
+              style:
+              widget.errorTextStyle ?? TextStyle(color: widget.errorColor),
             ),
           ),
-        if (widget.bottomMargin != null) SizedBox(height: widget.bottomMargin),
+        if (widget.bottomMargin != null)
+          SizedBox(height: widget.bottomMargin),
       ],
     );
   }
 
   String? _validate(String? value) {
-    if (widget.enableDefaultValidation && (value == null || value.isEmpty)) {
-      return "Required";
+    if (widget.enableDefaultValidation && (value?.isEmpty ?? true)) {
+      return "This field is required";
     }
-    if (widget.validator != null) {
-      return widget.validator!(value);
-    }
-    return null;
+    return widget.validator?.call(value);
   }
 
   Border? _buildBorder(bool isOutlined) {
     if (widget.borderType == BorderType.none) return null;
-    final borderSide = BorderSide(color: isError ? widget.errorColor : widget.borderColor);
-    return isOutlined ? Border.all(color: borderSide.color) : Border(bottom: borderSide);
+    final borderSide = BorderSide(
+        color: isError ? widget.errorColor : widget.borderColor);
+    return isOutlined
+        ? Border.all(color: borderSide.color)
+        : Border(bottom: borderSide);
   }
 
   BorderRadius? _defaultBorderRadius(bool isOutlined) {
-    return (isOutlined || widget.fillColor != null) ? BorderRadius.circular(8) : null;
+    return (isOutlined || widget.fillColor != null)
+        ? BorderRadius.circular(8)
+        : null;
   }
 
   IconButton _buildVisibilityButton(EnabledPassword password) {
     return IconButton(
       onPressed: () {
-        setState(() {
-          _showPassword = !_showPassword;
+        FocusScope.of(context).unfocus();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() => _showPassword = !_showPassword);
+          }
         });
       },
       icon: _showPassword
@@ -175,8 +184,7 @@ class _InputFormFieldState extends State<InputFormField> {
   }
 }
 
-/// Used to enable password toggling functionality.
-/// Customize the icons as needed.
+/// Enables password visibility toggle.
 class EnabledPassword {
   const EnabledPassword({this.showPasswordIcon, this.hidePasswordIcon});
   final Widget? showPasswordIcon;
@@ -184,11 +192,3 @@ class EnabledPassword {
 }
 
 enum BorderType { outlined, bottom, none }
-
-extension NullableExtension<T> on T? {
-  bool get isNotNull => this != null;
-}
-
-extension StringExtension on String? {
-  bool isNullOrEmpty() => this == null || this!.isEmpty;
-}

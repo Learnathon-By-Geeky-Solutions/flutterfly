@@ -131,11 +131,11 @@ abstract class AppLocalizations {
   /// **'Forgot Password?'**
   String get forgotPassword;
 
-  /// No description provided for @logIn.
+  /// No description provided for @signIn.
   ///
   /// In en, this message translates to:
-  /// **'Login'**
-  String get logIn;
+  /// **'Sign In'**
+  String get signIn;
 
   /// No description provided for @orContinue.
   ///
@@ -143,11 +143,11 @@ abstract class AppLocalizations {
   /// **'or continue with'**
   String get orContinue;
 
-  /// No description provided for @googleLogin.
+  /// No description provided for @googleSignIn.
   ///
   /// In en, this message translates to:
-  /// **'Login with Google'**
-  String get googleLogin;
+  /// **'Sign In with Google'**
+  String get googleSignIn;
 
   /// No description provided for @noAccount.
   ///
@@ -340,6 +340,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password cannot contain spaces.'**
   String get passwordNoSpacesAllowed;
+
+  /// No description provided for @requiredField.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get requiredField;
+
+  /// No description provided for @passwordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordMismatch;
 
   /// No description provided for @continueButton.
   ///

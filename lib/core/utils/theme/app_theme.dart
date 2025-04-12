@@ -37,9 +37,12 @@ class AppTheme {
           unselectedColor: Colors.white,
           selectedTextColor: Colors.white,
           unselectedTextColor: Colors.black,
-          borderColor: Colors.grey.withOpacity(0.3),
+          borderColor: Colors.grey.withValues(alpha: 0.3),
         ),
       ],
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: AppColors.primaryDark,
+      ),
     );
   }
 
@@ -68,9 +71,12 @@ class AppTheme {
           unselectedColor: AppColors.primaryDark,
           selectedTextColor: Colors.white,
           unselectedTextColor: Colors.white70,
-          borderColor: Colors.grey.withOpacity(0.3),
+          borderColor: Colors.grey.withValues(alpha: 0.3),
         ),
       ],
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: Colors.white,
+      ),
     );
   }
 }

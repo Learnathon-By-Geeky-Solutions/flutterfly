@@ -152,7 +152,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
-                            : Text(loc.logIn, style: textTheme.labelLarge
+                            : Text(loc.signIn, style: textTheme.labelLarge
                             ?.copyWith(color: Colors.white)),
                       ),
                     ),
@@ -182,7 +182,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           children: [
                             Image.asset(ImageStrings.googleLogo, height: 18),
                             const SizedBox(width: 12),
-                            Text(loc.googleLogin, style: textTheme.labelMedium),
+                            Text(loc.googleSignIn, style: textTheme.labelMedium),
                           ],
                         ),
                       ),
