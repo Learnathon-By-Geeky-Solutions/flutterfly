@@ -29,10 +29,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
+  Future<void> login() async {
+    final loginState = ref.read(loginProvider);
+    if (loginState.isLoading) return;
+
+    final loginNotifier = ref.read(loginProvider.notifier);
+    if (_formKey.currentState!.validate()) {
+      await loginNotifier.login(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+      );
+
+      final newState = ref.read(loginProvider);
+      if (newState.error == null && mounted) {
+        context.go(AppRoutes.clientHome);
+      }
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final loginState = ref.watch(loginProvider);
-    final loginNotifier = ref.read(loginProvider.notifier);
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -91,7 +110,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       validator: (value) => Validators.validatePassword(
                         value,
                         loc,
-                        minLength: 8,
+                        minLength: 6,
                         requireUppercase: true,
                         requireDigit: true,
                         requireSpecialChar: true,
@@ -135,13 +154,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       child: ElevatedButton(
                         key: const Key('login-button'),
                         onPressed: () {
-                          if (loginState.isLoading) return;
-                          if (_formKey.currentState!.validate()) {
-                            loginNotifier.login(
-                              _emailController.text.trim(),
-                              _passwordController.text.trim(),
-                            );
-                          }
+                            login();
                         },
                         child: loginState.isLoading
                             ? SizedBox(

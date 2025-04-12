@@ -1,8 +1,10 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:quickdeal/core/error/failures.dart';
 import 'package:quickdeal/core/usecase/usecase.dart';
-import 'package:quickdeal/features/auth/domain/entities/user.dart';
-import 'package:quickdeal/features/auth/domain/repository/auth_repository.dart';
+import '../entities/user.dart';
+import '../repository/login_repository.dart';
+
+
 
 class UserLogin implements UseCase<User, UserLoginParams> {
   final AuthRepository authRepository;

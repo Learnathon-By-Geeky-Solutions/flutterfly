@@ -1,4 +1,4 @@
-import 'package:quickdeal/features/auth/domain/entities/user.dart';
+import '../../domain/entities/user.dart';
 
 class UserModel extends User {
   UserModel({required super.id, required super.email, required super.fullName});

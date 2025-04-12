@@ -1,44 +1,48 @@
 // lib/features/auth/notifier/login_notifier.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quickdeal/core/services/auth_service/auth_service.dart';
 
-final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
-  return LoginNotifier();
-});
+final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>(
+      (ref) => LoginNotifier(AuthService()),
+);
 
 class LoginNotifier extends StateNotifier<LoginState> {
-  LoginNotifier() : super(const LoginState());
+  final AuthService _authService;
 
-  // Simulate the login process.
+  LoginNotifier(this._authService) : super(LoginState());
+
   Future<void> login(String email, String password) async {
-    // Start loading and reset any previous error
-    state = state.copyWith(isLoading: true, error: null);
+    state = state.copyWith(isLoading: true, error: null, success: false);
 
-    // Simulate a network delay (e.g., API call)
-    await Future.delayed(const Duration(seconds: 2));
+    try {
+      final response = await _authService.loginWithEmailPassword(email, password);
 
-    // Check the credentials (this is just a mock, you should replace it with real logic)
-    if (email == 'test@example.com' && password == 'Password123!') {
-      // Simulate successful login
-      state = state.copyWith(isLoading: false, error: null);
-      // Navigate to dashboard screen of either client or vendor
-
-    } else {
-      // Simulate failed login
-      state = state.copyWith(isLoading: false, error: 'Invalid credentials');
+      if (response.user != null) {
+        state = state.copyWith(isLoading: false, success: true);
+      } else {
+        throw Exception("Invalid credentials or user not found.");
+      }
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: e.toString().replaceAll('Exception: ', ''), success: false,
+      );
     }
   }
 }
 
+
 class LoginState {
   final bool isLoading;
+  final bool success;
   final String? error;
 
-  const LoginState({this.isLoading = false, this.error});
+  const LoginState({this.isLoading = false, this.error, this.success = false});
 
-  LoginState copyWith({bool? isLoading, String? error}) {
+  LoginState copyWith({bool? isLoading, String? error, required bool success}) {
     return LoginState(
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
+      error: error ?? this.error
     );
   }
 }
