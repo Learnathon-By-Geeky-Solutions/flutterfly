@@ -18,8 +18,8 @@ class App extends ConsumerWidget {
         routerConfig: router,
         title: "QuickDeal",
         theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
+        //darkTheme: AppTheme.darkTheme,
+        //themeMode: ThemeMode.system,
         //locale: Locale('bn'),
         localizationsDelegates: const [
           AppLocalizations.delegate,

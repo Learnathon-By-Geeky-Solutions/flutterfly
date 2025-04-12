@@ -9,6 +9,6 @@ class AppColors {
   static const Color errorRed = Color(0xFFFF0000);
 
   // -- scaffold colors
-  static const Color scaffoldLight = Color(0xFFFFFFFF);
+  static const Color scaffoldLight = Color(0xFFF9FAFB);
   static const Color scaffoldDark = Color(0xFF1A2530);
 }
