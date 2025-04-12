@@ -1,12 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:quickdeal/core/services/auth_service/auth_service.dart';
 import 'package:quickdeal/core/utils/constants/color_palette.dart';
 import 'package:quickdeal/features/home/client_home/presentation/widgets/active_rfq_card.dart';
 import 'package:quickdeal/features/home/client_home/presentation/widgets/client_appbar.dart';
 import 'package:quickdeal/features/home/client_home/presentation/widgets/home_card.dart';
 import 'package:quickdeal/features/home/client_home/presentation/widgets/recent_update.dart';
 
-class ClientHomeScreen extends StatelessWidget {
+class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({super.key});
+
+  @override
+  _ClientHomeScreenState createState() => _ClientHomeScreenState();
+}
+
+class _ClientHomeScreenState extends State<ClientHomeScreen> {
+  String? _email;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEmail();
+  }
+
+  // Fetch the email from AuthService
+  void _loadEmail() {
+    final email = AuthService().getCurrentUserEmail();
+    setState(() {
+      _email = email;  // Update the state with the email
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +45,10 @@ class ClientHomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Hello, John!',
-                    style: TextStyle(
+                  // Display email or fallback message if it's not yet loaded
+                  Text(
+                    _email != null ? 'Hello, $_email!' : 'Hello, Guest!',
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1E293B),
@@ -111,7 +134,7 @@ class ClientHomeScreen extends StatelessWidget {
                   const Text(
                     'Active RFQs',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF1E293B),
                     ),
@@ -169,6 +192,6 @@ class ClientHomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      );
+    );
   }
 }

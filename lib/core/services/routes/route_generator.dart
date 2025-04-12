@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:quickdeal/features/auth/auth_gate.dart';
 import 'package:quickdeal/features/auth/login/presentation/screens/login_screen.dart';
 import 'package:quickdeal/features/auth/signup/client_signup/presentation/screens/client_signup_screen.dart';
 import 'package:quickdeal/features/auth/signup/email_otp_screen.dart';
@@ -14,8 +15,12 @@ import '../../../common/widget/client_widgets/client_navbar_wrapper.dart';
 import 'app_routes.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: AppRoutes.splash,
+  initialLocation: AppRoutes.authGate,
   routes: [
+    GoRoute(
+      path: AppRoutes.authGate,
+      builder: (context, state) => const AuthGate(),
+    ),
     GoRoute(
       path: AppRoutes.splash,
       builder: (context, state) => const SplashScreen(),
@@ -43,8 +48,6 @@ final GoRouter router = GoRouter(
         return EmailOtpScreen(email: email);
       },
     ),
-
-    /// ShellRoute for bottom navbar navigation
     ShellRoute(
       builder: (context, state, child) => ClientBottomNavBarWrapper(child: child),
       routes: [

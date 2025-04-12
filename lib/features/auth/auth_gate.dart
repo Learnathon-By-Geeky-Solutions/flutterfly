@@ -15,7 +15,6 @@ class AuthGate extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: AppHelperFunctions.appLoader(context));
         }
-
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final session = snapshot.data?.session;
           final router = GoRouter.of(context);

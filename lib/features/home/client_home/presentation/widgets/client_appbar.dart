@@ -11,7 +11,7 @@ class ClientAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       title: Row(
         children: [
-          getLogoBasedOnTheme(context, width: 80, height: 30),
+          getLogoBasedOnTheme(context, width: 100, height: 60),
           const Divider()
         ],
       ),
