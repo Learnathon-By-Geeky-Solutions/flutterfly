@@ -36,9 +36,9 @@ class VendorBottomNavBar extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildNavItem(0, Icons.home, 'Home'),
+                    _buildNavItem(0, Icons.home_rounded, 'Home'),
                     _buildNavItem(1, Icons.description, 'Available RFQs'),
-                    _buildNavItem(2, Icons.gavel, 'My Bids'),
+                    _buildNavItem(2, Icons.gavel_rounded, 'My Bids'),
                     _buildNavItem(3, Icons.business_center, 'Business Profile'),
                   ],
                 ),

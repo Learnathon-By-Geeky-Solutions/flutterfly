@@ -18,15 +18,7 @@ class ClientBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: child, // THIS IS NOW DYNAMIC FROM go_router
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => onItemTapped(2),
-          backgroundColor: const Color(0xFFFF4D6D),
-          elevation: 4,
-          shape: const CircleBorder(),
-          child: const Icon(Icons.add, size: 32, color: Colors.white),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: child,
         bottomNavigationBar: ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
           child: Container(
@@ -41,18 +33,16 @@ class ClientBottomNavBar extends StatelessWidget {
             ),
             child: BottomAppBar(
               color: const Color(0xFF1A2639),
-              shape: const CircularNotchedRectangle(),
-              notchMargin: 8,
               child: SizedBox(
                 height: 70,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildNavItem(0, Icons.home_outlined, 'Home'),
-                    _buildNavItem(1, Icons.description_outlined, 'My RFQs'),
-                    const SizedBox(width: 40),
-                    _buildNavItem(3, Icons.access_time_outlined, 'Ongoing Bids'),
-                    _buildNavItem(4, Icons.person_outlined, 'Profile'),
+                    _buildNavItem(0, Icons.home_rounded, 'Home'),
+                    _buildNavItem(1, Icons.description_rounded, 'My RFQs'),
+                    _buildNavItem(2, Icons.add, 'Request Quota'),
+                    _buildNavItem(3, Icons.access_time_filled_rounded, 'Ongoing Bids'),
+                    _buildNavItem(4, Icons.person, 'Profile'),
                   ],
                 ),
               ),
@@ -61,6 +51,7 @@ class ClientBottomNavBar extends StatelessWidget {
         ),
       ),
     );
+
   }
 
   Widget _buildNavItem(int index, IconData icon, String label) {
@@ -97,7 +88,7 @@ class ClientBottomNavBar extends StatelessWidget {
                   label,
                   style: TextStyle(
                     color: isSelected ? activeColor : inactiveColor,
-                    fontSize: isSelected ? 0 : 11,
+                    fontSize: isSelected ? 0 : 10,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
