@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickdeal/core/services/auth_service/auth_service.dart'; // Import your AuthService here
+import 'package:quickdeal/core/services/role_manager/role_manager.dart';
 import 'package:quickdeal/core/services/routes/app_routes.dart';
 import '../../../common/widget/getLogoWidget.dart';
 import '../../../core/utils/constants/color_palette.dart';
@@ -60,7 +63,17 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
         type: SnackbarType.success,
       );
 
-      context.pushReplacement(AppRoutes.clientHome);
+      UserRole userRole = await getCurrentUserRole();
+      final router = GoRouter.of(context);
+
+      if(mounted && userRole == UserRole.vendor) {
+        print("is vendor");
+        router.go(AppRoutes.vendorHome);
+      }
+      else if(mounted){
+        router.go(AppRoutes.clientHome);
+      }
+
     } catch (e) {
       CustomSnackbar.show(
         context,

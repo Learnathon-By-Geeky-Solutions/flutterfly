@@ -4,10 +4,19 @@ class AuthService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   // -- Signup with Email and OTP
-  Future<AuthResponse> signupWithEmailOtp(String email, String password) async {
+  Future<AuthResponse> signupWithEmailOtp(
+      String email,
+      String password,
+      String fullName,
+      bool isVendor,
+      ) async {
     final response = await _supabase.auth.signUp(
       email: email,
-      password: password
+      password: password,
+      data: {
+        'full_name': fullName,
+        'is_vendor': isVendor,
+      },
     );
 
     return response;

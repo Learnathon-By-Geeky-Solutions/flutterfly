@@ -32,7 +32,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         (ref) => ClientSignupNotifier(ref.read(signupUseCaseProvider)),
   );
 
-  bool _becomeVendor = false;
+  bool isVendor = false;
   String _accountType = 'personal';
 
   @override
@@ -44,7 +44,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     super.dispose();
   }
 
-  void clientSignup() async {
+  void signup() async {
     final fullName = _fullNameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
@@ -53,7 +53,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
     if (mounted) {
       AuthService authService = AuthService();
-      await authService.signupWithEmailOtp(email, password);
+      await authService.signupWithEmailOtp(email, password, fullName, isVendor);
 
       CustomSnackbar.show(
         context,
@@ -209,8 +209,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         ],
                       ),
                       Switch(
-                        value: _becomeVendor,
-                        onChanged: (value) => setState(() => _becomeVendor = value),
+                        value: isVendor,
+                        onChanged: (value) => setState(() => isVendor = value),
                         inactiveThumbColor: Colors.white,
                         inactiveTrackColor: Colors.black12,
                         activeColor: Colors.white,
@@ -227,13 +227,13 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         ? null
                         : () {
                       if (_formKey.currentState?.validate() ?? false) {
-                        clientSignup();
+                        signup();
                       }
                     },
                     child: isLoading
                         ? const CircularProgressIndicator()
                         : Text(
-                      _becomeVendor ? loc.continueButton : loc.createAccountButton,
+                      isVendor ? loc.continueButton : loc.createAccountButton,
                       style: textTheme.labelLarge?.copyWith(color: Colors.white),
                     ),
                   ),

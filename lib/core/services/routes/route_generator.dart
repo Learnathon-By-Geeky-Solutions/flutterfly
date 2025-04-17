@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickdeal/features/auth/auth_gate.dart';
 import 'package:quickdeal/features/auth/login/presentation/screens/login_screen.dart';
@@ -12,7 +13,13 @@ import 'package:quickdeal/features/rfq/client_add_request.dart';
 import 'package:quickdeal/features/rfq/my_rfq.dart';
 import 'package:quickdeal/features/splash/presentation/splash_screen.dart';
 import '../../../common/widget/client_widgets/client_navbar_wrapper.dart';
+import '../../../common/widget/vendor_widgets/vendor_navbar_wrapper.dart';
+import '../../../features/home/vendor_home/presentation/vendor_home.dart';
+import '../../../features/unauthorized/unauthorized_screen.dart';
+import '../role_manager/role_manager.dart';
 import 'app_routes.dart';
+
+UserRole userRole = getCurrentUserRole() as UserRole;
 
 final GoRouter router = GoRouter(
   initialLocation: AppRoutes.authGate,
@@ -53,40 +60,127 @@ final GoRouter router = GoRouter(
       routes: [
         GoRoute(
           path: AppRoutes.clientHome,
-          name: 'client_home',
           pageBuilder: (context, state) => const NoTransitionPage(
             child: ClientHomeScreen(),
           ),
+          redirect: (BuildContext context, GoRouterState state) {
+            if (!RoleManager.hasPermission(userRole, Permission.clientHome)) {
+              return AppRoutes.unauthorizedScreen;
+            }
+            return null;
+          }
+
         ),
         GoRoute(
-          path: '/my-rfqs',
-          name: 'my_rfqs',
+          path: AppRoutes.clientRfqs,
           pageBuilder: (context, state) => const NoTransitionPage(
             child: MyRfq(),
           ),
+          redirect: (BuildContext context, GoRouterState state) {
+            if (!RoleManager.hasPermission(userRole, Permission.clientRfq)) {
+              return AppRoutes.unauthorizedScreen;
+            }
+            return null;
+          },
         ),
         GoRoute(
-          path: '/add-request',
-          name: 'add_request',
+          path: AppRoutes.clientAddRequest,
           pageBuilder: (context, state) => const NoTransitionPage(
             child: ClientAddRequest(),
           ),
+          redirect: (BuildContext context, GoRouterState state) {
+            if (!RoleManager.hasPermission(userRole, Permission.clientCreateRequest)) {
+              return AppRoutes.unauthorizedScreen;
+            }
+            return null;
+          },
         ),
         GoRoute(
-          path: '/ongoing-bids',
-          name: 'ongoing_bids',
+          path: AppRoutes.clientOngoingBids,
           pageBuilder: (context, state) => const NoTransitionPage(
             child: ClientOngoingBids(),
           ),
+          redirect: (BuildContext context, GoRouterState state) {
+            if (!RoleManager.hasPermission(userRole, Permission.clientBids)) {
+              return AppRoutes.unauthorizedScreen;
+            }
+            return null;
+          },
         ),
         GoRoute(
-          path: '/profile',
-          name: 'profile',
+          path: AppRoutes.clientProfile,
           pageBuilder: (context, state) => const NoTransitionPage(
             child: ClientProfile(),
           ),
+          redirect: (BuildContext context, GoRouterState state) {
+            if (!RoleManager.hasPermission(userRole, Permission.clientProfile)) {
+              return AppRoutes.unauthorizedScreen;
+            }
+            return null;
+          },
         ),
       ],
+    ),
+
+    ShellRoute(
+      builder: (context, state, child) => VendorBottomNavbarWrapper(
+          child: child),
+      routes: [
+        GoRoute(
+            path: AppRoutes.vendorHome,
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: VendorHome(),
+            ),
+            redirect: (BuildContext context, GoRouterState state) {
+              if (!RoleManager.hasPermission(userRole, Permission.vendorHome)) {
+                return AppRoutes.unauthorizedScreen;
+              }
+              return null;
+            }
+
+        ),
+        GoRoute(
+          path: AppRoutes.vendorAvailableRfqs,
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: MyRfq(),
+          ),
+          redirect: (BuildContext context, GoRouterState state) {
+            if (!RoleManager.hasPermission(userRole, Permission.clientRfq)) {
+              return AppRoutes.unauthorizedScreen;
+            }
+            return null;
+          },
+        ),
+        GoRoute(
+          path: AppRoutes.vendorBids,
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: ClientAddRequest(),
+          ),
+          redirect: (BuildContext context, GoRouterState state) {
+            if (!RoleManager.hasPermission(userRole, Permission.clientCreateRequest)) {
+              return AppRoutes.unauthorizedScreen;
+            }
+            return null;
+          },
+        ),
+        GoRoute(
+          path: AppRoutes.vendorProfile,
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: ClientProfile(),
+          ),
+          redirect: (BuildContext context, GoRouterState state) {
+            if (!RoleManager.hasPermission(userRole, Permission.clientProfile)) {
+              return AppRoutes.unauthorizedScreen;
+            }
+            return null;
+          },
+        ),
+      ],
+    ),
+
+    GoRoute(
+      path: AppRoutes.unauthorizedScreen,
+      builder: (context, state) => const UnauthorizedScreen(),
     ),
   ],
 );
