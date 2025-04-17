@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:quickdeal/core/services/auth_service/auth_service.dart';
+import 'package:quickdeal/common/widget/custom_appbar.dart';
 import 'package:quickdeal/core/utils/constants/color_palette.dart';
 import 'package:quickdeal/features/home/client_home/presentation/widgets/active_rfq_card.dart';
-import 'package:quickdeal/features/home/client_home/presentation/widgets/client_appbar.dart';
 import 'package:quickdeal/features/home/client_home/presentation/widgets/home_card.dart';
 import 'package:quickdeal/features/home/client_home/presentation/widgets/recent_update.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({super.key});
@@ -14,26 +14,26 @@ class ClientHomeScreen extends StatefulWidget {
 }
 
 class _ClientHomeScreenState extends State<ClientHomeScreen> {
-  String? _email;
+  String? fullName;
 
   @override
   void initState() {
     super.initState();
-    _loadEmail();
+    _loadName();
   }
 
-  // Fetch the email from AuthService
-  void _loadEmail() {
-    final email = AuthService().getCurrentUserEmail();
+  void _loadName() {
+    final user = Supabase.instance.client.auth.currentUser;
     setState(() {
-      _email = email;  // Update the state with the email
+      fullName = user?.userMetadata?['full_name'] ?? 'Guest';
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ClientAppBar(),
+      appBar: CustomAppBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 80),
         child: Column(
@@ -47,7 +47,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                 children: [
                   // Display email or fallback message if it's not yet loaded
                   Text(
-                    _email != null ? 'Hello, $_email!' : 'Hello, Guest!',
+                    'Hello, $fullName!',
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,

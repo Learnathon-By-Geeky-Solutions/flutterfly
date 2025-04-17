@@ -1,9 +1,10 @@
-// login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickdeal/common/widget/getLogoWidget.dart';
 import 'package:quickdeal/common/widget/input_form_field.dart';
+import 'package:quickdeal/core/services/role_manager/role_manager.dart';
+import 'package:quickdeal/core/services/routes/route_generator.dart';
 import 'package:quickdeal/core/utils/constants/image_strings.dart';
 import '../../../../../core/services/routes/app_routes.dart';
 import '../../../../../core/utils/validators/validators.dart';
@@ -43,7 +44,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       final newState = ref.read(loginProvider);
       if (newState.error == null && mounted) {
-        context.go(AppRoutes.clientHome); // Prevents going back to login
+        final role = await getCurrentUserRole();
+        if (role == UserRole.vendor) {
+          print('userRole: $role');
+          print('Has permission: ${RoleManager.hasPermission(role, Permission
+              .vendorHome)}');
+
+          if (mounted) context.go(AppRoutes.vendorHome);
+        } else {
+          if (mounted) context.go(AppRoutes.clientHome);
+        }
+
       }
     }
   }
@@ -80,7 +91,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(height: 16),
                     Text(loc.welcomeBack, style: textTheme.displayLarge),
                     const SizedBox(height: 8),
-                    Text(loc.secureDeals, style: textTheme.titleSmall, textAlign: TextAlign.center),
+                    Text(
+                      loc.secureDeals,
+                      style: textTheme.titleSmall,
+                      textAlign: TextAlign.center,
+                    ),
                     const SizedBox(height: 32),
 
                     InputFormField(
@@ -132,7 +147,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             padding: EdgeInsets.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          child: Text(loc.forgotPassword, style: textTheme.labelMedium),
+                          child: Text(
+                            loc.forgotPassword,
+                            style: textTheme.labelMedium,
+                          ),
                         ),
                       ],
                     ),
@@ -150,11 +168,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           width: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white),
                           ),
                         )
-                            : Text(loc.signIn,
-                            style: textTheme.labelLarge?.copyWith(color: Colors.white)),
+                            : Text(
+                          loc.signIn,
+                          style: textTheme.labelLarge
+                              ?.copyWith(color: Colors.white),
+                        ),
                       ),
                     ),
 
@@ -164,7 +186,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         const Expanded(child: Divider()),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(loc.orContinue, style: textTheme.labelMedium),
+                          child:
+                          Text(loc.orContinue, style: textTheme.labelMedium),
                         ),
                         const Expanded(child: Divider()),
                       ],
@@ -181,7 +204,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           children: [
                             Image.asset(ImageStrings.googleLogo, height: 18),
                             const SizedBox(width: 12),
-                            Text(loc.googleSignIn, style: textTheme.labelMedium),
+                            Text(loc.googleSignIn,
+                                style: textTheme.labelMedium),
                           ],
                         ),
                       ),
@@ -194,14 +218,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       children: [
                         Text(loc.noAccount, style: textTheme.labelMedium),
                         TextButton(
-                          onPressed: () => context.go(AppRoutes.clientSignup),
+                          onPressed: () =>
+                              context.go(AppRoutes.clientSignup),
                           style: TextButton.styleFrom(
                             foregroundColor: colorScheme.secondary,
                             padding: const EdgeInsets.only(left: 4),
                           ),
                           child: Text(
                             loc.signUp,
-                            style: textTheme.labelLarge?.copyWith(color: colorScheme.secondary),
+                            style: textTheme.labelLarge
+                                ?.copyWith(color: colorScheme.secondary),
                           ),
                         ),
                       ],

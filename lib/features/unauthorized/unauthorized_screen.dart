@@ -41,7 +41,6 @@ class UnauthorizedScreen extends StatelessWidget {
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                // Navigate back to the previous page
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(

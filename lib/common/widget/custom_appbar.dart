@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../../common/widget/getLogoWidget.dart';
+import 'getLogoWidget.dart';
 
-class ClientAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ClientAppBar({super.key});
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

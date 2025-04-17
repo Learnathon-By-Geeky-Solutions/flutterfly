@@ -1,10 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../common/widget/custom_appbar.dart';
 import '../widgets/available_rfq_section.dart';
 import '../widgets/home_section.dart';
 import '../widgets/ongoing_bids_section.dart';
 
-class VendorHome extends StatelessWidget {
-  const VendorHome({super.key});
+class VendorHomeScreen extends StatefulWidget {
+  const VendorHomeScreen({super.key});
+
+  @override
+  VendorHomeScreenState createState() => VendorHomeScreenState();
+}
+
+class VendorHomeScreenState extends State<VendorHomeScreen> {
+  String? fullName;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadName();
+  }
+
+  void _loadName() {
+    final user = Supabase.instance.client.auth.currentUser;
+    setState(() {
+      fullName = user?.userMetadata?['full_name'] ?? 'Guest';
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +63,15 @@ class VendorHome extends StatelessWidget {
     ];
 
     return Scaffold(
+      appBar: CustomAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Home section with welcome message and stats
-              const HomeSection(
-                companyName: 'X Solutions Ltd',
+              HomeSection(
+                companyName: fullName ?? 'Guest',
                 newRfqCount: 3,
                 availableRfqCount: 12,
                 ongoingBidsCount: 5,

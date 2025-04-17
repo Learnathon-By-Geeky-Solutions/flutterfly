@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/services/routes/app_routes.dart';
-import '../../../features/home/client_home/presentation/widgets/client_bottom_navbar.dart';
+import 'client_bottom_navbar.dart';
+
 
 class ClientBottomNavBarWrapper extends StatelessWidget {
   final Widget child;
@@ -10,10 +11,10 @@ class ClientBottomNavBarWrapper extends StatelessWidget {
 
   static const List<String> _routes = [
     AppRoutes.clientHome,
-    '/my-rfqs',
-    '/add-request',
-    '/ongoing-bids',
-    '/profile',
+    AppRoutes.clientRfqs,
+    AppRoutes.clientAddRequest,
+    AppRoutes.clientOngoingBids,
+    AppRoutes.clientProfile
   ];
 
   int _calculateSelectedIndex(BuildContext context) {

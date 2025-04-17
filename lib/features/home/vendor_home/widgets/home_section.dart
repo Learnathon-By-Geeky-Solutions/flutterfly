@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomeSection extends StatelessWidget {
-  final String companyName;
+  final String? companyName;
   final int newRfqCount;
   final int availableRfqCount;
   final int ongoingBidsCount;

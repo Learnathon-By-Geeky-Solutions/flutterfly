@@ -13,7 +13,7 @@ class RoleManager {
       Permission.clientRfq,
       Permission.clientCreateRequest,
       Permission.clientProfile,
-      Permission.clientBids,
+      Permission.clientBids
     ],
   };
 
@@ -43,19 +43,8 @@ enum UserRole {
   client,
 }
 
-Future<UserRole> getCurrentUserRole() async {
-  final supabase = Supabase.instance.client;
-  final user = supabase.auth.currentUser;
-
-  if (user == null) {
-    throw Exception("User is not logged in");
-  }
-
-  final userMetadata = user.userMetadata;
-
-  if (userMetadata != null && userMetadata['is_vendor'] == true) {
-    return UserRole.vendor;
-  }
-
-  return UserRole.client;
+UserRole getCurrentUserRole() {
+  final user = Supabase.instance.client.auth.currentUser;
+  final isVendor = user?.userMetadata?['is_vendor'] ?? false;
+  return isVendor ? UserRole.vendor : UserRole.client;
 }

@@ -7,11 +7,11 @@ class ClientBottomNavBar extends StatelessWidget {
   final Widget child;
 
   const ClientBottomNavBar({
-    Key? key,
+    super.key,
     required this.selectedIndex,
     required this.onItemTapped,
     required this.child,
-  }) : super(key: key);
+  });
 
 
   @override

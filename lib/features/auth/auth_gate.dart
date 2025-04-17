@@ -4,6 +4,8 @@ import 'package:quickdeal/core/services/routes/app_routes.dart';
 import 'package:quickdeal/core/utils/helpers/helpers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../core/services/role_manager/role_manager.dart';
+
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
@@ -20,7 +22,17 @@ class AuthGate extends StatelessWidget {
           final router = GoRouter.of(context);
 
           if (session != null) {
-            router.go(AppRoutes.clientHome);
+            final userRole = getCurrentUserRole();
+            if(userRole == UserRole.vendor)
+              {
+                print("User is vendor");
+                router.go(AppRoutes.vendorHome);
+              }
+            else if(userRole == UserRole.client)
+              {
+                print("User is client");
+                router.go(AppRoutes.clientHome);
+              }
           } else {
             router.go(AppRoutes.login);
           }

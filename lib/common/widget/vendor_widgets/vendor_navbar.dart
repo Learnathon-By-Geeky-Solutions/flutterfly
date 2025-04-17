@@ -31,8 +31,6 @@ class VendorBottomNavBar extends StatelessWidget {
             ),
             child: BottomAppBar(
               color: const Color(0xFF1A2639),
-              shape: const CircularNotchedRectangle(),
-              notchMargin: 8,
               child: SizedBox(
                 height: 70,
                 child: Row(
@@ -40,8 +38,8 @@ class VendorBottomNavBar extends StatelessWidget {
                   children: [
                     _buildNavItem(0, Icons.home, 'Home'),
                     _buildNavItem(1, Icons.description, 'Available RFQs'),
-                    _buildNavItem(3, Icons.gavel, 'My Bids'),
-                    _buildNavItem(4, Icons.business_center, 'Business Profile'),
+                    _buildNavItem(2, Icons.gavel, 'My Bids'),
+                    _buildNavItem(3, Icons.business_center, 'Business Profile'),
                   ],
                 ),
               ),
@@ -54,8 +52,8 @@ class VendorBottomNavBar extends StatelessWidget {
 
   Widget _buildNavItem(int index, IconData icon, String label) {
     final bool isSelected = selectedIndex == index;
-    final Color activeColor = const Color(0xFFFF4D6D); // Same pink color as active color
-    final Color inactiveColor = Colors.white; // White color for inactive items
+    final Color activeColor = const Color(0xFFFF4D6D);
+    final Color inactiveColor = Colors.grey.shade400;
 
     return Expanded(
       child: InkWell(
@@ -79,13 +77,26 @@ class VendorBottomNavBar extends StatelessWidget {
                   size: 28,
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: TextStyle(
-                  color: isSelected ? activeColor : inactiveColor,
-                  fontSize: 12,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              AnimatedOpacity(
+                opacity: isSelected ? 0.0 : 1.0,
+                duration: const Duration(milliseconds: 200),
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    color: isSelected ? activeColor : inactiveColor,
+                    fontSize: isSelected ? 0 : 11,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                margin: EdgeInsets.only(top: isSelected ? 4 : 0),
+                width: isSelected ? 6 : 0,
+                height: isSelected ? 6 : 0,
+                decoration: BoxDecoration(
+                  color: activeColor,
+                  shape: BoxShape.circle,
                 ),
               ),
             ],
