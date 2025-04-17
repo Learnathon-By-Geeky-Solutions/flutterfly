@@ -57,20 +57,22 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
         return;
       }
 
-      CustomSnackbar.show(
-        context,
-        message: 'OTP verified successfully!',
-        type: SnackbarType.success,
-      );
+      Future.delayed(const Duration(milliseconds: 300), () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('OTP verified successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      });
 
-      UserRole userRole = await getCurrentUserRole();
+      UserRole userRole = getCurrentUserRole();
       final router = GoRouter.of(context);
 
       if(mounted && userRole == UserRole.vendor) {
-        print("is vendor");
         router.go(AppRoutes.vendorHome);
       }
-      else if(mounted){
+      else if(mounted && userRole == UserRole.client){
         router.go(AppRoutes.clientHome);
       }
 

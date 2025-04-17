@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:quickdeal/features/auth/auth_gate.dart';
 import 'package:quickdeal/features/auth/login/presentation/screens/login_screen.dart';
 import 'package:quickdeal/features/auth/signup/client_signup/presentation/screens/client_signup_screen.dart';
-import 'package:quickdeal/features/auth/signup/email_otp_screen.dart';
+import 'package:quickdeal/features/auth/otp_screen/email_otp_screen.dart';
 import 'package:quickdeal/features/auth/signup/vendor_signup/presentation/screens/vendor_signup_business_info_screen.dart';
 import 'package:quickdeal/features/auth/signup/vendor_signup/presentation/screens/vendor_signup_verification_screen.dart';
 import 'package:quickdeal/features/bidding/vendor_bidding/vendor_bidding.dart';

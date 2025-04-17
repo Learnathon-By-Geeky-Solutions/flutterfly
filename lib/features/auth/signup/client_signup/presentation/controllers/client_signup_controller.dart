@@ -6,7 +6,7 @@ class SignupState {
   final bool isSuccess;
 
   const SignupState({
-    this.isLoading = false,
+    this.isLoading = true,
     this.error,
     this.isSuccess = false,
   });
@@ -31,19 +31,5 @@ class SignupNotifier extends StateNotifier<SignupState> {
   // Simulating the signup process
   Future<void> signup(String fullName, String email, String password) async {
     state = state.copyWith(isLoading: true, error: null, isSuccess: false);
-
-    // Simulating a network delay for signup
-    await Future.delayed(const Duration(seconds: 2));
-
-    // Simulating a success or error after the delay
-    if (email == "test@example.com") {
-      state = state.copyWith(isLoading: false, isSuccess: true);
-    } else {
-      state = state.copyWith(
-        isLoading: false,
-        error: 'Signup failed. Please try again.',
-        isSuccess: false,
-      );
-    }
   }
 }

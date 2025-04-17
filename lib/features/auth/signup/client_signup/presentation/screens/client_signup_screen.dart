@@ -55,11 +55,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       AuthService authService = AuthService();
       await authService.signupWithEmailOtp(email, password, fullName, isVendor);
 
-      CustomSnackbar.show(
-        context,
-        message: 'OTP sent to $email',
-        type: SnackbarType.success,
-      );
+      Future.delayed(const Duration(milliseconds: 300), () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('OTP sent to $email'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      });
+
       context.go(AppRoutes.emailOtpScreen, extra: email);
     } else {
       final errorMessage = ref.read(clientSignupNotifierProvider).errorMessage;
@@ -69,6 +73,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         type: SnackbarType.error,
       );
     }
+
   }
 
   @override
@@ -231,11 +236,19 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       }
                     },
                     child: isLoading
-                        ? const CircularProgressIndicator()
+                        ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
                         : Text(
                       isVendor ? loc.continueButton : loc.createAccountButton,
                       style: textTheme.labelLarge?.copyWith(color: Colors.white),
                     ),
+
                   ),
                 ),
                 const SizedBox(height: 16),
