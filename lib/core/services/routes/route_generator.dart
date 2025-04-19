@@ -11,12 +11,11 @@ import 'package:quickdeal/features/home/client_home/presentation/screens/client_
 import 'package:quickdeal/features/bidding/client_bidding/client_ongoing_bids.dart';
 import 'package:quickdeal/features/profile/client_profile/client_profile.dart';
 import 'package:quickdeal/features/profile/vendor_profile/vendor_profile.dart';
-import 'package:quickdeal/features/rfq/client_rfq/presentation/screens/client_my_rfq_screen.dart';
 import 'package:quickdeal/features/splash/presentation/splash_screen.dart';
 import '../../../common/widget/client_widgets/client_navbar_wrapper.dart';
 import '../../../common/widget/vendor_widgets/vendor_navbar_wrapper.dart';
 import '../../../features/home/vendor_home/presentation/vendor_home.dart';
-import '../../../features/rfq/client_rfq/presentation/screens/create_rfq_screen.dart';
+import '../../../features/rfq/client_rfq/presentation/screens/client_add_request_screen.dart';
 import '../../../features/rfq/vendor_rfq/vendor_rfq.dart';
 import '../../../features/unauthorized/unauthorized_screen.dart';
 import '../role_manager/role_manager.dart';
@@ -76,7 +75,7 @@ final GoRouter router = GoRouter(
           GoRoute(
             path: AppRoutes.clientRfqs,
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: ClientMyRfqScreen(),
+              child: ClientAddRequestScreen(),
             ),
             redirect: (BuildContext context, GoRouterState state) {
               final userRole = getCurrentUserRole();
