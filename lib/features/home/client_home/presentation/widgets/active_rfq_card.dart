@@ -10,7 +10,7 @@ class ActiveRfqCard extends StatelessWidget {
   final String? budget;
 
   const ActiveRfqCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.status,
@@ -18,7 +18,7 @@ class ActiveRfqCard extends StatelessWidget {
     required this.statusBackgroundColor,
     this.currentBid,
     this.budget,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class ActiveRfqCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             spreadRadius: 1,
             blurRadius: 2,
             offset: const Offset(0, 1),
@@ -88,7 +88,7 @@ class ActiveRfqCard extends StatelessWidget {
                 ),
               ),
               Text(
-                currentBid != null ? '\$${currentBid}' : '\$${budget}',
+                currentBid != null ? '\$$currentBid' : '\$$budget',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

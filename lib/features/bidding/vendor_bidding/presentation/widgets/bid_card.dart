@@ -9,14 +9,14 @@ class BidCard extends StatelessWidget {
   final Color statusTextColor;
 
   const BidCard({
-    Key? key,
+    super.key,
     required this.projectTitle,
     required this.bidAmount,
     required this.submittedDate,
     required this.status,
     required this.statusColor,
     required this.statusTextColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

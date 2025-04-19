@@ -7,7 +7,6 @@ import 'app.dart';
 import 'core/config/app_config.dart';
 import 'core/utils/loggers/logger.dart';
 
-
 /*
     To switch flavors, run this in the terminal:
         flutter run --dart-define=FLAVOR=staging

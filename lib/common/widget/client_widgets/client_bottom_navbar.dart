@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quickdeal/features/home/client_home/presentation/screens/client_home.dart';
 
 class ClientBottomNavBar extends StatelessWidget {
   final int selectedIndex;
@@ -25,7 +24,7 @@ class ClientBottomNavBar extends StatelessWidget {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 16,
                   offset: const Offset(0, -4),
                 ),

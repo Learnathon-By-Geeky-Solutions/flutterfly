@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:quickdeal/core/services/role_manager/role_manager.dart';
 import 'core/services/routes/route_generator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/utils/theme/app_theme.dart';
 import 'l10n/generated/app_localizations.dart';
-import 'main.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});

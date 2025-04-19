@@ -7,12 +7,12 @@ class RecentUpdate extends StatelessWidget {
   final String message;
 
   const RecentUpdate({
-    Key? key,
+    super.key,
     required this.icon,
     required this.iconColor,
     required this.iconBackgroundColor,
     required this.message,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class RecentUpdate extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha:0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

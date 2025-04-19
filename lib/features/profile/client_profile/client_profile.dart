@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickdeal/core/services/auth_service/auth_service.dart';
 import 'package:quickdeal/core/services/routes/app_routes.dart';
-import 'package:quickdeal/app.dart'; // For navigatorKey
+// For navigatorKey
 
 class ClientProfile extends StatelessWidget {
   const ClientProfile({super.key});

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:quickdeal/app.dart';
 import 'package:quickdeal/core/services/auth_service/auth_service.dart';
 import 'package:quickdeal/core/services/routes/app_routes.dart';
 
@@ -307,12 +306,12 @@ class DetailItem extends StatelessWidget {
   final VoidCallback onTap;
 
   const DetailItem({
-    Key? key,
+    super.key,
     required this.title,
     required this.value,
     this.hasArrow = false,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

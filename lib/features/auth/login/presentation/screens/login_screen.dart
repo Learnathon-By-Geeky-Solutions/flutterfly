@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:quickdeal/common/widget/getLogoWidget.dart';
 import 'package:quickdeal/common/widget/input_form_field.dart';
 import 'package:quickdeal/core/services/role_manager/role_manager.dart';
-import 'package:quickdeal/core/services/routes/route_generator.dart';
 import 'package:quickdeal/core/utils/constants/image_strings.dart';
 import '../../../../../core/services/routes/app_routes.dart';
 import '../../../../../core/utils/validators/validators.dart';
@@ -44,7 +43,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       final newState = ref.read(loginProvider);
       if (newState.error == null && mounted) {
-        final role = await getCurrentUserRole();
+        final role = getCurrentUserRole();
         if (role == UserRole.vendor) {
           print('userRole: $role');
           print('Has permission: ${RoleManager.hasPermission(role, Permission

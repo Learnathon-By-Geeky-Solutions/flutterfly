@@ -1,6 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../utils/loggers/logger.dart';
 
 /*
     AppConfig is a utility class for loading and accessing environment-specific configuration values.
