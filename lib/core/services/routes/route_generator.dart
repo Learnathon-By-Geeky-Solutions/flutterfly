@@ -6,17 +6,17 @@ import 'package:quickdeal/features/auth/signup/client_signup/presentation/screen
 import 'package:quickdeal/features/auth/otp_screen/email_otp_screen.dart';
 import 'package:quickdeal/features/auth/signup/vendor_signup/presentation/screens/vendor_signup_business_info_screen.dart';
 import 'package:quickdeal/features/auth/signup/vendor_signup/presentation/screens/vendor_signup_verification_screen.dart';
-import 'package:quickdeal/features/bidding/vendor_bidding/vendor_bidding.dart';
+import 'package:quickdeal/features/bidding/vendor_bidding/presentation/screens/vendor_bidding.dart';
 import 'package:quickdeal/features/home/client_home/presentation/screens/client_home.dart';
 import 'package:quickdeal/features/bidding/client_bidding/client_ongoing_bids.dart';
 import 'package:quickdeal/features/profile/client_profile/client_profile.dart';
 import 'package:quickdeal/features/profile/vendor_profile/vendor_profile.dart';
-import 'package:quickdeal/features/rfq/client_rfq/client_add_request.dart';
-import 'package:quickdeal/features/rfq/client_rfq/my_rfq.dart';
+import 'package:quickdeal/features/rfq/client_rfq/presentation/screens/client_my_rfq_screen.dart';
 import 'package:quickdeal/features/splash/presentation/splash_screen.dart';
 import '../../../common/widget/client_widgets/client_navbar_wrapper.dart';
 import '../../../common/widget/vendor_widgets/vendor_navbar_wrapper.dart';
 import '../../../features/home/vendor_home/presentation/vendor_home.dart';
+import '../../../features/rfq/client_rfq/presentation/screens/create_rfq_screen.dart';
 import '../../../features/rfq/vendor_rfq/vendor_rfq.dart';
 import '../../../features/unauthorized/unauthorized_screen.dart';
 import '../role_manager/role_manager.dart';
@@ -76,7 +76,7 @@ final GoRouter router = GoRouter(
           GoRoute(
             path: AppRoutes.clientRfqs,
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: MyRfq(),
+              child: ClientMyRfqScreen(),
             ),
             redirect: (BuildContext context, GoRouterState state) {
               final userRole = getCurrentUserRole();
@@ -89,7 +89,7 @@ final GoRouter router = GoRouter(
           GoRoute(
             path: AppRoutes.clientAddRequest,
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: ClientAddRequest(),
+              child: ClientAddRequestScreen(),
             ),
             redirect: (BuildContext context, GoRouterState state) {
               final userRole = getCurrentUserRole();

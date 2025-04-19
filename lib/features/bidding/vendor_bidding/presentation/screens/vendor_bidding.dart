@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quickdeal/features/bidding/vendor_bidding/widgets/bid_card.dart';
+import 'package:quickdeal/features/bidding/vendor_bidding/presentation/widgets/bid_card.dart';
 
 class VendorBidding extends StatelessWidget {
   const VendorBidding({super.key});
