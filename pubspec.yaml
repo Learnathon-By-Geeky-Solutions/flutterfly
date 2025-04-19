@@ -37,6 +37,8 @@ dependencies:
   hive_flutter: ^1.1.0
   flutter_secure_storage: ^4.2.1
   dio: ^5.8.0+1
+  json_serializable: ^6.9.5
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
