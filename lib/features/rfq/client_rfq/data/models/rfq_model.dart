@@ -1,17 +1,27 @@
+import 'package:json_annotation/json_annotation.dart';
 import '../../domain/entities/rfq_entity.dart';
 
+part 'rfq_model.g.dart';
+
+@JsonSerializable()
 class RfqModel {
   final String title;
   final String description;
+  @JsonKey(name: 'client_id')
   final String clientId;
+  @JsonKey(name: 'category_id')
   final String categoryId;
+  @JsonKey(name: 'min_budget')
   final num? minBudget;
+  @JsonKey(name: 'max_budget')
   final num? maxBudget;
+  @JsonKey(name: 'bidding_deadline')
   final DateTime biddingDeadline;
+  @JsonKey(name: 'delivery_deadline')
   final DateTime? deliveryDeadline;
   final List<String>? attachments;
 
-  RfqModel({
+  const RfqModel({
     required this.title,
     required this.description,
     required this.clientId,
@@ -19,35 +29,12 @@ class RfqModel {
     this.minBudget,
     this.maxBudget,
     required this.biddingDeadline,
-    required this.deliveryDeadline,
+    this.deliveryDeadline,
     this.attachments,
   });
 
-  factory RfqModel.fromJson(Map<String, dynamic> json) => RfqModel(
-    title: json['title'],
-    description: json['description'],
-    clientId: json['client_id'],
-    categoryId: json['category_id'],
-    minBudget: json['min_budget'],
-    maxBudget: json['max_budget'],
-    biddingDeadline: DateTime.parse(json['bidding_deadline']),
-    deliveryDeadline: json['delivery_deadline'] != null
-        ? DateTime.parse(json['delivery_deadline'])
-        : null,
-    attachments: List<String>.from(json['attachments'] ?? []),
-  );
-
-  Map<String, dynamic> toJson() => {
-    'title': title,
-    'description': description,
-    'client_id': clientId,
-    'category_id': categoryId,
-    'min_budget': minBudget,
-    'max_budget': maxBudget,
-    'bidding_deadline': biddingDeadline.toIso8601String(),
-    'delivery_deadline': deliveryDeadline?.toIso8601String(),
-    'attachments': attachments,
-  };
+  factory RfqModel.fromJson(Map<String, dynamic> json) => _$RfqModelFromJson(json);
+  Map<String, dynamic> toJson() => _$RfqModelToJson(this);
 
   Rfq toEntity() => Rfq(
     title: title,
