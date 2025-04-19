@@ -34,6 +34,9 @@ dependencies:
   file_picker: ^9.2.3
   circle_nav_bar: ^2.2.0
   mime: ^2.0.0
+  hive_flutter: ^1.1.0
+  flutter_secure_storage: ^4.2.1
+  dio: ^5.8.0+1
 
 dev_dependencies:
   flutter_test:
