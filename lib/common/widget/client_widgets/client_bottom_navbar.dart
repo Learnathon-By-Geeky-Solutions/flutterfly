@@ -78,7 +78,7 @@ class ClientBottomNavBar extends StatelessWidget {
                 child: Icon(
                   icon,
                   color: isSelected ? activeColor : inactiveColor,
-                  size: 28,
+                  size: 18,
                 ),
               ),
               AnimatedOpacity(

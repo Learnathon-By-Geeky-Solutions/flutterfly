@@ -5,7 +5,6 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app.dart';
 import 'core/config/app_config.dart';
-import 'core/services/role_manager/role_manager.dart';
 import 'core/utils/loggers/logger.dart';
 
 
@@ -37,9 +36,11 @@ Future <void> main() async {
     ),
   );
   usePathUrlStrategy();
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
   runApp(ProviderScope(child: App()));
 }
+
