@@ -63,6 +63,27 @@ class AuthService {
     );
   }
 
+  // Signup vendor with Phone (send OTP to phone)
+  Future<void> signupVendorWithPhone(String phoneNumber) async {
+    final response = await _supabase.auth.signInWithOtp(
+      phone: phoneNumber,
+    );
+    return response;
+  }
+
+  // Verify OTP for phone number
+  Future<AuthResponse> verifyVendorPhoneOtp(String phoneNumber, String otp) async {
+    final response = await _supabase.auth.verifyOTP(
+      phone: phoneNumber,
+      token: otp,
+      type: OtpType.sms, // 🛑 NOT signup. Use sms type here
+    );
+    if (response.user == null) {
+      throw Exception('Phone OTP verification failed');
+    }
+    return response;
+  }
+
   // -- Logout
   Future<void> logOut() async {
     await _supabase.auth.signOut();

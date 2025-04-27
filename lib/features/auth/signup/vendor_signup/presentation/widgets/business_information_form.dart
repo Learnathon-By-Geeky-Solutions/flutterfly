@@ -153,16 +153,6 @@ class BusinessInfoForm extends ConsumerWidget {
             validator: controller.validatePhoneNumber,
             onSaved: (value) => controller.updatePhoneNumber(value ?? ''),
           ),
-          const SizedBox(height: 8),
-          TextFormField(
-            initialValue: registration.emailAddress,
-            decoration: const InputDecoration(
-              hintText: 'Email address',
-            ),
-            keyboardType: TextInputType.emailAddress,
-            validator: controller.validateEmailAddress,
-            onSaved: (value) => controller.updateEmailAddress(value ?? ''),
-          ),
           const SizedBox(height: 16),
 
           // Tax ID Number

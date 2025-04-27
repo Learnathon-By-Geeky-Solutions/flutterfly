@@ -22,4 +22,5 @@ class AppRoutes
   static const String vendorBids = '/vendor-bids';
   static const String vendorProfile = '/vendor-profile';
 
+
 }

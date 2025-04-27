@@ -5,7 +5,6 @@ import 'package:quickdeal/features/auth/login/presentation/screens/login_screen.
 import 'package:quickdeal/features/auth/signup/client_signup/presentation/screens/client_signup_screen.dart';
 import 'package:quickdeal/features/auth/otp_screen/email_otp_screen.dart';
 import 'package:quickdeal/features/auth/signup/vendor_signup/presentation/screens/vendor_signup_business_info_screen.dart';
-import 'package:quickdeal/features/auth/signup/vendor_signup/presentation/screens/vendor_signup_verification_screen.dart';
 import 'package:quickdeal/features/bidding/vendor_bidding/presentation/screens/vendor_bidding.dart';
 import 'package:quickdeal/features/home/client_home/presentation/screens/client_home.dart';
 import 'package:quickdeal/features/bidding/client_bidding/client_ongoing_bids.dart';
@@ -14,6 +13,7 @@ import 'package:quickdeal/features/profile/vendor_profile/vendor_profile.dart';
 import 'package:quickdeal/features/splash/presentation/splash_screen.dart';
 import '../../../common/widget/client_widgets/client_navbar_wrapper.dart';
 import '../../../common/widget/vendor_widgets/vendor_navbar_wrapper.dart';
+import '../../../features/auth/signup/vendor_signup/presentation/screens/vendor_signup_services_screen.dart';
 import '../../../features/home/vendor_home/presentation/vendor_home.dart';
 import '../../../features/rfq/client_rfq/presentation/screens/client_add_request_screen.dart';
 import '../../../features/rfq/vendor_rfq/vendor_rfq.dart';
@@ -45,8 +45,8 @@ final GoRouter router = GoRouter(
         builder: (context, state) => const VendorSignupBusinessInfoScreen(),
       ),
       GoRoute(
-        path: AppRoutes.vendorSignupVerificationScreen,
-        builder: (context, state) => const VendorVerificationPage(),
+        path: AppRoutes.vendorSignupServicesScreen,
+        builder: (context, state) => const VendorSignupServicesScreen(),
       ),
       GoRoute(
         path: AppRoutes.emailOtpScreen,

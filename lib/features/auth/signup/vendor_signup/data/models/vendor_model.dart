@@ -1,3 +1,4 @@
+// dart
 import '../../domain/entities/vendor_entity.dart';
 
 class VendorModel extends VendorEntity {
@@ -56,6 +57,32 @@ class VendorModel extends VendorEntity {
       emailAddress: '',
       taxIdNumber: '',
       currentStep: 1,
+    );
+  }
+
+  VendorModel copyWith({
+    String? businessName,
+    String? businessType,
+    String? streetAddress,
+    String? city,
+    String? state,
+    String? zipCode,
+    String? phoneNumber,
+    String? emailAddress,
+    String? taxIdNumber,
+    int? currentStep,
+  }) {
+    return VendorModel(
+      businessName: businessName ?? this.businessName,
+      businessType: businessType ?? this.businessType,
+      streetAddress: streetAddress ?? this.streetAddress,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      zipCode: zipCode ?? this.zipCode,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      emailAddress: emailAddress ?? this.emailAddress,
+      taxIdNumber: taxIdNumber ?? this.taxIdNumber,
+      currentStep: currentStep ?? this.currentStep,
     );
   }
 }
