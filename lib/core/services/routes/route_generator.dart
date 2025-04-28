@@ -17,6 +17,7 @@ import '../../../features/auth/signup/vendor_signup/presentation/screens/vendor_
 import '../../../features/home/vendor_home/presentation/vendor_home.dart';
 import '../../../features/rfq/client_rfq/presentation/screens/client_add_request_screen.dart';
 import '../../../features/rfq/vendor_rfq/vendor_rfq.dart';
+import '../../../features/rfq/vendor_rfq/view_rfq_details/presentation/view_rfq_details.dart';
 import '../../../features/unauthorized/unauthorized_screen.dart';
 import '../role_manager/role_manager.dart';
 import 'app_routes.dart';
@@ -143,7 +144,6 @@ final GoRouter router = GoRouter(
                 }
                 return null;
               }
-
           ),
           GoRoute(
             path: AppRoutes.vendorAvailableRfqs,
@@ -179,6 +179,23 @@ final GoRouter router = GoRouter(
             redirect: (BuildContext context, GoRouterState state) {
               final userRole = getCurrentUserRole();
               if (!RoleManager.hasPermission(userRole, Permission.vendorProfile)) {
+                return AppRoutes.unauthorizedScreen;
+              }
+              return null;
+            },
+          ),
+
+          GoRoute(
+            path: AppRoutes.vendorViewRfqDetailsScreen,
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              final Map<String, dynamic> rfq = state.extra as Map<String, dynamic>;
+              return NoTransitionPage(
+                child: RfqDetailsPage(rfq: rfq),
+              );
+            },
+            redirect: (BuildContext context, GoRouterState state) {
+              final userRole = getCurrentUserRole();
+              if (!RoleManager.hasPermission(userRole, Permission.vendorRfq)) {
                 return AppRoutes.unauthorizedScreen;
               }
               return null;

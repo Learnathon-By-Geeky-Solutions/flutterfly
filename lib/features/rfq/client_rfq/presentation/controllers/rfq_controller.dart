@@ -26,7 +26,12 @@ class RfqFormController {
   final productImages = <File>[];
   final documents = <File>[];
 
-  final categories = ['Manufacturing', 'Design', 'Other'];
+  final categories = [
+    'Manufacturing',
+    'Customized Design Work',
+    'Electrical Work',
+    'Homemade Food',
+    'Interior Design',];
 
   void dispose() {
     title.dispose();

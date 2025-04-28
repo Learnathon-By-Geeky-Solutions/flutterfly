@@ -28,7 +28,7 @@ class _ClientAddRequestScreenState extends State<ClientAddRequestScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-              Padding(
+            Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
                 'Product Title',
@@ -195,7 +195,7 @@ class _ClientAddRequestScreenState extends State<ClientAddRequestScreen> {
               },
               child: controller.isSubmitting
                   ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white))
-                  : const Text('Request for Quota'),
+                  : const Text('Request for Quote'),
             ),
           ],
         ),
