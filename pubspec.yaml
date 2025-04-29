@@ -40,7 +40,6 @@ dependencies:
   json_serializable: ^6.9.5
   json_annotation: ^4.9.0
   mocktail: ^1.0.4
-  flutter_pdfview: ^1.4.0+1
 
 dev_dependencies:
   flutter_test:
