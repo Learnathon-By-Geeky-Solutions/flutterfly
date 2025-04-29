@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickdeal/features/bidding/vendor_bidding/presentation/widgets/bid_card.dart';
-import 'package:intl/intl.dart';
 import '../../../../../common/widget/custom_appbar.dart';
 import '../../../../../core/services/routes/app_routes.dart';
 import '../../../../../main.dart';
