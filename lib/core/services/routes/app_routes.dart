@@ -23,6 +23,6 @@ class AppRoutes
   static const String vendorProfile = '/vendor-profile';
   static const String vendorViewRfqDetailsScreen = '/view-rfq-detail';
   static const String clientViewsRfqBids = 'client-view-bids';
-
+  static const String vendorViewOwnBidDetails = '/vendor/bids/details';
 
 }

@@ -1,26 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:quickdeal/core/utils/helpers/helpers.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import '../../../../../core/services/routes/app_routes.dart';
 
 class BidCard extends StatelessWidget {
-  final String projectTitle;
-  final String bidAmount;
-  final String submittedDate;
-  final String status;
-  final Color statusColor;
-  final Color statusTextColor;
+  final Map<String, dynamic> bid;
+  final Map<String, dynamic>? rfqInfo;
 
   const BidCard({
     super.key,
-    required this.projectTitle,
-    required this.bidAmount,
-    required this.submittedDate,
-    required this.status,
-    required this.statusColor,
-    required this.statusTextColor,
+    required this.bid,
+    required this.rfqInfo,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Extract individual properties from the bid map
+    final String projectTitle = rfqInfo?['title'] ?? 'No Title';
+    final String bidAmount = '\$${bid['proposed_price_per_item'] ?? 0}';
+    final String submittedDate = bid['created_at'] != null
+        ? DateFormat('MMM dd, yyyy').format(DateTime.parse(bid['created_at']))
+        : 'No Date';
+    final String status = bid['status'] ?? 'No Status';
+    final Color statusColor = status == 'Accepted'
+        ? Color(0xFFE0F7E6)
+        : status == 'Rejected'
+        ? Color(0xFFFAE3E3)
+        : Color(0xFFF8EAC0);
+    final Color statusTextColor = status == 'Accepted'
+        ? Color(0xFF2D9D5B)
+        : status == 'Rejected'
+        ? Color(0xFFD85050)
+        : Color(0xFFB7953F);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -36,7 +48,7 @@ class BidCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppHelperFunctions.limitWords(projectTitle, 3),
+                  projectTitle,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -112,7 +124,16 @@ class BidCard extends StatelessWidget {
               width: double.infinity,
               height: 55,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Passing specific bid_id and rfq_id to the next page
+                  context.push(
+                    AppRoutes.vendorViewOwnBidDetails,
+                    extra: {
+                      'bid_id': bid['bid_id'],
+                      'rfq_id': bid['rfq_id'],
+                    },
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFF5A7E),
                   foregroundColor: Colors.white,

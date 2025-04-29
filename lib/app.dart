@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'core/services/routes/route_generator.dart';
+import 'core/services/routes/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/utils/theme/app_theme.dart';
 import 'l10n/generated/app_localizations.dart';
