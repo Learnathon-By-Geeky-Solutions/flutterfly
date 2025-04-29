@@ -20,12 +20,10 @@ class _VendorBiddingState extends State<VendorBidding> {
   Future<void> _fetchRFQInfo(String rfqId) async {
     final response = await supabase.from('rfqs').select().eq('rfq_id', rfqId).single();
 
-    if (response != null) {
-      setState(() {
-        _rfqInfo = response;
-      });
+    setState(() {
+      _rfqInfo = response;
+    });
     }
-  }
 
   // Fetch Bids and corresponding RFQ info
   Future<void> _fetchMyBids() async {

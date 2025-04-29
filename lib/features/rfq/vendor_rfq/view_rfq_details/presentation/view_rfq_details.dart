@@ -54,20 +54,18 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
 
       final response = await supabase.from('bids').insert(insertedBid).select().single();
 
-      if (response != null) {
-        setState(() {
-          _myBids.add(response); // Optimistically add bid
-        });
+      setState(() {
+        _myBids.add(response); // Optimistically add bid
+      });
 
-        _amountController.clear();
-        _proposalDetailsController.clear();
-        _submissionDateController.clear();
+      _amountController.clear();
+      _proposalDetailsController.clear();
+      _submissionDateController.clear();
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Bid placed successfully!')),
-        );
-      }
-    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Bid placed successfully!')),
+      );
+        } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to place bid: $error')),
       );

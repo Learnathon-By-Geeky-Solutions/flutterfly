@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:quickdeal/common/widget/custom_appbar.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../../../core/utils/constants/color_palette.dart';
 import '../../../main.dart';
 

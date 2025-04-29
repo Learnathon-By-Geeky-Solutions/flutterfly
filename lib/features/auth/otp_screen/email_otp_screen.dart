@@ -2,10 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:quickdeal/core/services/auth_service/auth_service.dart'; // Import your AuthService here
+import 'package:quickdeal/core/services/auth_service/auth_service.dart';
 import 'package:quickdeal/core/services/role_manager/role_manager.dart';
 import 'package:quickdeal/core/services/routes/app_routes.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../common/widget/getLogoWidget.dart';
 import '../../../core/services/memory_management/hive/hive_service.dart';
 import '../../../core/utils/constants/color_palette.dart';

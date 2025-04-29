@@ -145,7 +145,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                     description: 'WordPress-based e-commerce website with custom features',
                     status: 'Bidding',
                     statusColor: Colors.blue,
-                    statusBackgroundColor: Colors.blue.withOpacity(0.1),
+                    statusBackgroundColor: Colors.blue.withValues(alpha: 0.1),
                     currentBid: '2,500',
                   ),
                   ActiveRfqCard(
@@ -153,7 +153,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                     description: 'Modern logo design with brand guidelines',
                     status: 'Pending',
                     statusColor: Colors.orange,
-                    statusBackgroundColor: Colors.orange.withOpacity(0.1),
+                    statusBackgroundColor: Colors.orange.withValues(alpha: 0.1),
                     budget: '500',
                   ),
                 ],

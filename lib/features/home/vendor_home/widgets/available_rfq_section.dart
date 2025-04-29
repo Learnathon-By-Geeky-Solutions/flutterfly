@@ -147,7 +147,7 @@ class AvailableRfqSection extends StatelessWidget {
                           color: Colors.deepOrange,
                         ),
                       ),
-                      backgroundColor: Colors.deepOrange.withOpacity(0.1),
+                      backgroundColor: Colors.deepOrange.withValues(alpha: 0.1),
                       padding: const EdgeInsets.all(0),
                       labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
                     );
