@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/adapters.dart';
+import '../../../../../../core/services/memory_management/hive/hive_service.dart';
 import '../../data/datasource/vendor_signup_remote_datasource.dart';
 import '../../data/models/vendor_model.dart';
 import '../../data/repositories/vendor_signup_repository_impl.dart';
@@ -45,15 +47,9 @@ class VendorSignupController extends StateNotifier<VendorSignupState> {
 
   // Business type options
   final List<String> businessTypes = [
-    'Retail',
-    'Wholesale',
-    'Manufacturing',
-    'Service',
-    'Technology',
-    'Food & Beverage',
-    'Healthcare',
-    'Education',
-    'Other'
+    'Sole Proprietorship',
+    'Partnership',
+    'Corporation'
   ];
 
   VendorSignupController(
@@ -83,7 +79,7 @@ class VendorSignupController extends StateNotifier<VendorSignupState> {
   // Update individual fields
   void updateBusinessName(String value) {
     final updatedSignup = state.signup.copyWith(businessName: value);
-    state = state.copyWith(signup: updatedSignup as VendorModel);
+    state = state.copyWith(signup: updatedSignup);
   }
 
   void updateBusinessType(String value) {
@@ -141,7 +137,7 @@ class VendorSignupController extends StateNotifier<VendorSignupState> {
     );
   }
 
-  // Proceed to next step
+  // dart
   Future<bool> proceedToNextStep() async {
     if (!businessInfoFormKey.currentState!.validate()) {
       return false;
@@ -150,15 +146,18 @@ class VendorSignupController extends StateNotifier<VendorSignupState> {
     // Save form data
     businessInfoFormKey.currentState!.save();
 
-    // Save progress
-    await saveProgress();
+    // Open Hive box and store vendor info
+    await Hive.openBox('vendor');
+    final hiveService = HiveService();
+    final box = hiveService.box('vendor'); // Open the box using
+    // HiveService
+    final vendorData = state.signup.toJson(); // Assuming state.signup is VendorModel
 
-    // Update step
-    final updatedSignup = state.signup.copyWith(currentStep: 2);
-    state = state.copyWith(signup: updatedSignup as VendorModel);
+    await box.put('vendorInfo', vendorData);
 
     return true;
   }
+
 
   // Submit the entire signup
   Future<void> submitSignup() async {

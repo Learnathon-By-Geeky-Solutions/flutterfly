@@ -1,29 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quickdeal/common/widget/custom_appbar.dart';
 import 'package:quickdeal/core/services/auth_service/auth_service.dart';
 import 'package:quickdeal/core/services/routes/app_routes.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class VendorProfile extends StatelessWidget {
+import '../../../core/utils/helpers/helpers.dart';
+
+class VendorProfile extends StatefulWidget {
   const VendorProfile({super.key});
 
   @override
+  State<VendorProfile> createState() => _VendorProfileState();
+}
+
+class _VendorProfileState extends State<VendorProfile> {
+  Map<String, dynamic>? vendorData;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchVendorInfo();
+  }
+
+  Future<void> fetchVendorInfo() async {
+    final supabase = Supabase.instance.client;
+    final user = supabase.auth.currentUser;
+
+    if (user != null) {
+      final response = await supabase
+          .from('vendors')
+          .select()
+          .eq('vendor_id', user.id)
+          .maybeSingle();
+
+      setState(() {
+        vendorData = response;
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        body: Center(child: AppHelperFunctions.appLoader(context)),
+      );
+    }
+
+    if (vendorData == null) {
+      return const Scaffold(
+        body: Center(child: Text('Failed to load profile.')),
+      );
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: const Text('Business Profile'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 20),
-            // Profile Image
             Center(
               child: Stack(
                 children: [
@@ -39,9 +77,7 @@ class VendorProfile extends StatelessWidget {
                     ),
                     child: ClipOval(
                       child: Image.network(
-                        'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/body%20%283%29-4E7oq8BzTSZvBhbIhjXVedZ7lDdj9y.png',
-                        width: 100,
-                        height: 100,
+                        vendorData!['profile_picture'] ?? 'https://default.image.url',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
@@ -76,29 +112,26 @@ class VendorProfile extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // Business Name
-            const Text(
-              'TechPro Solutions',
-              style: TextStyle(
+            Text(
+              vendorData!['business_name'] ?? '',
+              style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
-            // Business Description
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Text(
-                'Innovation-driven software development and consulting services',
+                vendorData!['business_type'] ?? '',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            // Edit Profile Button
             SizedBox(
               width: 150,
               child: ElevatedButton(
@@ -116,48 +149,44 @@ class VendorProfile extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Basic Details Section
+            // BASIC DETAILS
             const SectionHeader(title: 'BASIC DETAILS'),
             DetailItem(
               title: 'Company Name',
-              value: 'TechPro Solutions Inc.',
-              hasArrow: true,
-              onTap: () {},
-            ),
-            DetailItem(
-              title: 'Registration Number',
-              value: 'REG123456789',
+              value: vendorData!['business_name'] ?? '',
               hasArrow: true,
               onTap: () {},
             ),
             DetailItem(
               title: 'Industry',
-              value: 'Information Technology',
+              value: vendorData!['business_type'] ?? '',
               hasArrow: true,
               onTap: () {},
             ),
             const SizedBox(height: 16),
 
-            // Contact Information Section
+            // CONTACT INFORMATION
             const SectionHeader(title: 'CONTACT INFORMATION'),
             ContactItem(
               icon: Icons.email_outlined,
-              value: 'contact@techpro.com',
+              value: vendorData!['email'] ?? '',
               onTap: () {},
             ),
             ContactItem(
               icon: Icons.phone_outlined,
-              value: '+1 (555) 123-4567',
+              value: vendorData!['contact_number'] ?? '',
               onTap: () {},
             ),
-            ContactItem(
-              icon: Icons.location_on_outlined,
-              value: '123 Tech Street, Silicon Valley, CA 94025',
-              onTap: () {},
-            ),
+            if (vendorData!['address'] != null)
+              ContactItem(
+                icon: Icons.location_on_outlined,
+                value:
+                "${vendorData!['address']['streetAddress']}, ${vendorData!['address']['city']}, ${vendorData!['address']['state']} ${vendorData!['address']['zipCode']}",
+                onTap: () {},
+              ),
             const SizedBox(height: 16),
 
-            // Account Settings Section
+            // ACCOUNT SETTINGS
             const SectionHeader(title: 'ACCOUNT SETTINGS'),
             SettingsItem(
               icon: Icons.notifications_none,
@@ -179,7 +208,7 @@ class VendorProfile extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Support & Help Section
+            // SUPPORT & HELP
             const SectionHeader(title: 'SUPPORT & HELP'),
             SettingsItem(
               icon: Icons.help_outline,
@@ -195,6 +224,7 @@ class VendorProfile extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
+            // LOGOUT BUTTON
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: InkWell(
@@ -207,7 +237,8 @@ class VendorProfile extends StatelessWidget {
                       ),
                       title: const Text('Confirm Logout'),
                       content: const Text('Are you sure you want to logout?'),
-                      actionsPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      actionsPadding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.of(ctx).pop(),
@@ -220,10 +251,10 @@ class VendorProfile extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             Navigator.of(ctx).pop();
                             final authService = AuthService();
-                            authService.logOut();
+                            await authService.logOut();
                             context.go(AppRoutes.authGate);
 
                             Future.delayed(const Duration(milliseconds: 300), () {
@@ -235,7 +266,6 @@ class VendorProfile extends StatelessWidget {
                               );
                             });
                           },
-
                           child: const Text('Logout'),
                         ),
                       ],
@@ -256,14 +286,14 @@ class VendorProfile extends StatelessWidget {
                       SizedBox(width: 8),
                       Text(
                         'Logout',
-                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-
             const SizedBox(height: 24),
           ],
         ),
@@ -271,6 +301,8 @@ class VendorProfile extends StatelessWidget {
     );
   }
 }
+
+
 
 class SectionHeader extends StatelessWidget {
   final String title;

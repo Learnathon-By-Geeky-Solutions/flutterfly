@@ -8,6 +8,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
+      automaticallyImplyLeading: false,
       elevation: 0,
       title: Row(
         children: [
@@ -51,8 +52,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         const SizedBox(width: 8),
         CircleAvatar(
           radius: 16,
-          backgroundImage: const NetworkImage(
-            'https://randomuser.me/api/portraits/men/32.jpg',
+          backgroundImage: NetworkImage(
+            'https://default.image.url',
           ),
         ),
         const SizedBox(width: 16),

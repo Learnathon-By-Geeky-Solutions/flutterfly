@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quickdeal/core/services/auth_service/auth_service.dart'; // Import your AuthService here
 import 'package:quickdeal/core/services/role_manager/role_manager.dart';
 import 'package:quickdeal/core/services/routes/app_routes.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../common/widget/getLogoWidget.dart';
+import '../../../core/services/memory_management/hive/hive_service.dart';
 import '../../../core/utils/constants/color_palette.dart';
 import 'package:quickdeal/common/widget/custom_snackbar.dart';
 
@@ -25,6 +27,7 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
   final AuthService _authService = AuthService();
 
   @override
+  @override
   void dispose() {
     for (var controller in _controllers) {
       controller.dispose();
@@ -35,11 +38,13 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
     super.dispose();
   }
 
+
   void _onOtpChanged(String value, int index) {
     if (value.isNotEmpty && index < 5) {
-      FocusScope.of(context).requestFocus(_focusNodes[index + 1]);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        FocusScope.of(context).requestFocus(_focusNodes[index + 1]);
+      });
     }
-
     _otp = _controllers.map((controller) => controller.text).join();
   }
 
@@ -69,6 +74,54 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
       final router = GoRouter.of(context);
 
       if(mounted && userRole == UserRole.vendor) {
+        final hiveService = HiveService();
+        final box = hiveService.box('vendor');
+        final servicesOffered = box.get('services_offered');
+        final vendorInfo = box.get('vendorInfo');
+
+        final supabase = Supabase.instance.client;
+        final user = supabase.auth.currentUser;
+
+        if (user == null) {
+          CustomSnackbar.show(
+            context,
+            message: 'User is not authenticated!',
+            type: SnackbarType.error,
+          );
+          return;
+        }
+
+        List<String> categoryIds = [];
+
+        for (String serviceName in servicesOffered) {
+          final categoryResponse = await supabase
+              .from('categories')
+              .select('category_id')
+              .eq('name', serviceName)
+              .maybeSingle();
+
+          if (categoryResponse != null) {
+            categoryIds.add(categoryResponse['category_id']);
+          }
+        }
+
+        // Now categoryIds contains the category_id for each service name.
+
+        await supabase.from('vendors').update({
+          'business_name': vendorInfo['businessName'],
+          'business_type': vendorInfo['businessType'],
+          'address': {
+            'streetAddress': vendorInfo['streetAddress'],
+            'city': vendorInfo['city'],
+            'state': vendorInfo['state'],
+            'zipCode': vendorInfo['zipCode'],
+          },
+          'contact_number': vendorInfo['phoneNumber'],
+          'tin': vendorInfo['taxIdNumber'],
+          'services_offered': categoryIds, // <-- now it's category IDs, not names
+        }).eq('vendor_id', user.id);
+
+
         router.go(AppRoutes.vendorHome);
       }
       else if(mounted && userRole == UserRole.client){

@@ -60,12 +60,16 @@ class VendorSignupBusinessInfoScreen extends ConsumerWidget {
               children: [
                 SignupProgressIndicator(
                   currentStep: signup.currentStep,
-                  totalSteps: 3,
+                  totalSteps: 2,
                 ),
                 const SizedBox(height: 16),
                 SignupStepIndicator(
                   currentStep: signup.currentStep,
-                  stepLabels: const ['Business Info', 'Verification', 'Services'],
+                  stepLabels: const [
+                    'Business Info',
+                    //'Verification',
+                    'Services'
+                  ],
                 ),
               ],
             ),
@@ -95,12 +99,7 @@ class VendorSignupBusinessInfoScreen extends ConsumerWidget {
                 if (success) {
                   // Navigate to next step or show next form
                   if (!context.mounted) return;
-                  await context.push(AppRoutes.vendorSignupVerificationScreen);
-                }
-              } else if (signup.currentStep == 3) {
-                await controller.submitSignup();
-                if (state.isSuccess) {
-                  // Navigate to success page
+                  await context.push(AppRoutes.vendorSignupServicesScreen);
                 }
               }
             },
@@ -108,7 +107,7 @@ class VendorSignupBusinessInfoScreen extends ConsumerWidget {
               context.go(AppRoutes.login);
             },
             isLoading: state.isLoading,
-            isLastStep: signup.currentStep == 3,
+            isLastStep: signup.currentStep == 2,
           ),
         ],
       ),

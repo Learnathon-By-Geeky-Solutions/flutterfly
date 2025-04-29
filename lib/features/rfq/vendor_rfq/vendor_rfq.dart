@@ -1,14 +1,121 @@
 import 'package:flutter/material.dart';
 import 'package:quickdeal/features/rfq/vendor_rfq/widgets/rfq_card.dart';
-import '../../../common/widget/custom_appbar.dart';
+import 'package:quickdeal/common/widget/custom_appbar.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../core/utils/helpers/helpers.dart';
 
-class VendorRfq extends StatelessWidget {
+class VendorRfq extends StatefulWidget {
   const VendorRfq({super.key});
+
+  @override
+  State<VendorRfq> createState() => _VendorRfqState();
+}
+
+class _VendorRfqState extends State<VendorRfq> {
+  final SupabaseClient supabase = Supabase.instance.client;
+
+  List<Map<String, dynamic>> rfqs = [];
+  List<Map<String, dynamic>> filteredRfqs = [];
+  bool isLoading = true;
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchRfqs();
+
+    // Listen to changes in the search input
+    searchController.addListener(() {
+      filterRfqs(searchController.text);
+    });
+  }
+
+  Future<void> fetchRfqs() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final userId = supabase.auth.currentUser?.id;
+
+      if (userId == null) {
+        throw Exception('User not logged in');
+      }
+
+      // Step 1: Fetch the services offered by the vendor
+      final vendorResponse = await supabase
+          .from('vendors')
+          .select('services_offered')
+          .eq('vendor_id', userId)
+          .single();
+
+      final servicesOffered = vendorResponse['services_offered'];
+
+      if (servicesOffered == null || servicesOffered.isEmpty) {
+        throw Exception('Vendor has no services offered');
+      }
+
+      // Step 2: Fetch all RFQs that match the vendor's services (no search/filter applied yet)
+      final response = await supabase
+          .from('rfqs')
+          .select(''' 
+          rfq_id,
+          client_id,
+          category_id,
+          title,
+          description,
+          min_budget,
+          max_budget,
+          bidding_deadline,
+          rfq_status,
+          location,
+          quantity,
+          specification,
+          delivery_deadline,
+          attachments,
+          created_at,
+          updated_at,
+          currently_selected_bid_id,
+          clients(full_name, profile_pic)
+        ''')
+          .eq('rfq_status', 'ongoing') // Filter ongoing RFQs
+          .filter('category_id', 'in', servicesOffered)
+          .order('created_at', ascending: false);
+
+      setState(() {
+        rfqs = List<Map<String, dynamic>>.from(response);
+        filteredRfqs = List<Map<String, dynamic>>.from(rfqs); // Initialize filtered list
+        isLoading = false;
+      });
+
+    } catch (e) {
+      debugPrint('Error fetching RFQs: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  // Function to filter RFQs based on search query
+  void filterRfqs(String query) {
+    final filtered = rfqs.where((rfq) {
+      final title = rfq['title']?.toLowerCase() ?? '';
+      final description = rfq['description']?.toLowerCase() ?? '';
+      final lowerQuery = query.toLowerCase();
+
+      // Search matches either title or description
+      return title.contains(lowerQuery) || description.contains(lowerQuery);
+    }).toList();
+
+    setState(() {
+      filteredRfqs = filtered;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: const CustomAppBar(),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,7 +127,7 @@ class VendorRfq extends StatelessWidget {
                 color: Colors.grey[50],
                 border: Border(
                   bottom: BorderSide(
-                    color: Colors.grey[200]!,
+                    color: Colors.grey[200]! ,
                     width: 1,
                   ),
                 ),
@@ -34,140 +141,64 @@ class VendorRfq extends StatelessWidget {
                 ),
               ),
             ),
+            // The Search Bar will stay independent of the RFQ list
+            Container(
+              height: 80,
+              padding: const EdgeInsets.all(16),
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search RFQs...',
+                  hintStyle: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 16,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.grey[800],
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+
             Expanded(
               child: Container(
                 color: Colors.grey[50],
-                child: ListView(
-                  padding: const EdgeInsets.all(16),
+                child: isLoading
+                    ? Center(child: AppHelperFunctions.appLoader(context))
+                    : filteredRfqs.isEmpty
+                    ? const Center(child: Text('No RFQs found'))
+                    : ListView(
+                  padding: const EdgeInsets.all(8),
                   children: [
-                    // Search Bar
-                    Container(
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.grey[200]!),
-                      ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Search RFQs...',
-                          hintStyle: TextStyle(
-                            color: Colors.grey[400],
-                            fontSize: 16,
-                          ),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Colors.grey[800],
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                        ),
+                    // All RFQs Available Text with some space below it
+                    const Text(
+                      'All RFQs available to you',
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
-                    const SizedBox(height: 16),
-
-                    // Filter Chips
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          FilterChip(
-                            selected: true,
-                            label: const Text(
-                              'All\nRFQs',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            backgroundColor: const Color(0xFFFF5A7E),
-                            selectedColor: const Color(0xFFFF5A7E),
-                            onSelected: (bool selected) {},
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(16),
-                          ),
-                          const SizedBox(width: 12),
-                          FilterChip(
-                            selected: false,
-                            label: const Text(
-                              'Technology',
-                              style: TextStyle(
-                                color: Color(0xFF2D3142),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            backgroundColor: Colors.white,
-                            onSelected: (bool selected) {},
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              side: BorderSide(color: Colors.grey[300]!),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                          ),
-                          const SizedBox(width: 12),
-                          FilterChip(
-                            selected: false,
-                            label: const Text(
-                              'Construction',
-                              style: TextStyle(
-                                color: Color(0xFF2D3142),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            backgroundColor: Colors.white,
-                            onSelected: (bool selected) {},
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              side: BorderSide(color: Colors.grey[300]!),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                          ),
-                          const SizedBox(width: 12),
-                          FilterChip(
-                            selected: false,
-                            label: const Text(
-                              'S',
-                              style: TextStyle(
-                                color: Color(0xFF2D3142),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            backgroundColor: Colors.white,
-                            onSelected: (bool selected) {},
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              side: BorderSide(color: Colors.grey[300]!),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
+                    const SizedBox(height: 16), // Add space after the text
                     // RFQ Cards
-                    RFQCard(
-                      title: 'Website Redesign Project',
-                      description: 'Looking for a skilled web design agency to redesign our corporate website with modern UI/UX principles.',
-                      company: 'Tech Solutions Inc.',
-                      deadline: 'Mar 15, 2025',
-                      budget: '\$15,000 - \$25,000',
-                      isNew: true,
-                    ),
-                    const SizedBox(height: 16),
-                    RFQCard(
-                      title: 'Mobile App Development',
-                      description: 'Seeking experienced mobile app developers for iOS and Android platforms. Native development required.',
-                      company: 'Mobile Innovations Ltd.',
-                      deadline: 'Feb 28, 2025',
-                      budget: '\$30,000 - \$50,000',
-                      isNew: false,
-                    ),
+                    ...filteredRfqs.map((rfq) {
+                  return  Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: RFQCard(
+                            rfq: rfq,
+                            title: rfq['title'] ?? 'No Title',
+                            description: _trimDescription(rfq['description'] ?? 'No Description'),
+                            company: rfq['clients']?['full_name'] ?? 'Unknown',
+                            deadline: rfq['bidding_deadline'] != null
+                                ? DateTime.parse(rfq['bidding_deadline']).toLocal().toString().split(' ')[0]
+                                : 'No Deadline',
+                            budget: _formatBudget(rfq['min_budget'], rfq['max_budget']),
+                            isNew: true,
+                          ),
+                        );
+                    }),
                   ],
                 ),
               ),
@@ -177,4 +208,24 @@ class VendorRfq extends StatelessWidget {
       ),
     );
   }
+
+  String _formatBudget(dynamic minBudget, dynamic maxBudget) {
+    if (minBudget == null && maxBudget == null) {
+      return 'Budget not specified';
+    }
+    if (minBudget != null && maxBudget != null) {
+      return '\$${minBudget.toString()} - \$${maxBudget.toString()}';
+    }
+    if (minBudget != null) {
+      return 'Starts from \$${minBudget.toString()}';
+    }
+    return 'Up to \$${maxBudget.toString()}';
+  }
+}
+
+String _trimDescription(String description, {int maxLength = 150}) {
+  if (description.length <= maxLength) {
+    return description;
+  }
+  return '${description.substring(0, maxLength).trim()}...';
 }

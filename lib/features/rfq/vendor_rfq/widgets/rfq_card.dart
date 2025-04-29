@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/services/routes/app_routes.dart';
 
 class RFQCard extends StatelessWidget {
   final String title;
@@ -7,6 +9,7 @@ class RFQCard extends StatelessWidget {
   final String deadline;
   final String budget;
   final bool isNew;
+  final Map<String, dynamic> rfq;
 
   const RFQCard({
     super.key,
@@ -16,6 +19,7 @@ class RFQCard extends StatelessWidget {
     required this.deadline,
     required this.budget,
     required this.isNew,
+    required this.rfq,
   });
 
   @override
@@ -116,7 +120,11 @@ class RFQCard extends StatelessWidget {
               width: double.infinity,
               height: 48,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.push(
+                      AppRoutes.vendorViewRfqDetailsScreen,
+                      extra: rfq);
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFF5A7E),
                   foregroundColor: Colors.white,

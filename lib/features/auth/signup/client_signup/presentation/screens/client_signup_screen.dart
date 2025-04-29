@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:quickdeal/core/services/auth_service/auth_service.dart';
 import 'package:quickdeal/core/utils/constants/color_palette.dart';
 import 'package:quickdeal/common/widget/custom_snackbar.dart';
 import 'package:quickdeal/core/utils/theme/custom_themes/account_button_theme.dart';
 import 'package:quickdeal/common/widget/input_form_field.dart';
 import '../../../../../../common/widget/getLogoWidget.dart';
+import '../../../../../../core/services/memory_management/hive/hive_service.dart';
 import '../../../../../../core/utils/validators/validators.dart';
 import '../../../../../../l10n/generated/app_localizations.dart';
 import '../../../../../../core/services/routes/app_routes.dart';
@@ -230,9 +232,32 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   child: ElevatedButton(
                     onPressed: isLoading
                         ? null
-                        : () {
+                        : () async {
                       if (_formKey.currentState?.validate() ?? false) {
-                        signup();
+                        final fullName = _fullNameController.text.trim();
+                        final email = _emailController.text.trim();
+                        final password = _passwordController.text.trim();
+
+                        final userInfo = {
+                          'fullName': fullName,
+                          'email': email,
+                          'password': password,
+                          'isVendor': isVendor,
+                        };
+
+                        if (isVendor) {
+                          await Hive.openBox('vendor');
+                          final hiveService = HiveService();
+                          final box = hiveService.box('vendor');
+                          await box.put('userInfo', userInfo);
+
+                          print('User Info: $userInfo.email');
+
+                          if(!context.mounted) return;
+                          context.go(AppRoutes.vendorSignupBusinessInfoScreen);
+                        } else {
+                          signup();
+                        }
                       }
                     },
                     child: isLoading
@@ -248,7 +273,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       isVendor ? loc.continueButton : loc.createAccountButton,
                       style: textTheme.labelLarge?.copyWith(color: Colors.white),
                     ),
-
                   ),
                 ),
                 const SizedBox(height: 16),
