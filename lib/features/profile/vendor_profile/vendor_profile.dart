@@ -115,7 +115,7 @@ class _VendorProfileState extends State<VendorProfile> {
             Text(
               vendorData!['business_name'] ?? '',
               style: const TextStyle(
-                fontSize: 22,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),

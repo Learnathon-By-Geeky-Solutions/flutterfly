@@ -77,7 +77,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                       child: const Text(
                         'Submit New Request',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
                       ),

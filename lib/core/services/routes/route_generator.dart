@@ -14,6 +14,7 @@ import 'package:quickdeal/features/splash/presentation/splash_screen.dart';
 import '../../../common/widget/client_widgets/client_navbar_wrapper.dart';
 import '../../../common/widget/vendor_widgets/vendor_navbar_wrapper.dart';
 import '../../../features/auth/signup/vendor_signup/presentation/screens/vendor_signup_services_screen.dart';
+import '../../../features/bidding/client_bidding/rfq_bids_screen.dart';
 import '../../../features/home/vendor_home/presentation/vendor_home.dart';
 import '../../../features/rfq/client_rfq/presentation/screens/client_add_request_screen.dart';
 import '../../../features/rfq/vendor_rfq/vendor_rfq.dart';
@@ -87,6 +88,15 @@ final GoRouter router = GoRouter(
             },
           ),
           GoRoute(
+            path: '${AppRoutes.clientRfqs}/:rfqId/bids',
+            pageBuilder: (context, state) {
+              final rfqId = state.pathParameters['rfqId']!;
+              return NoTransitionPage(
+                child: RfqBidsScreen(rfqId: rfqId),
+              );
+            },
+          ),
+          GoRoute(
             path: AppRoutes.clientAddRequest,
             pageBuilder: (context, state) => const NoTransitionPage(
               child: ClientAddRequestScreen(),
@@ -102,7 +112,7 @@ final GoRouter router = GoRouter(
           GoRoute(
             path: AppRoutes.clientOngoingBids,
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: ClientOngoingBids(),
+              child: ClientOngoingRfqsPage(),
             ),
             redirect: (BuildContext context, GoRouterState state) {
               final userRole = getCurrentUserRole();

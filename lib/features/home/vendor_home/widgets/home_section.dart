@@ -37,8 +37,8 @@ class HomeSection extends StatelessWidget {
                 'Welcome back, $companyName!',
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: 4.0),
@@ -46,7 +46,7 @@ class HomeSection extends StatelessWidget {
                 'You have $newRfqCount new RFQs to review',
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 16.0,
+                  fontSize: 11.0,
                 ),
               ),
             ],
@@ -125,7 +125,7 @@ class HomeSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             spreadRadius: 1,
             blurRadius: 4,
             offset: const Offset(0, 1),
@@ -139,7 +139,7 @@ class HomeSection extends StatelessWidget {
             title,
             style: const TextStyle(
               color: Colors.black54,
-              fontSize: 14.0,
+              fontSize: 13.0,
             ),
           ),
           const SizedBox(height: 8.0),
@@ -154,7 +154,7 @@ class HomeSection extends StatelessWidget {
               Text(
                 value,
                 style: const TextStyle(
-                  fontSize: 24.0,
+                  fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),

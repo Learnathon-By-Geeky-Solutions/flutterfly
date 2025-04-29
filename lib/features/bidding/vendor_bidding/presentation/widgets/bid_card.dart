@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickdeal/core/utils/helpers/helpers.dart';
 
 class BidCard extends StatelessWidget {
   final String projectTitle;
@@ -35,9 +36,9 @@ class BidCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  projectTitle,
+                  AppHelperFunctions.limitWords(projectTitle, 3),
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.grey[900],
                   ),
@@ -67,9 +68,9 @@ class BidCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Bid Amount',
+                      'Proposed Amount per Item',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: Colors.grey[600],
                       ),
                     ),
@@ -90,7 +91,7 @@ class BidCard extends StatelessWidget {
                     Text(
                       'Submitted',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: Colors.grey[600],
                       ),
                     ),
@@ -98,7 +99,7 @@ class BidCard extends StatelessWidget {
                     Text(
                       submittedDate,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 11,
                         color: Colors.grey[900],
                       ),
                     ),
@@ -109,7 +110,7 @@ class BidCard extends StatelessWidget {
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
-              height: 48,
+              height: 55,
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -123,7 +124,7 @@ class BidCard extends StatelessWidget {
                 child: const Text(
                   'View Details',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

@@ -12,7 +12,6 @@ class ClientBottomNavBar extends StatelessWidget {
     required this.child,
   });
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -35,11 +34,11 @@ class ClientBottomNavBar extends StatelessWidget {
               child: SizedBox(
                 height: 70,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildNavItem(0, Icons.home_rounded, 'Home'),
                     _buildNavItem(1, Icons.description_rounded, 'My RFQs'),
-                    _buildNavItem(2, Icons.add, 'Request Quota'),
+                    _buildNavItem(2, Icons.add, 'Add Request'),
                     _buildNavItem(3, Icons.access_time_filled_rounded, 'Ongoing Bids'),
                     _buildNavItem(4, Icons.person, 'Profile'),
                   ],
@@ -87,7 +86,7 @@ class ClientBottomNavBar extends StatelessWidget {
                   label,
                   style: TextStyle(
                     color: isSelected ? activeColor : inactiveColor,
-                    fontSize: isSelected ? 0 : 10,
+                    fontSize: isSelected ? 0 : 7,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

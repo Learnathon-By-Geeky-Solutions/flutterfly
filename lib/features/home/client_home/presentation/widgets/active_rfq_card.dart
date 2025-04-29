@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/utils/constants/color_palette.dart';
+import '../../../../../core/utils/helpers/helpers.dart';
+
 class ActiveRfqCard extends StatelessWidget {
   final String title;
   final String description;
@@ -44,7 +47,7 @@ class ActiveRfqCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                title,
+                AppHelperFunctions.limitWords(title,2),
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -60,7 +63,7 @@ class ActiveRfqCard extends StatelessWidget {
                 child: Text(
                   status,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 9,
                     color: statusColor,
                     fontWeight: FontWeight.w500,
                   ),
@@ -72,7 +75,7 @@ class ActiveRfqCard extends StatelessWidget {
           Text(
             description,
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: 12,
               color: Color(0xFF64748B),
             ),
           ),
@@ -83,14 +86,14 @@ class ActiveRfqCard extends StatelessWidget {
               Text(
                 currentBid != null ? 'Current Bid: ' : 'Budget: ',
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   color: Color(0xFF64748B),
                 ),
               ),
               Text(
                 currentBid != null ? '\$$currentBid' : '\$$budget',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                   color: currentBid != null ? Colors.green : Colors.black,
                 ),
@@ -110,8 +113,8 @@ class ActiveRfqCard extends StatelessWidget {
               child: const Text(
                 'View Details',
                 style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 14,
+                  color: AppColors.primaryAccent,
+                  fontSize: 12,
                 ),
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/services/routes/app_routes.dart';
+import '../../../../core/utils/helpers/helpers.dart';
 
 class RFQCard extends StatelessWidget {
   final String title;
@@ -39,9 +40,9 @@ class RFQCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  title,
+                  AppHelperFunctions.limitWords(title, 3),
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF2D3142),
                   ),
@@ -68,7 +69,7 @@ class RFQCard extends StatelessWidget {
             Text(
               description,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 12,
                 color: Colors.grey[700],
                 height: 1.4,
               ),
@@ -81,7 +82,7 @@ class RFQCard extends StatelessWidget {
                 Text(
                   company,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 10,
                     color: Colors.grey[700],
                   ),
                 ),
@@ -95,7 +96,7 @@ class RFQCard extends StatelessWidget {
                 Text(
                   'Deadline: $deadline',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 10,
                     color: Colors.grey[700],
                   ),
                 ),
@@ -109,7 +110,7 @@ class RFQCard extends StatelessWidget {
                 Text(
                   'Budget: $budget',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 10,
                     color: Colors.grey[700],
                   ),
                 ),
@@ -118,7 +119,7 @@ class RFQCard extends StatelessWidget {
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
-              height: 48,
+              height: 55,
               child: ElevatedButton(
                 onPressed: () {
                   context.push(
@@ -136,7 +137,7 @@ class RFQCard extends StatelessWidget {
                 child: const Text(
                   'View Details',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

@@ -11,6 +11,8 @@ import '../../../core/services/memory_management/hive/hive_service.dart';
 import '../../../core/utils/constants/color_palette.dart';
 import 'package:quickdeal/common/widget/custom_snackbar.dart';
 
+import '../../../main.dart';
+
 class EmailOtpScreen extends ConsumerStatefulWidget {
   final String email;
   const EmailOtpScreen({super.key, required this.email});
@@ -79,7 +81,6 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
         final servicesOffered = box.get('services_offered');
         final vendorInfo = box.get('vendorInfo');
 
-        final supabase = Supabase.instance.client;
         final user = supabase.auth.currentUser;
 
         if (user == null) {

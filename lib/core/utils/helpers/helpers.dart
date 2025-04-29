@@ -16,6 +16,12 @@ class AppHelperFunctions {
     );
   }
 
+  static String limitWords(String text, int wordLimit) {
+    final words = text.split(' ');
+    if (words.length <= wordLimit) return text;
+    return '${words.take(wordLimit).join(' ')}...';
+  }
+
   static bool isDarkTheme(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark;
   }

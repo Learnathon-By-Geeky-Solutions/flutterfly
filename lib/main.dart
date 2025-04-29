@@ -13,6 +13,8 @@ import 'core/utils/loggers/logger.dart';
         flutter run --dart-define=FLAVOR=prod
 */
 
+final SupabaseClient supabase = Supabase.instance.client;
+
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

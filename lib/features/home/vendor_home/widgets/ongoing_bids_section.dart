@@ -31,13 +31,13 @@ class BidItem {
   Color get statusBackgroundColor {
     switch (status.toLowerCase()) {
       case 'in review':
-        return Colors.amber.withOpacity(0.1);
+        return Colors.amber.withValues(alpha:0.1);
       case 'accepted':
-        return Colors.green.withOpacity(0.1);
+        return Colors.green.withValues(alpha:0.1);
       case 'rejected':
-        return Colors.red.withOpacity(0.1);
+        return Colors.red.withValues(alpha:0.1);
       default:
-        return Colors.grey.withOpacity(0.1);
+        return Colors.grey.withValues(alpha:0.1);
     }
   }
 }
@@ -62,7 +62,7 @@ class OngoingBidsSection extends StatelessWidget {
           child: Text(
             'Ongoing Bids',
             style: TextStyle(
-              fontSize: 20.0,
+              fontSize: 15.0,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -91,7 +91,7 @@ class OngoingBidsSection extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withValues(alpha:0.1),
               spreadRadius: 1,
               blurRadius: 4,
               offset: const Offset(0, 1),
@@ -107,7 +107,7 @@ class OngoingBidsSection extends StatelessWidget {
                 Text(
                   item.title,
                   style: const TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 14.0,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -136,7 +136,7 @@ class OngoingBidsSection extends StatelessWidget {
               'Client: ${item.clientName}',
               style: TextStyle(
                 color: Colors.grey.shade600,
-                fontSize: 14.0,
+                fontSize: 13.0,
               ),
             ),
             const SizedBox(height: 16.0),
@@ -148,7 +148,7 @@ class OngoingBidsSection extends StatelessWidget {
                     const Text(
                       'Your Bid: ',
                       style: TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 12.0,
                         color: Colors.black87,
                       ),
                     ),
@@ -167,14 +167,14 @@ class OngoingBidsSection extends StatelessWidget {
                     const Text(
                       'Time Left: ',
                       style: TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 12.0,
                         color: Colors.black87,
                       ),
                     ),
                     Text(
                       '${item.daysLeft} days',
                       style: const TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 12.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),

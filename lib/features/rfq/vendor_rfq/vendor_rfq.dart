@@ -55,36 +55,52 @@ class _VendorRfqState extends State<VendorRfq> {
         throw Exception('Vendor has no services offered');
       }
 
-      // Step 2: Fetch all RFQs that match the vendor's services (no search/filter applied yet)
+      // Step 2: Fetch rfq_ids the vendor has already placed bids on
+      final bidResponse = await supabase
+          .from('bids')
+          .select('rfq_id')
+          .eq('vendor_id', userId);
+
+      final List<String> rfqIdsBidOn = List<Map<String, dynamic>>.from(bidResponse)
+          .map((e) => e['rfq_id'].toString())
+          .toList();
+
+      // Step 3: Fetch RFQs that match vendor's services and are NOT already bid on
       final response = await supabase
           .from('rfqs')
           .select(''' 
-          rfq_id,
-          client_id,
-          category_id,
-          title,
-          description,
-          min_budget,
-          max_budget,
-          bidding_deadline,
-          rfq_status,
-          location,
-          quantity,
-          specification,
-          delivery_deadline,
-          attachments,
-          created_at,
-          updated_at,
-          currently_selected_bid_id,
-          clients(full_name, profile_pic)
-        ''')
-          .eq('rfq_status', 'ongoing') // Filter ongoing RFQs
+        rfq_id,
+        client_id,
+        category_id,
+        title,
+        description,
+        min_budget,
+        max_budget,
+        bidding_deadline,
+        rfq_status,
+        location,
+        quantity,
+        specification,
+        delivery_deadline,
+        attachments,
+        created_at,
+        updated_at,
+        currently_selected_bid_id,
+        clients(full_name, profile_pic)
+      ''')
+          .eq('rfq_status', 'ongoing')
           .filter('category_id', 'in', servicesOffered)
           .order('created_at', ascending: false);
 
+      // Step 4: Remove any RFQ already bid on
+      final List<Map<String, dynamic>> allRfqs = List<Map<String, dynamic>>.from(response);
+      final filteredOutBids = allRfqs
+          .where((rfq) => !rfqIdsBidOn.contains(rfq['rfq_id'].toString()))
+          .toList();
+
       setState(() {
-        rfqs = List<Map<String, dynamic>>.from(response);
-        filteredRfqs = List<Map<String, dynamic>>.from(rfqs); // Initialize filtered list
+        rfqs = filteredOutBids;
+        filteredRfqs = List<Map<String, dynamic>>.from(filteredOutBids);
         isLoading = false;
       });
 
@@ -151,7 +167,7 @@ class _VendorRfqState extends State<VendorRfq> {
                   hintText: 'Search RFQs...',
                   hintStyle: TextStyle(
                     color: Colors.grey[400],
-                    fontSize: 16,
+                    fontSize: 12,
                   ),
                   prefixIcon: Icon(
                     Icons.search,
