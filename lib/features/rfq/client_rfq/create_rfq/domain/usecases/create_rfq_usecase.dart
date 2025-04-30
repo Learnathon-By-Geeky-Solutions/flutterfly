@@ -10,25 +10,29 @@ class CreateRfqUseCase {
     required String title,
     required String desc,
     required String clientId,
-    required String categoryId,
-    required num? min,
-    required num? max,
+    required List<String> categoryNames,
+    required num budget,
     required DateTime bidBy,
-    required DateTime deliverBy,
-    required List<File> images,
-    required List<File> docs,
+    DateTime? deliverBy,
+    String? location,
+    int? quantity,
+    List<Map<String, String>>? specification,
+    List<File>? images,
   }) {
     final rfq = Rfq(
       title: title,
       description: desc,
       clientId: clientId,
-      categoryId: categoryId,
-      minBudget: min,
-      maxBudget: max,
+      categoryNames: categoryNames,
+      budget: budget,
       biddingDeadline: bidBy,
       deliveryDeadline: deliverBy,
+      location: location,
+      quantity: quantity,
+      specification: specification,
       attachments: [],
     );
-    return repo.submitRequest(rfq, images, docs);
+
+    return repo.submitRequest(rfq, images!);
   }
 }

@@ -16,11 +16,10 @@ class _VendorBiddingState extends State<VendorBidding> {
   List<Map<String, dynamic>> _myBids = [];
   final String? userId = supabase.auth.currentUser?.id;
 
-  // Fetch Bids and corresponding RFQ info
   Future<void> _fetchMyBids() async {
     final response = await supabase
         .from('bids')
-        .select('*, rfqs!bids_rfq_id_fkey(*)') // Fetch the related RFQ data along with the bids
+        .select('*, rfqs!bids_rfq_id_fkey(*)')
         .eq('vendor_id', userId as Object);
 
     if (response.isNotEmpty) {
@@ -175,7 +174,34 @@ class _VendorBiddingState extends State<VendorBidding> {
             // Bid Cards
             Expanded(
               child: _myBids.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
+                  ? Center(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.inbox,
+                          size: 80,
+                          color: Colors.grey[400],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'You have no bids yet. Check RFQs available to you to start bidding!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+              )
                   : ListView.builder(
                 padding: const EdgeInsets.all(16),
                 itemCount: _myBids.length,
@@ -205,6 +231,7 @@ class _VendorBiddingState extends State<VendorBidding> {
                 },
               ),
             ),
+
           ],
         ),
       ),

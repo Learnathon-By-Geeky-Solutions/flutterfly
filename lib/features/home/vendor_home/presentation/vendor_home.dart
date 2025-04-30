@@ -37,17 +37,17 @@ class VendorHomeScreenState extends State<VendorHomeScreen> {
         title: 'Ergonomic Office Chair',
         category: 'Office Furniture',
         description: 'Premium mesh back office chair with lumbar...',
-        tags: ['Faster Delivery'],
+        tags: ['Manufacturing', 'Customized Design', 'Garments'],
         daysLeft: 15,
-        priceRange: '\$5,000-\$8,000',
+        priceRange: '8,000৳',
         isNew: true,
       ),
       const RfqItem(
         title: 'Website Redesign',
         category: 'Corporate website with CMS',
-        tags: [],
+        tags: ['Manufacturing', 'Customized Design', 'Garments'],
         daysLeft: 10,
-        priceRange: '\$3,000-\$5,000',
+        priceRange: '5,000৳',
         isNew: true,
       ),
     ];
@@ -76,7 +76,7 @@ class VendorHomeScreenState extends State<VendorHomeScreen> {
                 availableRfqCount: 12,
                 ongoingBidsCount: 5,
                 confirmedCount: 8,
-                pendingAmount: 2.4,
+                pendingAmount: 2,
               ),
 
               // Available RFQs section

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:quickdeal/core/utils/helpers/helpers.dart';
 import '../../../../../core/services/routes/app_routes.dart';
 
 class BidCard extends StatelessWidget {
@@ -17,11 +18,11 @@ class BidCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Extract individual properties from the bid map
     final String projectTitle = rfqInfo?['title'] ?? 'No Title';
-    final String bidAmount = '\$${bid['proposed_price_per_item'] ?? 0}';
+    final String bidAmount = '${bid['proposed_price_per_item'] ?? 0}';
     final String submittedDate = bid['created_at'] != null
         ? DateFormat('MMM dd, yyyy').format(DateTime.parse(bid['created_at']))
         : 'No Date';
-    final String status = bid['status'] ?? 'No Status';
+    final String status = bid['status'] ?? 'Pending';
     final Color statusColor = status == 'Accepted'
         ? Color(0xFFE0F7E6)
         : status == 'Rejected'
@@ -48,7 +49,7 @@ class BidCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  projectTitle,
+                  AppHelperFunctions.limitWords(projectTitle, 15),
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -88,7 +89,7 @@ class BidCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      bidAmount,
+                      '$bidAmount৳',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -111,7 +112,7 @@ class BidCard extends StatelessWidget {
                     Text(
                       submittedDate,
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 12,
                         color: Colors.grey[900],
                       ),
                     ),

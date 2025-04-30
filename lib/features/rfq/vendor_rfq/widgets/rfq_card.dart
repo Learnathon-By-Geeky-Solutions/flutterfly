@@ -9,7 +9,7 @@ class RFQCard extends StatelessWidget {
   final String company;
   final String deadline;
   final String budget;
-  final bool isNew;
+  final String status;
   final Map<String, dynamic> rfq;
 
   const RFQCard({
@@ -19,7 +19,7 @@ class RFQCard extends StatelessWidget {
     required this.company,
     required this.deadline,
     required this.budget,
-    required this.isNew,
+    required this.status,
     required this.rfq,
   });
 
@@ -47,16 +47,16 @@ class RFQCard extends StatelessWidget {
                     color: Color(0xFF2D3142),
                   ),
                 ),
-                if (isNew)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
                       color: const Color(0xFFE0F7E6),
                       borderRadius: BorderRadius.circular(50),
                     ),
-                    child: const Text(
-                      'New',
-                      style: TextStyle(
+                    child: Text(
+                        status == 'ongoing' ? 'Active' : (status == 'paused'
+                            ? 'Paused' : 'Unknown'),
+                        style: const TextStyle(
                         color: Color(0xFF2D9D5B),
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -82,7 +82,7 @@ class RFQCard extends StatelessWidget {
                 Text(
                   company,
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 11,
                     color: Colors.grey[700],
                   ),
                 ),
@@ -94,7 +94,7 @@ class RFQCard extends StatelessWidget {
                 Icon(Icons.access_time, size: 18, color: Colors.grey[700]),
                 const SizedBox(width: 8),
                 Text(
-                  'Deadline: $deadline',
+                  'Deadline: ${AppHelperFunctions.formatDate(deadline)}',
                   style: TextStyle(
                     fontSize: 10,
                     color: Colors.grey[700],
@@ -108,7 +108,7 @@ class RFQCard extends StatelessWidget {
                 Icon(Icons.label, size: 18, color: Colors.grey[700]),
                 const SizedBox(width: 8),
                 Text(
-                  'Budget: $budget',
+                  'Budget: $budget৳',
                   style: TextStyle(
                     fontSize: 10,
                     color: Colors.grey[700],

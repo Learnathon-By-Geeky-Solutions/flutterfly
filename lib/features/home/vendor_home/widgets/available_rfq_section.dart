@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/constants/color_palette.dart';
+
 class RfqItem {
   final String title;
   final String category;
@@ -143,13 +145,17 @@ class AvailableRfqSection extends StatelessWidget {
                       label: Text(
                         tag,
                         style: const TextStyle(
-                          fontSize: 7.0,
-                          color: Colors.deepOrange,
+                          fontSize: 8.0,
+                          color: AppColors.primaryAccent,
                         ),
                       ),
-                      backgroundColor: Colors.deepOrange.withValues(alpha: 0.1),
+                      backgroundColor: Colors.deepOrange.withAlpha(20),
                       padding: const EdgeInsets.all(0),
                       labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      side: const BorderSide(
+                        color: AppColors.primaryAccent,
+                        width: 0.5,
+                      ),
                     );
                   }).toList(),
                 ),

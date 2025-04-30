@@ -91,22 +91,6 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
           return;
         }
 
-        List<String> categoryIds = [];
-
-        for (String serviceName in servicesOffered) {
-          final categoryResponse = await supabase
-              .from('categories')
-              .select('category_id')
-              .eq('name', serviceName)
-              .maybeSingle();
-
-          if (categoryResponse != null) {
-            categoryIds.add(categoryResponse['category_id']);
-          }
-        }
-
-        // Now categoryIds contains the category_id for each service name.
-
         await supabase.from('vendors').update({
           'business_name': vendorInfo['businessName'],
           'business_type': vendorInfo['businessType'],
@@ -118,7 +102,7 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
           },
           'contact_number': vendorInfo['phoneNumber'],
           'tin': vendorInfo['taxIdNumber'],
-          'services_offered': categoryIds, // <-- now it's category IDs, not names
+          'services_offered': servicesOffered,
         }).eq('vendor_id', user.id);
 
 

@@ -1,4 +1,4 @@
-import '../../../../../core/network/local/local_service.dart';
+import '../../../../../../core/network/local/local_service.dart';
 import '../../domain/entities/rfq_entity.dart';
 
 abstract class RfqLocalDataSource {

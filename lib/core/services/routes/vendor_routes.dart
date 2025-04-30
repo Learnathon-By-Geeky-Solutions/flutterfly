@@ -6,6 +6,7 @@ import 'package:quickdeal/features/rfq/vendor_rfq/vendor_rfq.dart';
 import 'package:quickdeal/features/rfq/vendor_rfq/view_rfq_details/presentation/view_rfq_details.dart';
 import 'package:quickdeal/features/bidding/vendor_bidding/vendor_view_bids/presentation/vendor_view_own_bid_details.dart';
 import '../../../common/widget/vendor_widgets/vendor_navbar_wrapper.dart';
+import '../../../features/bidding/vendor_bidding/place_bids/vendor_place_bid.dart';
 import '../role_manager/role_manager.dart';
 import 'app_routes.dart';
 
@@ -47,7 +48,7 @@ final ShellRoute vendorShellRoute = ShellRoute(
     GoRoute(
       path: AppRoutes.vendorViewRfqDetailsScreen,
       pageBuilder: (context, state) {
-        final rfq = state.extra as Map<String, dynamic>;
+        final rfq = state.extra as Map<String, dynamic>? ?? {};
         return NoTransitionPage(child: RfqDetailsPage(rfq: rfq));
       },
       redirect: (context, state) =>
@@ -58,11 +59,9 @@ final ShellRoute vendorShellRoute = ShellRoute(
     GoRoute(
       path: AppRoutes.vendorViewOwnBidDetails,
       pageBuilder: (context, state) {
-        // Access extra data passed during navigation
         final extra = state.extra as Map<String, dynamic>?;
-        final bidId = extra?['bid_id'] ?? '';  // Match the key 'bid_id' here
-        final rfqId = extra?['rfq_id'] ?? '';  // Match the key 'rfq_id' here
-
+        final bidId = extra?['bid_id'] ?? '';
+        final rfqId = extra?['rfq_id'] ?? '';
         return NoTransitionPage(
           child: VendorViewOwnBidDetails(
             bidId: bidId,
@@ -75,8 +74,13 @@ final ShellRoute vendorShellRoute = ShellRoute(
             ? null
             : AppRoutes.unauthorizedScreen;
       },
-    )
-
-
+    ),
+    GoRoute(
+      path: AppRoutes.vendorPlaceBid,
+      builder: (context, state) {
+        final rfq = state.extra as Map<String, dynamic>;
+        return VendorPlaceBid(rfq: rfq);
+      },
+    ),
   ],
 );

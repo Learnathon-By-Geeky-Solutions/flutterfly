@@ -29,12 +29,12 @@ class _ClientOngoingRfqsPageState extends State<ClientOngoingRfqsPage> {
 
   @override
   void dispose() {
-    _timer?.cancel(); // Cancel the timer when the widget is disposed
+    _timer?.cancel();
     super.dispose();
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
       setState(() {
         // Just triggers a rebuild to update countdowns
       });
@@ -60,23 +60,6 @@ class _ClientOngoingRfqsPageState extends State<ClientOngoingRfqsPage> {
         _isLoading = false;
       });
     }
-  }
-
-  String _getTimeLeft(String deadline) {
-    final endDate = DateTime.parse(deadline);
-    final now = DateTime.now();
-    final difference = endDate.difference(now);
-
-    if (difference.isNegative) return 'Deadline Passed';
-
-    final days = difference.inDays;
-    final hours = difference.inHours % 24;
-    final minutes = difference.inMinutes % 60;
-    final seconds = difference.inSeconds % 60;
-
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-
-    return '${twoDigits(days)}:${twoDigits(hours)}:${twoDigits(minutes)}:${twoDigits(seconds)} left till deadline';
   }
 
   @override
@@ -134,7 +117,8 @@ class _ClientOngoingRfqsPageState extends State<ClientOngoingRfqsPage> {
                         const Icon(Icons.timer_outlined, size: 18, color: Colors.redAccent),
                         const SizedBox(width: 6),
                         Text(
-                          _getTimeLeft(rfq['bidding_deadline']),
+                          AppHelperFunctions.formatTimeLeft
+                            (rfq['bidding_deadline']),
                           style: const TextStyle(color: Colors.redAccent),
                         ),
                       ],

@@ -5,6 +5,5 @@ abstract class RfqRepository {
   Future<void> submitRequest(
       Rfq rfq,
       List<File> images,
-      List<File> docs
       );
 }

@@ -15,10 +15,10 @@ class RfqRepositoryImpl implements RfqRepository {
   RfqRepositoryImpl({required this.remote, required this.local});
 
   @override
-  Future<void> submitRequest(Rfq rfq, List<File> images, List<File> docs) async {
+  Future<void> submitRequest(Rfq rfq, List<File> images) async {
 
     // 1. Upload attachments
-    final allFiles = [...images, ...docs];
+    final allFiles = [...images];
     final urls = <String>[];
     for (final file in allFiles) {
       final url = await remote.uploadFile(file);

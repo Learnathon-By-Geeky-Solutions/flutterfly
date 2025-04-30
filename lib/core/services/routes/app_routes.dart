@@ -24,5 +24,7 @@ class AppRoutes
   static const String vendorViewRfqDetailsScreen = '/view-rfq-detail';
   static const String clientViewsRfqBids = 'client-view-bids';
   static const String vendorViewOwnBidDetails = '/vendor/bids/details';
+  static const String clientViewOwnRfqDetails = '/my-rfqs/:rfqTitle/details';
+  static const String vendorPlaceBid = '/vendor-place-bid';
 
 }

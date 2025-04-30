@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:quickdeal/common/widget/custom_appbar.dart';
+import 'package:quickdeal/core/utils/helpers/helpers.dart';
+import '../../../../../core/services/routes/app_routes.dart';
 import '../../../../../core/utils/constants/color_palette.dart';
 import '../../../../../main.dart';
+import '../../../client_rfq/view_rfq/widgets/specification_card.dart';
 
 class RfqDetailsPage extends StatefulWidget {
   final Map<String, dynamic> rfq;
@@ -29,6 +33,7 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
   }
 
   Future<void> _fetchMyBids() async {
+    if (userId == null) return;
     final response = await supabase
         .from('bids')
         .select()
@@ -55,7 +60,7 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
       final response = await supabase.from('bids').insert(insertedBid).select().single();
 
       setState(() {
-        _myBids.add(response); // Optimistically add bid
+        _myBids.add(response);
       });
 
       _amountController.clear();
@@ -65,7 +70,7 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Bid placed successfully!')),
       );
-        } catch (error) {
+    } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to place bid: $error')),
       );
@@ -82,8 +87,10 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildProductInfo(),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
             _buildBidAndDeliveryInfo(),
+            const SizedBox(height: 16),
+            _buildDescriptionSection(),
             const SizedBox(height: 16),
             _buildSpecificationsSection(),
             const SizedBox(height: 16),
@@ -91,8 +98,6 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
             const SizedBox(height: 16),
             _buildClientInfo(),
             const SizedBox(height: 16),
-            _buildMyBidsSection(), // 👉 your new section
-            const SizedBox(height: 24),
           ],
         ),
       ),
@@ -101,62 +106,67 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
   }
 
   // --- UI Widgets ---
-
-  Widget _buildProductInfo() {
+  Widget _buildDescriptionSection() {
     return Container(
-      color: Colors.white,
       padding: const EdgeInsets.all(16),
-      child: Row(
+      color: Colors.white,
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.rfq['title'] ?? 'No Title',
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight
-                      .bold),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  widget.rfq['description'] ?? 'No Description',
-                  style: const TextStyle(fontSize: 12, color: Colors.black87),
-                ),
-                const SizedBox(height: 8),
-                _buildCategoryAndDelivery(),
-              ],
-            ),
+          const Text('Description', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          Text(
+            widget.rfq['description'] ?? 'No Description',
+            style: const TextStyle(fontSize: 14, color: Colors.black87),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildCategoryAndDelivery() {
-    return Row(
-      children: [
-        _buildBadge(widget.rfq['category_id']?.toString() ?? 'No Category', Colors.grey[200]),
-      ],
-    );
-  }
-
-  Widget _buildBadge(String text, Color? color, {IconData? icon}) {
+  Widget _buildProductInfo() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Row(
+      color: Colors.white,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (icon != null) Icon(icon, size: 12, color: Colors.red[400]),
-          if (icon != null) const SizedBox(width: 4),
           Text(
-            text,
-            style: TextStyle(fontSize: 10, color: Colors.red[400]),
+            widget.rfq['title'] ?? 'No Title',
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
           ),
+          const SizedBox(height: 8),
+          Text(
+            widget.rfq['description'] ?? 'No Description',
+            style: const TextStyle(fontSize: 12, color: Colors.black87),
+          ),
+          const SizedBox(height: 16),
+          if (widget.rfq['category_names'] != null &&
+              widget.rfq['category_names'].isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Wrap(
+                spacing: 8.0,
+                runSpacing: 4.0,
+                children: widget.rfq['category_names']
+                    .map<Widget>((category) => Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryAccent.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Text(
+                    category,
+                    style: TextStyle(
+                      color: AppColors.primaryAccent,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ))
+                    .toList(),
+              ),
+            ),
         ],
       ),
     );
@@ -171,6 +181,7 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
           _buildBidInfo(),
           const SizedBox(width: 12),
           _buildDeliveryInfo(),
+
         ],
       ),
     );
@@ -186,13 +197,11 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
         ),
         child: Column(
           children: [
-            const Text('Client Budget', style: TextStyle(color: Colors.white,
-                fontSize: 12)),
+            const Text('Client Budget', style: TextStyle(color: Colors.white, fontSize: 14)),
             const SizedBox(height: 4),
             Text(
-              '\$${widget.rfq['min_budget'] ?? 0} - \$${widget.rfq['max_budget'] ?? 0}',
-              style: const TextStyle(color: Colors.white, fontSize: 14,
-                  fontWeight: FontWeight.bold),
+                '${widget.rfq['budget'] ?? 0}৳',
+                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -203,7 +212,7 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
   Widget _buildDeliveryInfo() {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 18.5, horizontal: 16),
         decoration: BoxDecoration(
           color: Colors.green,
           borderRadius: BorderRadius.circular(8),
@@ -211,13 +220,13 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
         child: Column(
           children: [
             const Text('Delivery Deadline', style: TextStyle(color: Colors
-                .white, fontSize: 10)),
-            const SizedBox(height: 4),
+                .white, fontSize: 11)),
+            const SizedBox(height: 7),
             Text(
               widget.rfq['delivery_deadline'] != null
-                  ? DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.rfq['delivery_deadline']))
+                  ? AppHelperFunctions.formatDate(widget.rfq['delivery_deadline'])
                   : 'No Date',
-              style: const TextStyle(color: Colors.white, fontSize: 14,
+              style: const TextStyle(color: Colors.white, fontSize: 12,
                   fontWeight: FontWeight.bold),
             ),
           ],
@@ -235,7 +244,14 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
         children: [
           const Text('Specifications', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          Text(widget.rfq['specification']?.join(', ') ?? 'Not Specified'),
+          if (widget.rfq['specification'] != null && widget.rfq['specification']!
+              .isNotEmpty)
+            ...widget.rfq['specification']!.map<Widget>((spec) {
+              return SpecificationCard(
+                title: spec['key'] ?? 'No title',
+                value: spec['value'] ?? 'No value',
+              );
+            }).toList(),
         ],
       ),
     );
@@ -250,13 +266,42 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
         children: [
           const Text('Client Request Details', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          _buildDetailRow('Quantity Needed', widget.rfq['quantity']?.toString() ?? 'Not Available'),
-          const Divider(height: 24),
-          _buildDetailRow('Bidding Deadline', widget.rfq['bidding_deadline'] != null
-              ? DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.rfq['bidding_deadline']))
-              : 'Not Available'),
-          const Divider(height: 24),
-          _buildDetailRow('Location', widget.rfq['location'] ?? 'Not Available'),
+
+          // Card for Quantity Needed
+          Card(
+            elevation: 3,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              title: const Text('Quantity Needed', style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Text(widget.rfq['quantity']?.toString() ?? 'Not Available'),
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          // Card for Bidding Deadline
+          Card(
+            elevation: 3,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              title: const Text('Bidding Deadline', style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Text(widget.rfq['bidding_deadline'] != null
+                  ? DateFormat('dd-MM-yyyy').format(DateTime.parse(widget.rfq['bidding_deadline']))
+                  : 'Not Available'),
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          // Card for Location
+          Card(
+            elevation: 3,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              title: const Text('Location', style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Text(widget.rfq['location'] ?? 'Not Available'),
+            ),
+          ),
         ],
       ),
     );
@@ -289,16 +334,6 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-        Text(value, style: const TextStyle(fontSize: 14, color: Colors.grey)),
-      ],
-    );
-  }
-
   Widget _buildPlaceBidButton() {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -309,7 +344,7 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
         ],
       ),
       child: ElevatedButton(
-        onPressed: _showPlaceBidDialog,
+        onPressed: _navigateToPlaceBidPage,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryAccent,
           foregroundColor: Colors.white,
@@ -321,109 +356,14 @@ class _RfqDetailsPageState extends State<RfqDetailsPage> {
     );
   }
 
-  void _showPlaceBidDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Place Your Bid'),
-              content: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _amountController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'Proposed Amount per Unit'),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _proposalDetailsController,
-                      maxLines: 3,
-                      decoration: const InputDecoration(labelText: 'Proposal Details'),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _submissionDateController,
-                      readOnly: true,
-                      onTap: () async {
-                        final picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101),
-                        );
-                        if (picked != null) {
-                          setState(() {
-                            _submissionDateController.text = DateFormat('dd-MM-yyyy').format(picked);
-                          });
-                        }
-                      },
-                      decoration: const InputDecoration(labelText: 'Project Submission Date'),
-                    ),
-                  ],
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    _submitBid();
-                  },
-                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryAccent),
-                  child: const Text('Place Bid'),
-                ),
-              ],
-            );
-          },
-        );
-      },
+  void _navigateToPlaceBidPage() async {
+    final success = await context.push<bool>(
+    AppRoutes.vendorPlaceBid,
+    extra: widget.rfq,
     );
-  }
 
-  Widget _buildMyBidsSection() {
-    if (_myBids.isEmpty) {
-      return const SizedBox();
+    if (success == true) {
+      _fetchMyBids();
     }
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('My Bids', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 16),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: _myBids.length,
-            itemBuilder: (context, index) {
-              final bid = _myBids[index];
-              return Card(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: ListTile(
-                  title: Text('\$${bid['proposed_price_per_item'] ?? 'N/A'} per unit'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Delivery by: ${DateFormat('dd-MM-yyyy').format(DateTime.parse(bid['proposed_delivery_deadline']))}'),
-                      if (bid['proposal_details'] != null) Text('Details: ${bid['proposal_details']}'),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
   }
 }

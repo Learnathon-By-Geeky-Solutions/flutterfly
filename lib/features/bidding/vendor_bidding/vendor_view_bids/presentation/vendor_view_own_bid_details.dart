@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:quickdeal/core/utils/helpers/helpers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import '../../../../../core/utils/constants/color_palette.dart';
 import '../../../../../main.dart';
+import '../../../../rfq/client_rfq/view_rfq/widgets/specification_card.dart';
 
 class VendorViewOwnBidDetails extends StatefulWidget {
   final String bidId;
@@ -76,7 +78,6 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
     }
   }
 
-
   // Fetch Bid Details
   Future<Map<String, dynamic>?> _fetchBidDetails() async {
     try {
@@ -141,12 +142,8 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
       schema: 'public',
       table: 'bids',
       callback: (payload) async {
-        print("Received new bid: $payload");
-
-        // Get the proposed bid amount from the payload
         double newBidAmount = payload.newRecord['proposed_price_per_item'];
 
-        // Check if the new bid is lower than the current bid
         if (_currentBid != null && newBidAmount < _currentBid!) {
           setState(() {
             outBidsCount++;
@@ -159,10 +156,7 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
     print("Subscribed to bids changes: ${subscription.presence}");
   }
 
-
   void updateUIWithBidAmount(double bidAmount) {
-    // Here, you would update your UI with the new bid amount
-    // For example, update a text field or label that shows the "Current bid"
     setState(() {
       _currentBid = bidAmount;
     });
@@ -171,7 +165,7 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return Center(child: AppHelperFunctions.appLoader(context));
     }
 
     if (bidData == null || rfqData == null) {
@@ -198,7 +192,7 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
             _buildProductHeader(rfqData!),
             _buildBidStatus(),
             _buildDivider(),
-            _buildSpecifications(bidData!),
+            _buildSpecificationsSection(),
             _buildDivider(),
             _buildClientRequestDetails(rfqData!),
             _buildDivider(),
@@ -219,26 +213,7 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withValues(alpha:0.2),
-                  spreadRadius: 1,
-                  blurRadius: 2,
-                  offset: const Offset(0, 1),
-                ),
-              ],
-            ),
-            child: Image.network(
-              rfqData['product_image_url'] ?? 'https://via.placeholder.com/80', // Use the actual URL or placeholder
-              fit: BoxFit.contain,
-            ),
-          ),
+
           const SizedBox(width: 16),
           Expanded(
             child: Column(
@@ -247,7 +222,7 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
                 Text(
                   rfqData['title'] ?? 'Unknown Product',
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -255,7 +230,7 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
                 Text(
                   rfqData['description'] ?? 'No description available',
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     color: Colors.black54,
                   ),
                 ),
@@ -266,16 +241,33 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: Text(
-                    rfqData['category'] ?? 'Category',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.black54,
-                    ),
-                  ),
+                  child:
+              Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+      child: Wrap(
+        spacing: 8.0,
+        runSpacing: 4.0,
+        children: rfqData['category_names']
+            .map<Widget>((category) => Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: AppColors.primaryAccent.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Text(
+            category,
+            style: TextStyle(
+              color: AppColors.primaryAccent,
+              fontSize: 10,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ))
+            .toList(),
+      ),
+    ),
                 ),
               ],
             ),
@@ -293,14 +285,14 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
         children: [
           Expanded(
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.only(left: 5),
               decoration: BoxDecoration(
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(4),
               ),
               alignment: Alignment.center,
               child: Text(
-                'Current Bid: ${_currentBid != null ? '\$$_currentBid' : 'Loading...'}',
+                'Current Bid: ${_currentBid != null ? '$_currentBid ৳' : 'N/A'}',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -343,91 +335,30 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
                 ),
               ),
             ),
-          )
-
+          ),
         ],
       ),
     );
   }
 
-  // Build UI for Specifications
-  Widget _buildSpecifications(Map<String, dynamic> bidData) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+  Widget _buildSpecificationsSection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Specifications',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          const Text('Specifications', style: TextStyle(fontSize: 14,
+              fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Material',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black54,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Mesh & Metal',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Weight',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black54,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        '15 kg',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+          if (rfqData?['specification'] != null && rfqData?['specification']!
+              .isNotEmpty)
+            ...rfqData?['specification']!.map<Widget>((spec) {
+              return SpecificationCard(
+                title: spec['key'] ?? 'No title',
+                value: spec['value'] ?? 'No value',
+              );
+            }).toList(),
         ],
       ),
     );
@@ -448,13 +379,14 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
             ),
           ),
           const SizedBox(height: 16),
-          _buildDetailRow('Quantity Needed', rfqData['quantity_needed'] ?? 'Unknown'),
+          _buildDetailRow('Quantity Needed', (rfqData['quantity']?.toString() ?? 'Unknown')),
           const SizedBox(height: 12),
-          _buildDetailRow('Budget Range', (rfqData['min_budget'] ?? 0).toString()),
+          _buildDetailRow('Estd. Budget', '${(rfqData['budget'] ?? 0).toString()} ৳'),
           const SizedBox(height: 12),
-          _buildDetailRow('Delivery Deadline', rfqData['delivery_deadline'] ?? 'Unknown'),
+          _buildDetailRow('Delivery Deadline',
+              AppHelperFunctions.formatDate(rfqData['delivery_deadline']) ?? 'Unknown'),
           const SizedBox(height: 12),
-          _buildDetailRow('Location', rfqData['location'] ?? 'Unknown'),
+          _buildLocationRow(rfqData['location'] ?? 'Unknown'),
         ],
       ),
     );
@@ -501,14 +433,13 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
           const SizedBox(height: 16),
           _buildDetailRow(
             'Proposed Amount',
-            '\$${bidData['proposed_price_per_item'] ?? 'N/A'}/unit',
+            '${bidData['proposed_price_per_item'] ?? 'N/A'} ৳/unit',
             valueColor: Colors.green,
             valueFontWeight: FontWeight.bold,
           ),
           const SizedBox(height: 12),
-          _buildDetailRow('Submission Date', bidData['created_at'] ?? 'N/A'),
+          _buildDetailRow('Your Delivery Date', AppHelperFunctions.formatDate(bidData['created_at'] )?? 'N/A'),
           const SizedBox(height: 16),
-          //_buildProposalDownload(bidData),
         ],
       ),
     );
@@ -527,14 +458,14 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
         Text(
           label,
           style: const TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             color: Colors.black54,
           ),
         ),
         Text(
           value,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 11,
             color: valueColor ?? Colors.black87,
             fontWeight: valueFontWeight ?? FontWeight.normal,
           ),
@@ -542,6 +473,37 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
       ],
     );
   }
+
+  Widget _buildLocationRow(String location) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            'Location',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.black54,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              location ?? 'Unknown',
+              textAlign: TextAlign.right,
+              style: const TextStyle(
+                fontSize: 11,
+                color: Colors.black87,
+              ),
+              softWrap: true,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
   // Divider
   Widget _buildDivider() {
@@ -554,26 +516,28 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
 
   // Build UI for Withdraw Button
   Widget _buildWithdrawButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          backgroundColor: Colors.red,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFEF2F2),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.delete_outline_rounded, color: Colors.red, size: 20),
+          SizedBox(width: 8),
+          Text(
+            'Withdraw Bid',
+            style: TextStyle(
+                color: Colors.red, fontWeight: FontWeight.w600),
           ),
-        ),
-        child: const Text(
-          'Withdraw Bid',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        ],
       ),
     );
+
+
   }
 }

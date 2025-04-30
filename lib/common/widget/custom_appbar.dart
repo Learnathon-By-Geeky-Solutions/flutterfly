@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'getLogoWidget.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  final bool showBackButton;
+
+  const CustomAppBar({super.key, this.showBackButton = false});
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +14,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       title: Row(
         children: [
+          if (showBackButton)
+            IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () {
+                Navigator.pop(context); // Pops the current screen off the stack
+              },
+            ),
           getLogoBasedOnTheme(context, width: 100, height: 60),
-          const Divider()
+          const Divider(),
         ],
       ),
       actions: [

@@ -1,5 +1,5 @@
 import 'dart:io';
-import '../../../../../core/network/remote/remote_service.dart';
+import '../../../../../../core/network/remote/remote_service.dart';
 import '../../domain/entities/rfq_entity.dart';
 import '../models/rfq_model.dart';
 

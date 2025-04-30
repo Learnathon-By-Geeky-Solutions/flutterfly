@@ -6,7 +6,7 @@ class HomeSection extends StatelessWidget {
   final int availableRfqCount;
   final int ongoingBidsCount;
   final int confirmedCount;
-  final double pendingAmount;
+  final int pendingAmount;
 
   const HomeSection({
     super.key,
@@ -98,7 +98,7 @@ class HomeSection extends StatelessWidget {
                   Expanded(
                     child: _buildStatCard(
                       title: 'Pending',
-                      value: '\$${pendingAmount.toStringAsFixed(1)}K',
+                      value: pendingAmount.toString(),
                       icon: Icons.account_balance_wallet,
                       iconColor: Colors.purple,
                     ),
