@@ -45,8 +45,9 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
             .single();
 
         if (response['proposed_price_per_item'] != null) {
-          _currentBid = response['proposed_price_per_item'];
+          _currentBid = (response['proposed_price_per_item'] as num).toDouble();
         }
+
       }
 
       int lowerBidCount = 0;
@@ -167,6 +168,8 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
     if (isLoading) {
       return Center(child: AppHelperFunctions.appLoader(context));
     }
+
+    print("Building UI with bidData: $bidData and rfqData: $rfqData");
 
     if (bidData == null || rfqData == null) {
       return const Center(child: Text('No data found'));
@@ -292,7 +295,7 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
               ),
               alignment: Alignment.center,
               child: Text(
-                'Current Bid: ${_currentBid != null ? '$_currentBid ৳' : 'N/A'}',
+                'Current Bid: ${_currentBid != null ? '$_currentBid৳' : 'N/A'}',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -310,7 +313,7 @@ class _VendorViewOwnBidDetailsState extends State<VendorViewOwnBidDetails> {
               ),
               alignment: Alignment.center,
               child: Text(
-                'My Bid: ${bidData?['proposed_price_per_item'] ?? 'Not Available'}',
+                'My Bid: ${bidData?['proposed_price_per_item'] ?? 'Not Available'}৳',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

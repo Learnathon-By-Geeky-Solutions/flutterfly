@@ -18,7 +18,7 @@ class _ClientOngoingRfqsPageState extends State<ClientOngoingRfqsPage> {
 
   bool _isLoading = true;
   List<Map<String, dynamic>> _rfqs = [];
-  Timer? _timer; // Add a timer
+  Timer? _timer;
 
   @override
   void initState() {

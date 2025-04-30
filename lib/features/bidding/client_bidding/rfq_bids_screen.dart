@@ -37,8 +37,8 @@ class _RfqBidsScreenState extends State<RfqBidsScreen> {
       final selectedBid = rfq['rfqs_currently_selected_bid_id_fkey'];
 
       setState(() {
-        _allBids = bids;
         _currentlySelectedBid = selectedBid != null ? Map<String, dynamic>.from(selectedBid) : null;
+        _allBids = bids.where((bid) => selectedBid == null || bid['bid_id'] != selectedBid['bid_id']).toList();
         _isLoading = false;
       });
     } catch (e) {
@@ -94,7 +94,7 @@ class _RfqBidsScreenState extends State<RfqBidsScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Received Bids (${_allBids.length})',
+          'Received Bids (${_allBids.length + (_currentlySelectedBid != null ? 1 : 0)})',
           style: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
@@ -128,11 +128,13 @@ class _RfqBidsScreenState extends State<RfqBidsScreen> {
     final delivery = bid['proposed_delivery_deadline'];
     final deliveryDate = delivery != null ? DateFormat('MMM d, yyyy').format(DateTime.parse(delivery)) : 'Unknown';
     final description = bid['proposal_details'] ?? '';
-    final rating = vendor['rating'] ?? 4.0; // Optional field
+    final rating = vendor['rating'] ?? 0.0;
 
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: isSelected ? Colors.green : Colors.grey.shade200, width: isSelected ? 2 : 1),
+        border: Border.all(
+            color: isSelected ? Colors.green : Colors.grey.shade200,
+            width: isSelected ? 2 : 1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
@@ -207,18 +209,22 @@ class _RfqBidsScreenState extends State<RfqBidsScreen> {
                               fontSize: 11,
                             ),
                           ),
-
                         ],
                       ),
                     ],
                   ),
                 ),
-                Text(
-                  '\$${price.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                SizedBox(
+                  width: 75,
+                  child: Text(
+                    '৳${price.toStringAsFixed(2)}',
+                    textAlign: TextAlign.right,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
                   ),
                 ),
               ],
@@ -232,65 +238,127 @@ class _RfqBidsScreenState extends State<RfqBidsScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  try {
-                    final selectedBidId = bid['bid_id'];
+            if (!isSelected)
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      final selectedBidId = bid['bid_id'];
 
-                    // Update RFQ's currently selected bid
-                    await supabase
-                        .from('rfqs')
-                        .update({'currently_selected_bid_id': selectedBidId})
-                        .eq('rfq_id', widget.rfqId);
+                      await supabase
+                          .from('rfqs')
+                          .update({'currently_selected_bid_id': selectedBidId})
+                          .eq('rfq_id', widget.rfqId);
 
-                    print('Bid selected successfully: $selectedBidId');
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Bid selected successfully!'),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      }
 
-                    // Show success snackbar
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Bid selected successfully!'),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
+                      await _fetchBids();
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Failed to select bid.'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                     }
-
-                    // Refresh data to update selected card
-                    await _fetchBids();
-                  } catch (e) {
-                    print('Error selecting bid: $e');
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Failed to select bid.'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isSelected ? AppColors.statusGreen : AppColors
-                      .primaryAccent,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryAccent,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                ),
-                child: Text(
-                  isSelected ? 'Selected' : 'Select Bid',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                  child: const Text(
+                    'Select Bid',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
-            ),
+            if (isSelected) ...[
+              const SizedBox(height: 12),
+              Row(
+                children: const [
+                  Icon(Icons.check_circle, color: Colors.green, size: 16),
+                  SizedBox(width: 4),
+                  Text(
+                    'Selected',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => _showConfirmDialog(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'Confirm this bid',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
+      ),
+    );
+  }
+
+  void _showConfirmDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Bid'),
+        content: const Text('Are you sure you want to confirm this bid?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Bid confirmed!'),
+                  backgroundColor: Colors.blue,
+                ),
+              );
+              // TODO: add backend confirmation logic if needed
+            },
+            child: const Text('Confirm'),
+          ),
+        ],
       ),
     );
   }
