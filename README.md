@@ -37,6 +37,8 @@ You can try out the latest version of the app by downloading the APK below:
 
 [![Download APK](https://img.shields.io/badge/Download-APK-blue?style=for-the-badge&logo=android)](https://appdistribution.firebase.google.com/testerapps/1:261320880017:android:6f85954fc43b85789bf430/releases/0mqvlgcih6t1g?utm_source=firebase-console)
 
+![Schema Diagram](https://i.imgur.com/K6OmrZK.png)
+
 
 ## 🏗️ Progress Tracker
 
@@ -63,6 +65,7 @@ You can try out the latest version of the app by downloading the APK below:
 - Bug Fixes
 - Vendor dashboard
 - Order confirmation screen
+
 
 <a id="problem"></a>
 ## ⚠️ Problem Statement
