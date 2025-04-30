@@ -31,34 +31,38 @@
     <a href="https://github.com/Learnathon-By-Geeky-Solutions/flutterfly/issues/new?labels=enhancement&template=feature-request.md">Request Feature</a>
 </p>
 
-<details>
-  <summary>📖 Table of Contents</summary>
+## 📦 Download APK
 
-- <a href="#wiki">➡️ Visit Our Wiki</a>
-- <a href="#problem">⚠️ Problem Statement</a>
-- [📱 Features](#-features)
-- [🧩 Project Structure: Feature-First Clean Architecture with Repository Pattern](#clean)
-- <a href="#wiki">➡️ Visit Our Wiki</a>
-- [🚀 Getting Started](#-getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Setting Up Flavors](#setting-up-flavors)
-- <a href="#license">⚖️ License</a>
-- [🌟 Top Contributors](#-top-contributors)
-- <a href="#team">🦋 Team Information: Flutterfly</a>
+You can try out the latest version of the app by downloading the APK below:
 
-</details>
+[![Download APK](https://img.shields.io/badge/Download-APK-blue?style=for-the-badge&logo=android)](https://appdistribution.firebase.google.com/testerapps/1:261320880017:android:6f85954fc43b85789bf430/releases/0mqvlgcih6t1g?utm_source=firebase-console)
 
-<a id="wiki"></a>
-## ➡️ Visit Our Wiki
 
-For comprehensive documentation, guides, and resources related to the Flutterfly project, please explore our [Wiki](https://github.com/Learnathon-By-Geeky-Solutions/flutterfly/wiki). It provides in-depth insights to help you understand and contribute effectively.
+## 🏗️ Progress Tracker
 
-<div align="center">
-  <a href="https://github.com/Learnathon-By-Geeky-Solutions/flutterfly/wiki">
-   <img src="https://img.shields.io/badge/Flutterfly-Wiki-007ACC?logo=github&logoColor=white&style=for-the-badge&background=000000" alt="GitHub Learnathon Wiki">
-  </a>
-</div>
+### ✅ Done
+
+- Multi-flavored environment (dev, prod, staging)
+- Light and Dark theme (Login and Signup screens)
+- Localization for English and Bangla (Login and Signup screens)
+- App signing
+- Realtime bid updates using Supabase realtime database
+- User Registration
+- Role-based Access Control
+- Login and signup Functionality
+- Re-usable UIs and components
+- Client add request, view RFQs and select bid screens
+- Vendor place bid, track bid screens
+- Client Dashboard
+
+### 📝 To-Do
+
+- Payment Integration
+- Ratings and Reviews
+- Google Sign-In
+- Bug Fixes
+- Vendor dashboard
+- Order confirmation screen
 
 <a id="problem"></a>
 ## ⚠️ Problem Statement
@@ -301,6 +305,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [license-url]: https://github.com/Learnathon-By-Geeky-Solutions/flutterfly/blob/master/LICENSE
 [FigJam]: https://img.shields.io/badge/FigJam-F24E1E?style=for-the-badge&logo=figma&logoColor=white
 [FigJam-url]: https://www.figma.com/figjam/
+[Supabase]: https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white
+[Supabase-url]: https://supabase.com/
+
 
 [sonarqube-shield]:https://img.shields.io/static/v1?label=Quality%20Gate&message=Passed&color=brightgreen&style=for-the-badge
 [sonarqube-url]: https://sonarcloud.io/dashboard?id=Learnathon-By-Geeky-Solutions_flutterfly
