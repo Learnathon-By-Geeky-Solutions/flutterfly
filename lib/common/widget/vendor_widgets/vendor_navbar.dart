@@ -23,7 +23,7 @@ class VendorBottomNavBar extends StatelessWidget {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 16,
                   offset: const Offset(0, -4),
                 ),
@@ -32,7 +32,7 @@ class VendorBottomNavBar extends StatelessWidget {
             child: BottomAppBar(
               color: const Color(0xFF1A2639),
               child: SizedBox(
-                height: 70,
+                height: 20,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -74,7 +74,7 @@ class VendorBottomNavBar extends StatelessWidget {
                 child: Icon(
                   icon,
                   color: isSelected ? activeColor : inactiveColor,
-                  size: 28,
+                  size: 25,
                 ),
               ),
               AnimatedOpacity(
@@ -84,7 +84,7 @@ class VendorBottomNavBar extends StatelessWidget {
                   label,
                   style: TextStyle(
                     color: isSelected ? activeColor : inactiveColor,
-                    fontSize: isSelected ? 0 : 11,
+                    fontSize: isSelected ? 0 : 7,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

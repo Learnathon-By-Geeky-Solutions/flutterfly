@@ -1,4 +1,4 @@
-import '../../../features/rfq/client_rfq/domain/entities/rfq_entity.dart';
+import '../../../features/rfq/client_rfq/create_rfq/domain/entities/rfq_entity.dart';
 import '../../services/memory_management/hive/hive_service.dart';
 
 /*
@@ -11,6 +11,6 @@ class LocalService {
 
   Future<void> cacheRfq(Rfq rfq) async {
     final box = hive.box<Rfq>('rfqs');
-    await box.put(rfq.clientId, rfq); //TODO: Change to Rfq ID
+    await box.put(rfq.clientId, rfq);
   }
 }

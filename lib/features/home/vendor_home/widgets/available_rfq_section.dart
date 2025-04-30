@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/constants/color_palette.dart';
+
 class RfqItem {
   final String title;
   final String category;
@@ -42,7 +44,7 @@ class AvailableRfqSection extends StatelessWidget {
           child: Text(
             'Available RFQs',
             style: TextStyle(
-              fontSize: 20.0,
+              fontSize: 15.0,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -68,7 +70,7 @@ class AvailableRfqSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             spreadRadius: 1,
             blurRadius: 4,
             offset: const Offset(0, 1),
@@ -89,8 +91,8 @@ class AvailableRfqSection extends StatelessWidget {
                     Text(
                       item.title,
                       style: const TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     if (item.isNew)
@@ -107,7 +109,7 @@ class AvailableRfqSection extends StatelessWidget {
                           'New',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 12.0,
+                            fontSize: 7.0,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -119,7 +121,7 @@ class AvailableRfqSection extends StatelessWidget {
                   item.category,
                   style: TextStyle(
                     color: Colors.grey.shade600,
-                    fontSize: 14.0,
+                    fontSize: 11.0,
                   ),
                 ),
                 const SizedBox(height: 8.0),
@@ -128,7 +130,7 @@ class AvailableRfqSection extends StatelessWidget {
                     item.description!,
                     style: TextStyle(
                       color: Colors.grey.shade800,
-                      fontSize: 14.0,
+                      fontSize: 12.0,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -143,13 +145,17 @@ class AvailableRfqSection extends StatelessWidget {
                       label: Text(
                         tag,
                         style: const TextStyle(
-                          fontSize: 12.0,
-                          color: Colors.deepOrange,
+                          fontSize: 8.0,
+                          color: AppColors.primaryAccent,
                         ),
                       ),
-                      backgroundColor: Colors.deepOrange.withOpacity(0.1),
+                      backgroundColor: Colors.deepOrange.withAlpha(20),
                       padding: const EdgeInsets.all(0),
                       labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      side: const BorderSide(
+                        color: AppColors.primaryAccent,
+                        width: 0.5,
+                      ),
                     );
                   }).toList(),
                 ),
@@ -166,13 +172,13 @@ class AvailableRfqSection extends StatelessWidget {
                       '${item.daysLeft} days left',
                       style: TextStyle(
                         color: Colors.grey.shade600,
-                        fontSize: 14.0,
+                        fontSize: 11.0,
                       ),
                     ),
                     const SizedBox(width: 16.0),
                     Icon(
-                      Icons.attach_money,
-                      size: 16.0,
+                      Icons.monetization_on,
+                      size: 14.0,
                       color: Colors.grey.shade600,
                     ),
                     const SizedBox(width: 4.0),
@@ -180,7 +186,7 @@ class AvailableRfqSection extends StatelessWidget {
                       item.priceRange,
                       style: TextStyle(
                         color: Colors.grey.shade600,
-                        fontSize: 14.0,
+                        fontSize: 12.0,
                       ),
                     ),
                   ],

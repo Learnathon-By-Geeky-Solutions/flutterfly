@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/services/routes/app_routes.dart';
+import '../../../../core/utils/helpers/helpers.dart';
 
 class RFQCard extends StatelessWidget {
   final String title;
@@ -8,7 +9,7 @@ class RFQCard extends StatelessWidget {
   final String company;
   final String deadline;
   final String budget;
-  final bool isNew;
+  final String status;
   final Map<String, dynamic> rfq;
 
   const RFQCard({
@@ -18,7 +19,7 @@ class RFQCard extends StatelessWidget {
     required this.company,
     required this.deadline,
     required this.budget,
-    required this.isNew,
+    required this.status,
     required this.rfq,
   });
 
@@ -39,23 +40,23 @@ class RFQCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  title,
+                  AppHelperFunctions.limitWords(title, 3),
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF2D3142),
                   ),
                 ),
-                if (isNew)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
                       color: const Color(0xFFE0F7E6),
                       borderRadius: BorderRadius.circular(50),
                     ),
-                    child: const Text(
-                      'New',
-                      style: TextStyle(
+                    child: Text(
+                        status == 'ongoing' ? 'Active' : (status == 'paused'
+                            ? 'Paused' : 'Unknown'),
+                        style: const TextStyle(
                         color: Color(0xFF2D9D5B),
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -68,7 +69,7 @@ class RFQCard extends StatelessWidget {
             Text(
               description,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 12,
                 color: Colors.grey[700],
                 height: 1.4,
               ),
@@ -81,7 +82,7 @@ class RFQCard extends StatelessWidget {
                 Text(
                   company,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 11,
                     color: Colors.grey[700],
                   ),
                 ),
@@ -93,9 +94,9 @@ class RFQCard extends StatelessWidget {
                 Icon(Icons.access_time, size: 18, color: Colors.grey[700]),
                 const SizedBox(width: 8),
                 Text(
-                  'Deadline: $deadline',
+                  'Deadline: ${AppHelperFunctions.formatDate(deadline)}',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 10,
                     color: Colors.grey[700],
                   ),
                 ),
@@ -107,9 +108,9 @@ class RFQCard extends StatelessWidget {
                 Icon(Icons.label, size: 18, color: Colors.grey[700]),
                 const SizedBox(width: 8),
                 Text(
-                  'Budget: $budget',
+                  'Budget: $budget৳',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 10,
                     color: Colors.grey[700],
                   ),
                 ),
@@ -118,7 +119,7 @@ class RFQCard extends StatelessWidget {
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
-              height: 48,
+              height: 55,
               child: ElevatedButton(
                 onPressed: () {
                   context.push(
@@ -136,7 +137,7 @@ class RFQCard extends StatelessWidget {
                 child: const Text(
                   'View Details',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

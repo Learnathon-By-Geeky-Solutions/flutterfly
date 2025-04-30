@@ -19,13 +19,13 @@ class HomeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             spreadRadius: 1,
             blurRadius: 2,
             offset: const Offset(0, 1),
@@ -33,12 +33,13 @@ class HomeCard extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: iconBackgroundColor.withOpacity(0.1),
+              color: iconBackgroundColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(30),
             ),
             child: Icon(
@@ -47,20 +48,20 @@ class HomeCard extends StatelessWidget {
               size: 20,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 5),
           Text(
             title,
             style: const TextStyle(
               color: Color(0xFF64748B),
-              fontSize: 14,
+              fontSize: 10,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             count,
             style: const TextStyle(
               color: Color(0xFF1E293B),
-              fontSize: 20,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),

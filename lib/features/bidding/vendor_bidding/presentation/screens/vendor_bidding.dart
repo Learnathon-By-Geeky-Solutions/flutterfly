@@ -1,12 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:quickdeal/features/bidding/vendor_bidding/presentation/widgets/bid_card.dart';
+import '../../../../../common/widget/custom_appbar.dart';
+import '../../../../../core/services/routes/app_routes.dart';
+import '../../../../../main.dart';
 
-class VendorBidding extends StatelessWidget {
+class VendorBidding extends StatefulWidget {
   const VendorBidding({super.key});
+
+  @override
+  _VendorBiddingState createState() => _VendorBiddingState();
+}
+
+class _VendorBiddingState extends State<VendorBidding> {
+  List<Map<String, dynamic>> _myBids = [];
+  final String? userId = supabase.auth.currentUser?.id;
+
+  Future<void> _fetchMyBids() async {
+    final response = await supabase
+        .from('bids')
+        .select('*, rfqs!bids_rfq_id_fkey(*)')
+        .eq('vendor_id', userId as Object);
+
+    if (response.isNotEmpty) {
+      setState(() {
+        _myBids = List<Map<String, dynamic>>.from(response);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchMyBids();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -17,7 +49,7 @@ class VendorBidding extends StatelessWidget {
               child: Text(
                 'My Bids',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey[900],
                 ),
@@ -28,24 +60,22 @@ class VendorBidding extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Container(
-                height: 48,
+                height: 45,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey[300]!),
                 ),
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: 'Search projects...',
+                    hintText: 'Search bids...',
                     hintStyle: TextStyle(
                       color: Colors.grey[400],
-                      fontSize: 16,
+                      fontSize: 13,
                     ),
                     prefixIcon: Icon(
                       Icons.search,
                       color: Colors.grey[800],
                     ),
-                    border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                 ),
@@ -143,38 +173,65 @@ class VendorBidding extends StatelessWidget {
 
             // Bid Cards
             Expanded(
-              child: ListView(
+              child: _myBids.isEmpty
+                  ? Center(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.inbox,
+                          size: 80,
+                          color: Colors.grey[400],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'You have no bids yet. Check RFQs available to you to start bidding!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+              )
+                  : ListView.builder(
                 padding: const EdgeInsets.all(16),
-                children: const [
-                  BidCard(
-                    projectTitle: 'Office Renovation Project',
-                    bidAmount: '\$45,000',
-                    submittedDate: 'Jan 15, 2025',
-                    status: 'Pending',
-                    statusColor: Color(0xFFF8EAC0),
-                    statusTextColor: Color(0xFFB7953F),
-                  ),
-                  SizedBox(height: 16),
-                  BidCard(
-                    projectTitle: 'Restaurant Design',
-                    bidAmount: '\$28,500',
-                    submittedDate: 'Jan 10, 2025',
-                    status: 'Accepted',
-                    statusColor: Color(0xFFE0F7E6),
-                    statusTextColor: Color(0xFF2D9D5B),
-                  ),
-                  SizedBox(height: 16),
-                  BidCard(
-                    projectTitle: 'Hotel Lobby Redesign',
-                    bidAmount: '\$35,000',
-                    submittedDate: 'Jan 5, 2025',
-                    status: 'Rejected',
-                    statusColor: Color(0xFFFAE3E3),
-                    statusTextColor: Color(0xFFD85050),
-                  ),
-                ],
+                itemCount: _myBids.length,
+                itemBuilder: (context, index) {
+                  final bid = _myBids[index];
+                  final rfqInfo = bid['rfqs']; // Accessing the related RFQ data
+                  return GestureDetector(
+                    onTap: () {
+                      context.push(
+                        AppRoutes.vendorViewOwnBidDetails,
+                        extra: {
+                          'bid_id': bid['bid_id'],
+                          'rfq_id': bid['rfq_id'],
+                        },
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        BidCard(
+                          bid: bid,
+                          rfqInfo: rfqInfo,
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
+
           ],
         ),
       ),

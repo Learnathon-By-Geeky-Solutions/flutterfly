@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/adapters.dart';
-
 import '../../../../../../common/widget/custom_snackbar.dart';
 import '../../../../../../core/services/auth_service/auth_service.dart';
 import '../../../../../../core/services/memory_management/hive/hive_service.dart';
 import '../../../../../../core/services/routes/app_routes.dart';
+import '../../../../../rfq/client_rfq/create_rfq/domain/entities/category.dart';
 import '../controllers/vendor_signup_controller.dart';
 import '../widgets/signup_progress_indicator.dart';
 import '../widgets/signup_step_indicator.dart';
@@ -21,16 +21,11 @@ class VendorSignupServicesScreen extends ConsumerStatefulWidget {
 
 class _VendorSignupServicesScreenState
     extends ConsumerState<VendorSignupServicesScreen> {
-  final Map<String, bool> _serviceCategories = {
-    'Manufacturing': false,
-    'Customized Design Work': false,
-    'Electrical Work': false,
-    'Homemade Food': false,
-    'Interior Design': false,
-  };
+  // List to store selected categories as Category enums
+  List<Category> selectedCategories = [];
 
-  Future<void> vendorSignup()
-  async {
+  // Function to handle vendor signup and OTP
+  Future<void> vendorSignup() async {
     if (mounted) {
       AuthService authService = AuthService();
 
@@ -146,7 +141,8 @@ class _VendorSignupServicesScreenState
                       ),
                     ),
                     const SizedBox(height: 16),
-                    ..._serviceCategories.keys.map((String key) {
+                    // Render service options using Category enum
+                    ...CategoryExtension.getCategories().map((category) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
@@ -155,10 +151,14 @@ class _VendorSignupServicesScreenState
                               width: 24,
                               height: 24,
                               child: Checkbox(
-                                value: _serviceCategories[key],
+                                value: selectedCategories.contains(category),
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    _serviceCategories[key] = value ?? false;
+                                    if (value == true) {
+                                      selectedCategories.add(category);
+                                    } else {
+                                      selectedCategories.remove(category);
+                                    }
                                   });
                                 },
                                 shape: RoundedRectangleBorder(
@@ -168,7 +168,7 @@ class _VendorSignupServicesScreenState
                             ),
                             const SizedBox(width: 12),
                             Text(
-                              key,
+                              category.name,
                               style: const TextStyle(
                                 fontSize: 16,
                               ),
@@ -176,7 +176,7 @@ class _VendorSignupServicesScreenState
                           ],
                         ),
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),
@@ -186,27 +186,23 @@ class _VendorSignupServicesScreenState
               child: SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: // dart
-                ElevatedButton(
+                child: ElevatedButton(
                   onPressed: () async {
-                    // Get all services where the value is true
-                    final selectedServices = _serviceCategories.entries
-                        .where((entry) => entry.value)
-                        .map((entry) => entry.key)
-                        .toList();
-
-                    if (selectedServices.isEmpty) {
+                    if (selectedCategories.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Please select at least one service.')),
                       );
                       return;
                     }
+
                     // Open Hive box and store the selected services
                     await Hive.openBox('vendor');
                     final hiveService = HiveService();
                     final box = hiveService.box('vendor');
-                    await box.put('services_offered', selectedServices);
-                    print('Selected Services: $selectedServices');
+                    final selectedCategoryNames =
+                    selectedCategories.map((e) => e.name).toList();
+                    await box.put('services_offered', selectedCategoryNames);
+                    print('Selected Services: $selectedCategoryNames');
 
                     vendorSignup();
                   },
@@ -224,7 +220,7 @@ class _VendorSignupServicesScreenState
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                )
+                ),
               ),
             ),
           ],

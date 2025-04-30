@@ -2,14 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:quickdeal/core/services/auth_service/auth_service.dart'; // Import your AuthService here
+import 'package:quickdeal/core/services/auth_service/auth_service.dart';
 import 'package:quickdeal/core/services/role_manager/role_manager.dart';
 import 'package:quickdeal/core/services/routes/app_routes.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../common/widget/getLogoWidget.dart';
 import '../../../core/services/memory_management/hive/hive_service.dart';
 import '../../../core/utils/constants/color_palette.dart';
 import 'package:quickdeal/common/widget/custom_snackbar.dart';
+
+import '../../../main.dart';
 
 class EmailOtpScreen extends ConsumerStatefulWidget {
   final String email;
@@ -79,7 +80,6 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
         final servicesOffered = box.get('services_offered');
         final vendorInfo = box.get('vendorInfo');
 
-        final supabase = Supabase.instance.client;
         final user = supabase.auth.currentUser;
 
         if (user == null) {
@@ -90,22 +90,6 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
           );
           return;
         }
-
-        List<String> categoryIds = [];
-
-        for (String serviceName in servicesOffered) {
-          final categoryResponse = await supabase
-              .from('categories')
-              .select('category_id')
-              .eq('name', serviceName)
-              .maybeSingle();
-
-          if (categoryResponse != null) {
-            categoryIds.add(categoryResponse['category_id']);
-          }
-        }
-
-        // Now categoryIds contains the category_id for each service name.
 
         await supabase.from('vendors').update({
           'business_name': vendorInfo['businessName'],
@@ -118,7 +102,7 @@ class _EmailOtpScreenState extends ConsumerState<EmailOtpScreen> {
           },
           'contact_number': vendorInfo['phoneNumber'],
           'tin': vendorInfo['taxIdNumber'],
-          'services_offered': categoryIds, // <-- now it's category IDs, not names
+          'services_offered': servicesOffered,
         }).eq('vendor_id', user.id);
 
 

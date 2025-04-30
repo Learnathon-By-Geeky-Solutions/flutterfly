@@ -49,42 +49,58 @@ class _VendorRfqState extends State<VendorRfq> {
           .eq('vendor_id', userId)
           .single();
 
-      final servicesOffered = vendorResponse['services_offered'];
+      List<String> servicesOffered = List<String>.from(vendorResponse['services_offered']);
 
-      if (servicesOffered == null || servicesOffered.isEmpty) {
+      if (servicesOffered.isEmpty) {
         throw Exception('Vendor has no services offered');
       }
 
-      // Step 2: Fetch all RFQs that match the vendor's services (no search/filter applied yet)
+      // Step 2: Fetch rfq_ids the vendor has already placed bids on
+      final bidResponse = await supabase
+          .from('bids')
+          .select('rfq_id')
+          .eq('vendor_id', userId);
+
+      final List<String> rfqIdsBidOn = List<Map<String, dynamic>>.from(bidResponse)
+          .map((e) => e['rfq_id'].toString())
+          .toList();
+
+      // Step 3: Fetch RFQs that match vendor's services and are NOT already bid on
       final response = await supabase
           .from('rfqs')
           .select(''' 
-          rfq_id,
-          client_id,
-          category_id,
-          title,
-          description,
-          min_budget,
-          max_budget,
-          bidding_deadline,
-          rfq_status,
-          location,
-          quantity,
-          specification,
-          delivery_deadline,
-          attachments,
-          created_at,
-          updated_at,
-          currently_selected_bid_id,
-          clients(full_name, profile_pic)
-        ''')
-          .eq('rfq_status', 'ongoing') // Filter ongoing RFQs
-          .filter('category_id', 'in', servicesOffered)
+      rfq_id,
+      client_id,
+      category_names,
+      title,
+      description,
+      budget,
+      bidding_deadline,
+      rfq_status,
+      location,
+      quantity,
+      specification,
+      delivery_deadline,
+      attachments,
+      created_at,
+      updated_at,
+      currently_selected_bid_id,
+      clients(full_name, profile_pic)
+    ''')
+          .eq('rfq_status', 'ongoing')
+      // Ensure category_names is compared with an array of strings (servicesOffered)
+          .filter('category_names', 'cs', servicesOffered)  // Array subset filter for category_names
           .order('created_at', ascending: false);
 
+      // Step 4: Remove any RFQ already bid on
+      final List<Map<String, dynamic>> allRfqs = List<Map<String, dynamic>>.from(response);
+      final filteredOutBids = allRfqs
+          .where((rfq) => !rfqIdsBidOn.contains(rfq['rfq_id'].toString()))
+          .toList();
+
       setState(() {
-        rfqs = List<Map<String, dynamic>>.from(response);
-        filteredRfqs = List<Map<String, dynamic>>.from(rfqs); // Initialize filtered list
+        rfqs = filteredOutBids;
+        filteredRfqs = List<Map<String, dynamic>>.from(filteredOutBids);
         isLoading = false;
       });
 
@@ -95,6 +111,7 @@ class _VendorRfqState extends State<VendorRfq> {
       });
     }
   }
+
 
   // Function to filter RFQs based on search query
   void filterRfqs(String query) {
@@ -151,7 +168,7 @@ class _VendorRfqState extends State<VendorRfq> {
                   hintText: 'Search RFQs...',
                   hintStyle: TextStyle(
                     color: Colors.grey[400],
-                    fontSize: 16,
+                    fontSize: 12,
                   ),
                   prefixIcon: Icon(
                     Icons.search,
@@ -184,21 +201,22 @@ class _VendorRfqState extends State<VendorRfq> {
                     const SizedBox(height: 16), // Add space after the text
                     // RFQ Cards
                     ...filteredRfqs.map((rfq) {
-                  return  Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: RFQCard(
-                            rfq: rfq,
-                            title: rfq['title'] ?? 'No Title',
-                            description: _trimDescription(rfq['description'] ?? 'No Description'),
-                            company: rfq['clients']?['full_name'] ?? 'Unknown',
-                            deadline: rfq['bidding_deadline'] != null
-                                ? DateTime.parse(rfq['bidding_deadline']).toLocal().toString().split(' ')[0]
-                                : 'No Deadline',
-                            budget: _formatBudget(rfq['min_budget'], rfq['max_budget']),
-                            isNew: true,
-                          ),
-                        );
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: RFQCard(
+                          rfq: rfq,
+                          title: rfq['title'] ?? 'No Title',
+                          description: _trimDescription(rfq['description'] ?? 'No Description'),
+                          company: rfq['clients']?['full_name'] ?? 'Unknown',
+                          deadline: rfq['bidding_deadline'] != null
+                              ? DateTime.parse(rfq['bidding_deadline']).toLocal().toString().split(' ')[0]
+                              : 'No Deadline',
+                          budget: rfq['budget'].toString(),
+                          status: rfq['rfq_status'] ?? 'ongoing', // Pass status correctly here
+                        ),
+                      );
                     }),
+
                   ],
                 ),
               ),
@@ -207,19 +225,6 @@ class _VendorRfqState extends State<VendorRfq> {
         ),
       ),
     );
-  }
-
-  String _formatBudget(dynamic minBudget, dynamic maxBudget) {
-    if (minBudget == null && maxBudget == null) {
-      return 'Budget not specified';
-    }
-    if (minBudget != null && maxBudget != null) {
-      return '\$${minBudget.toString()} - \$${maxBudget.toString()}';
-    }
-    if (minBudget != null) {
-      return 'Starts from \$${minBudget.toString()}';
-    }
-    return 'Up to \$${maxBudget.toString()}';
   }
 }
 
